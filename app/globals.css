@@ -1,0 +1,67 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-inter: 'Inter', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+html {
+  color-scheme: dark;
+}
+
+@layer base {
+  body {
+    @apply bg-spectre-bg text-spectre-text font-inter;
+  }
+
+  input, textarea, select {
+    @apply bg-spectre-surface border border-spectre-border rounded text-spectre-text focus:outline-none focus:ring-2 focus:ring-spectre-accent focus:ring-offset-0;
+  }
+
+  button {
+    @apply transition-colors duration-200;
+  }
+}
+
+@layer components {
+  .spectre-card {
+    @apply bg-spectre-surface border border-spectre-border rounded-lg;
+  }
+
+  .spectre-input {
+    @apply bg-spectre-surface border border-spectre-border rounded px-3 py-2 text-spectre-text text-sm focus:outline-none focus:ring-2 focus:ring-spectre-accent;
+  }
+
+  .spectre-btn-primary {
+    @apply bg-spectre-accent hover:bg-opacity-90 text-black font-medium px-4 py-2 rounded transition-all;
+  }
+
+  .spectre-btn-danger {
+    @apply bg-spectre-danger hover:bg-opacity-90 text-white font-medium px-4 py-2 rounded transition-all;
+  }
+
+  .spectre-btn-secondary {
+    @apply bg-spectre-border hover:bg-spectre-surface text-spectre-text font-medium px-4 py-2 rounded transition-all;
+  }
+
+  .spectre-output {
+    @apply font-mono text-xs text-spectre-accent bg-spectre-surface-dark border border-spectre-border rounded p-3 overflow-y-auto;
+  }
+
+  .spectre-status-badge {
+    @apply inline-flex items-center gap-2 px-3 py-1 bg-spectre-surface border border-spectre-border rounded-full text-xs font-medium;
+  }
+
+  .spectre-status-running {
+    @apply text-spectre-accent;
+  }
+
+  .spectre-status-running::before {
+    content: '';
+    @apply inline-block w-2 h-2 bg-spectre-accent rounded-full animate-pulse;
+  }
+}
