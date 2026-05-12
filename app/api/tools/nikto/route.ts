@@ -1,56 +1,85 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { spawn } from 'child_process';
+import { saveScan, parseNiktoOutput } from '@/lib/store';
+import crypto from 'crypto';
+
+const BLOCKED = ['localhost', '127.0.0.1', '::1', '0.0.0.0', ''];
+
+function validateTarget(target: string): string | null {
+  const t = target.trim().toLowerCase();
+  if (!t) return 'Target is required';
+  if (BLOCKED.some((b) => t === b || t.startsWith(b + ':'))) return 'Scanning localhost is not allowed';
+  if (t.includes('..') || t.includes(';') || t.includes('|') || t.includes('`'))
+    return 'Invalid target';
+  return null;
+}
 
 export async function POST(request: NextRequest) {
   try {
     const { target } = await request.json();
 
-    if (!target || target === 'localhost' || target === '127.0.0.1') {
-      return NextResponse.json(
-        { error: 'Invalid target' },
-        { status: 400 },
-      );
+    const validationError = validateTarget(target);
+    if (validationError) {
+      return NextResponse.json({ error: validationError }, { status: 400 });
     }
 
     const encoder = new TextEncoder();
-    const readable = new ReadableStream({
+    let fullOutput = '';
+
+    const stream = new ReadableStream({
       start(controller) {
-        const nikto = spawn('nikto', ['-h', target]);
-
-        nikto.stdout.on('data', (data) => {
-          controller.enqueue(encoder.encode(data.toString()));
+        // nikto -h <target> -Format txt
+        const proc = spawn('nikto', ['-h', target.trim(), '-Format', 'txt'], {
+          stdio: ['ignore', 'pipe', 'pipe'],
         });
 
-        nikto.stderr.on('data', (data) => {
-          controller.enqueue(encoder.encode(`Error: ${data.toString()}`));
+        proc.stdout.on('data', (chunk: Buffer) => {
+          const text = chunk.toString();
+          fullOutput += text;
+          controller.enqueue(encoder.encode(text));
         });
 
-        nikto.on('close', (code) => {
-          if (code !== 0) {
-            controller.enqueue(encoder.encode(`\nNikto exited with code ${code}`));
+        proc.stderr.on('data', (chunk: Buffer) => {
+          controller.enqueue(encoder.encode(`[info] ${chunk.toString()}`));
+        });
+
+        proc.on('close', (code) => {
+          try {
+            const vulns = parseNiktoOutput(fullOutput, target.trim());
+            saveScan({
+              id: crypto.randomUUID(),
+              target: target.trim(),
+              tool: 'nikto',
+              output: fullOutput,
+              timestamp: new Date().toISOString(),
+              vulnerabilities: vulns,
+            });
+            controller.enqueue(encoder.encode(`\n[SPECTRE] Scan complete. ${vulns.length} finding(s) saved to Vulnerabilities.\n`));
+          } catch {
+            controller.enqueue(encoder.encode(`\n[SPECTRE] Scan complete.\n`));
           }
           controller.close();
         });
 
-        nikto.on('error', (err) => {
-          controller.enqueue(encoder.encode(`Error: ${err.message}`));
+        proc.on('error', (err) => {
+          if ((err as NodeJS.ErrnoException).code === 'ENOENT') {
+            controller.enqueue(encoder.encode('[ERROR] nikto not found. Install with: sudo apt install nikto\n'));
+          } else {
+            controller.enqueue(encoder.encode(`[ERROR] ${err.message}\n`));
+          }
           controller.close();
         });
       },
     });
 
-    return new Response(readable, {
+    return new Response(stream, {
       headers: {
-        'Content-Type': 'text/plain',
-        'Cache-Control': 'no-cache',
-        Connection: 'keep-alive',
+        'Content-Type': 'text/plain; charset=utf-8',
+        'Cache-Control': 'no-cache, no-transform',
+        'X-Accel-Buffering': 'no',
       },
     });
-  } catch (error) {
-    console.error('Nikto API error:', error);
-    return NextResponse.json(
-      { error: 'Failed to execute nikto' },
-      { status: 500 },
-    );
+  } catch {
+    return NextResponse.json({ error: 'Failed to start nikto' }, { status: 500 });
   }
 }

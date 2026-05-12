@@ -1,65 +1,97 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { spawn } from 'child_process';
+import { saveScan, parseNmapOutput } from '@/lib/store';
+import crypto from 'crypto';
 
-const PROFILE_FLAGS: Record<string, string> = {
-  Quick: '-T4 -F',
-  Service: '-sV -T4',
-  Full: '-sV -A -T4',
+const BLOCKED = ['localhost', '127.0.0.1', '::1', '0.0.0.0', ''];
+
+function validateTarget(target: string): string | null {
+  const t = target.trim().toLowerCase();
+  if (!t) return 'Target is required';
+  if (BLOCKED.includes(t)) return 'Scanning localhost is not allowed';
+  if (t.includes('..') || t.includes('/etc') || t.includes(';') || t.includes('|') || t.includes('`'))
+    return 'Invalid target';
+  return null;
+}
+
+const SCAN_PROFILES: Record<string, string[]> = {
+  quick:   ['-T4', '-F', '--open'],
+  service: ['-sV', '-T4', '--open'],
+  full:    ['-sV', '-A', '-T4', '--open'],
 };
 
 export async function POST(request: NextRequest) {
   try {
-    const { target, profile = 'Quick' } = await request.json();
+    const { target, profile = 'service' } = await request.json();
 
-    if (!target || target === 'localhost' || target === '127.0.0.1') {
-      return NextResponse.json(
-        { error: 'Invalid target' },
-        { status: 400 },
-      );
+    const validationError = validateTarget(target);
+    if (validationError) {
+      return NextResponse.json({ error: validationError }, { status: 400 });
     }
 
-    const flags = PROFILE_FLAGS[profile] || PROFILE_FLAGS.Quick;
-    const args = flags.split(' ').concat([target]);
+    const args = [...(SCAN_PROFILES[profile] ?? SCAN_PROFILES.service), target.trim()];
 
     const encoder = new TextEncoder();
-    const readable = new ReadableStream({
+    let fullOutput = '';
+
+    const stream = new ReadableStream({
       start(controller) {
-        const nmap = spawn('nmap', args);
+        const proc = spawn('nmap', args, { stdio: ['ignore', 'pipe', 'pipe'] });
 
-        nmap.stdout.on('data', (data) => {
-          controller.enqueue(encoder.encode(data.toString()));
+        proc.stdout.on('data', (chunk: Buffer) => {
+          const text = chunk.toString();
+          fullOutput += text;
+          controller.enqueue(encoder.encode(text));
         });
 
-        nmap.stderr.on('data', (data) => {
-          controller.enqueue(encoder.encode(`Error: ${data.toString()}`));
+        proc.stderr.on('data', (chunk: Buffer) => {
+          const text = chunk.toString();
+          // nmap writes status to stderr — include it so user sees progress
+          controller.enqueue(encoder.encode(`[info] ${text}`));
         });
 
-        nmap.on('close', (code) => {
-          if (code !== 0) {
-            controller.enqueue(encoder.encode(`\nNmap exited with code ${code}`));
+        proc.on('close', (code) => {
+          if (code !== 0 && fullOutput.trim() === '') {
+            controller.enqueue(encoder.encode(`[ERROR] nmap exited with code ${code}. Try running: sudo setcap cap_net_raw,cap_net_admin+eip $(which nmap)\n`));
+          } else {
+            // Parse and persist findings
+            try {
+              const vulns = parseNmapOutput(fullOutput, target.trim());
+              saveScan({
+                id: crypto.randomUUID(),
+                target: target.trim(),
+                tool: 'nmap',
+                output: fullOutput,
+                timestamp: new Date().toISOString(),
+                vulnerabilities: vulns,
+              });
+              controller.enqueue(encoder.encode(`\n[SPECTRE] Scan complete. ${vulns.length} finding(s) saved to Vulnerabilities.\n`));
+            } catch (e) {
+              controller.enqueue(encoder.encode(`\n[SPECTRE] Scan complete. Could not parse findings.\n`));
+            }
           }
           controller.close();
         });
 
-        nmap.on('error', (err) => {
-          controller.enqueue(encoder.encode(`Error: ${err.message}`));
+        proc.on('error', (err) => {
+          if ((err as NodeJS.ErrnoException).code === 'ENOENT') {
+            controller.enqueue(encoder.encode('[ERROR] nmap not found. Install with: sudo apt install nmap\n'));
+          } else {
+            controller.enqueue(encoder.encode(`[ERROR] ${err.message}\n`));
+          }
           controller.close();
         });
       },
     });
 
-    return new Response(readable, {
+    return new Response(stream, {
       headers: {
-        'Content-Type': 'text/plain',
-        'Cache-Control': 'no-cache',
-        Connection: 'keep-alive',
+        'Content-Type': 'text/plain; charset=utf-8',
+        'Cache-Control': 'no-cache, no-transform',
+        'X-Accel-Buffering': 'no',
       },
     });
   } catch (error) {
-    console.error('Nmap API error:', error);
-    return NextResponse.json(
-      { error: 'Failed to execute nmap' },
-      { status: 500 },
-    );
+    return NextResponse.json({ error: 'Failed to start nmap' }, { status: 500 });
   }
 }

@@ -1,0 +1,102 @@
+import { NextRequest, NextResponse } from 'next/server';
+
+const GROQ_API_KEY = process.env.GROQ_API_KEY;
+
+export async function POST(request: NextRequest) {
+  if (!GROQ_API_KEY) {
+    return NextResponse.json({ error: 'GROQ_API_KEY not configured' }, { status: 500 });
+  }
+
+  try {
+    const { messages } = await request.json();
+
+    const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${GROQ_API_KEY}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        model: 'llama-3.3-70b-versatile',
+        messages: [
+          {
+            role: 'system',
+            content: `You are SPECTRE, an expert penetration testing assistant embedded in a security operations dashboard. 
+Help the user enumerate targets, interpret nmap/nikto scan results, identify vulnerabilities, and plan attack vectors.
+When given scan output, extract and explain each finding clearly — include the service, risk level, and recommended action.
+Only assist with authorized targets in controlled lab environments. Be concise and technical.
+Format responses with clear sections when analyzing scan output.`,
+          },
+          ...messages.map((m: { role: string; content: string }) => ({
+            role: m.role,
+            content: m.content,
+          })),
+        ],
+        stream: true,
+        temperature: 0.7,
+        max_tokens: 2048,
+      }),
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('Groq API error:', errorText);
+      return NextResponse.json(
+        { error: `Groq API error: ${response.status} ${response.statusText}` },
+        { status: response.status }
+      );
+    }
+
+    if (!response.body) {
+      return NextResponse.json({ error: 'No response body from Groq' }, { status: 500 });
+    }
+
+    // Strip SSE envelope from Groq, stream raw tokens to client
+    // Fix: use text/plain — we're sending raw text, NOT SSE format
+    const encoder = new TextEncoder();
+
+    const stream = new ReadableStream({
+      async start(controller) {
+        const reader = response.body!.getReader();
+        const decoder = new TextDecoder();
+
+        try {
+          while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+
+            const text = decoder.decode(value, { stream: true });
+            for (const line of text.split('\n')) {
+              if (!line.startsWith('data: ')) continue;
+              const data = line.slice(6).trim();
+              if (data === '[DONE]') continue;
+              try {
+                const parsed = JSON.parse(data);
+                const token = parsed.choices?.[0]?.delta?.content;
+                if (token) controller.enqueue(encoder.encode(token));
+              } catch {
+                // malformed chunk, skip
+              }
+            }
+          }
+        } catch (err) {
+          controller.error(err);
+        } finally {
+          controller.close();
+        }
+      },
+    });
+
+    return new Response(stream, {
+      headers: {
+        // FIX: was text/event-stream but we're sending raw text — this caused the browser bug
+        'Content-Type': 'text/plain; charset=utf-8',
+        'Cache-Control': 'no-cache, no-transform',
+        'X-Accel-Buffering': 'no',
+      },
+    });
+  } catch (error) {
+    console.error('Chat API error:', error);
+    return NextResponse.json({ error: 'Failed to process chat request' }, { status: 500 });
+  }
+}
