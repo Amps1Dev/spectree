@@ -1,9 +1,7 @@
 import './globals.css';
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
 import Sidebar from '@/components/sidebar';
-
-const inter = Inter({ subsets: ['latin'] });
+import { LLMProvider } from '@/components/llm-context';
 
 export const metadata: Metadata = {
   title: 'SPECTRE - Penetration Testing Dashboard',
@@ -17,11 +15,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="dark">
-      <body className={`${inter.className} bg-spectre-bg text-spectre-text`}>
-        <div className="flex h-screen">
-          <Sidebar />
-          <main className="flex-1 overflow-auto">{children}</main>
-        </div>
+      <body className="font-inter bg-spectre-bg text-spectre-text">
+        <LLMProvider>
+          <div className="flex h-screen">
+            <Sidebar />
+            <main className="flex-1 overflow-auto">{children}</main>
+          </div>
+        </LLMProvider>
       </body>
     </html>
   );
