@@ -23,7 +23,7 @@ const OLLAMA_BASE_URL = (
   process.env.OLLAMA_BASE_URL || 'http://127.0.0.1:11434'
 ).replace(/\/+$/, '');
 const OLLAMA_MODEL = process.env.OLLAMA_MODEL || 'qwen2.5:1.5b';
-const GROQ_MODEL = process.env.GROQ_MODEL || 'llama-3.3-70b-versatile';
+const GROQ_MODEL = process.env.GROQ_MODEL || 'qwen/qwen3.8-27b';
 
 // Local-first by default so the app runs offline out of the box.
 export const DEFAULT_PROVIDER: ProviderId =
