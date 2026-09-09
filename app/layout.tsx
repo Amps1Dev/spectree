@@ -1,10 +1,7 @@
 import './globals.css';
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
 import Sidebar from '@/components/sidebar';
 import { LLMProvider } from '@/components/llm-context';
-
-const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: 'SPECTRE - Penetration Testing Dashboard',
@@ -18,7 +15,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="dark">
-      <body className={`${inter.className} bg-spectre-bg text-spectre-text`}>
+      <body className="font-inter bg-spectre-bg text-spectre-text">
         <LLMProvider>
           <div className="flex h-screen">
             <Sidebar />

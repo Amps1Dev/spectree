@@ -6,14 +6,32 @@ import { ChatMessage, SessionContext } from '@/lib/types';
 import ChatBubble from '@/components/chat-bubble';
 import ContextPanel from '@/components/context-panel';
 import { useLLM } from '@/components/llm-context';
+import { loadChat, saveChat, clearChat } from '@/lib/local-store';
 
 export default function ChatPage() {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [hydrated, setHydrated] = useState(false);
   const [context, setContext] = useState<SessionContext>({ suggestedSteps: [] });
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { provider } = useLLM();
+
+  // Restore persisted history once, on the client only (avoids an SSR/client
+  // hydration mismatch that a lazy localStorage initializer would cause).
+  useEffect(() => {
+    const saved = loadChat();
+    if (saved.length) setMessages(saved);
+    setHydrated(true);
+  }, []);
+
+  // Persist after each completed exchange — not on every stream token, and not
+  // before the initial load has run (which would clobber the store with []).
+  useEffect(() => {
+    if (!hydrated || loading) return;
+    saveChat(messages);
+  }, [messages, hydrated, loading]);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -23,6 +41,7 @@ export default function ChatPage() {
     e.preventDefault();
     if (!input.trim()) return;
 
+    setError('');
     const userMessage: ChatMessage = { role: 'user', content: input };
     setMessages((prev) => [...prev, userMessage]);
     setInput('');
@@ -35,7 +54,12 @@ export default function ChatPage() {
         body: JSON.stringify({ messages: [...messages, userMessage], provider }),
       });
 
-      if (!response.ok) throw new Error('Chat request failed');
+      if (!response.ok) {
+        // Surface the real reason (e.g. provider unreachable, key missing)
+        // instead of a blanket "Error communicating with assistant."
+        const detail = await response.json().catch(() => null);
+        throw new Error(detail?.error || `Request failed (${response.status})`);
+      }
 
       const reader = response.body?.getReader();
       const decoder = new TextDecoder();
@@ -45,12 +69,12 @@ export default function ChatPage() {
         while (true) {
           const { done, value } = await reader.read();
           if (done) break;
-          const chunk = decoder.decode(value);
-          fullResponse += chunk;
+          fullResponse += decoder.decode(value, { stream: true });
           setMessages((prev) => {
             const updated = [...prev];
-            if (updated[updated.length - 1]?.role === 'assistant') {
-              updated[updated.length - 1].content = fullResponse;
+            const last = updated[updated.length - 1];
+            if (last?.role === 'assistant') {
+              updated[updated.length - 1] = { role: 'assistant', content: fullResponse };
             } else {
               updated.push({ role: 'assistant', content: fullResponse });
             }
@@ -58,12 +82,11 @@ export default function ChatPage() {
           });
         }
       }
-    } catch (error) {
-      console.error('Chat error:', error);
-      setMessages((prev) => [
-        ...prev,
-        { role: 'assistant', content: 'Error communicating with assistant.' },
-      ]);
+    } catch (err) {
+      console.error('Chat error:', err);
+      setError(
+        err instanceof Error ? err.message : 'Error communicating with assistant.',
+      );
     } finally {
       setLoading(false);
     }
@@ -72,6 +95,8 @@ export default function ChatPage() {
   const clearSession = () => {
     setMessages([]);
     setContext({ suggestedSteps: [] });
+    setError('');
+    clearChat();
   };
 
   return (
@@ -96,6 +121,12 @@ export default function ChatPage() {
           ))}
           <div ref={messagesEndRef} />
         </div>
+
+        {error && (
+          <div className="mb-3 p-3 bg-spectre-danger/10 border border-spectre-danger rounded text-spectre-danger text-sm">
+            {error}
+          </div>
+        )}
 
         <form onSubmit={sendMessage} className="flex gap-2">
           <input

@@ -1,12 +1,14 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* System font stack — no webfont fetch, so a fresh build and every page load
+   work with no internet. Falls back cleanly across OSes. */
 :root {
-  --font-inter: 'Inter', sans-serif;
-  --font-mono: 'JetBrains Mono', monospace;
+  --font-inter: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial,
+    sans-serif;
+  --font-mono: ui-monospace, 'JetBrains Mono', 'SFMono-Regular', Menlo,
+    Consolas, monospace;
 }
 
 html {
@@ -63,5 +65,48 @@ html {
   .spectre-status-running::before {
     content: '';
     @apply inline-block w-2 h-2 bg-spectre-accent rounded-full animate-pulse;
+  }
+}
+
+/* Print / "Save as PDF": hide app chrome and controls, and render the report
+   as legible dark-on-white so it exports cleanly. Fully offline — no library. */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+
+  /* Collapse the reports two-column grid so the report fills the page. */
+  .reports-grid {
+    display: block !important;
+  }
+
+  html,
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+  }
+
+  .print-report {
+    border: none !important;
+    box-shadow: none !important;
+    background: #ffffff !important;
+    color: #000000 !important;
+    padding: 0 !important;
+    max-width: 100% !important;
+  }
+
+  .print-report h2,
+  .print-report h3,
+  .print-report h4,
+  .print-report p,
+  .print-report li,
+  .print-report span,
+  .print-report code {
+    color: #000000 !important;
+  }
+
+  .print-report .severity-badge {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
   }
 }

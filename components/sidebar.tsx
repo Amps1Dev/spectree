@@ -18,7 +18,7 @@ export default function Sidebar() {
   const active = providers.find((p) => p.id === provider);
 
   return (
-    <aside className="w-60 bg-spectre-surface border-r border-spectre-border flex flex-col">
+    <aside className="w-60 bg-spectre-surface border-r border-spectre-border flex flex-col no-print">
       <div className="p-6 border-b border-spectre-border">
         <h1 className="text-2xl font-bold text-spectre-accent">SPECTRE</h1>
       </div>
