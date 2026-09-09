@@ -5,6 +5,7 @@ import { Send } from 'lucide-react';
 import { ChatMessage, SessionContext } from '@/lib/types';
 import ChatBubble from '@/components/chat-bubble';
 import ContextPanel from '@/components/context-panel';
+import { useLLM } from '@/components/llm-context';
 
 export default function ChatPage() {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
@@ -12,6 +13,7 @@ export default function ChatPage() {
   const [loading, setLoading] = useState(false);
   const [context, setContext] = useState<SessionContext>({ suggestedSteps: [] });
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const { provider } = useLLM();
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -30,7 +32,7 @@ export default function ChatPage() {
       const response = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ messages: [...messages, userMessage] }),
+        body: JSON.stringify({ messages: [...messages, userMessage], provider }),
       });
 
       if (!response.ok) throw new Error('Chat request failed');

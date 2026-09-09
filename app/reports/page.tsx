@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { Download } from 'lucide-react';
 import ReportGenerator from '@/components/report-generator';
+import { useLLM } from '@/components/llm-context';
 
 export default function ReportsPage() {
   const [engagementName, setEngagementName] = useState('');
@@ -10,6 +11,7 @@ export default function ReportsPage() {
   const [findings, setFindings] = useState('');
   const [report, setReport] = useState<any>(null);
   const [loading, setLoading] = useState(false);
+  const { provider } = useLLM();
 
   const generateReport = async () => {
     if (!engagementName || !targetIp || !findings) {
@@ -26,6 +28,7 @@ export default function ReportsPage() {
           engagementName,
           targetIp,
           findings,
+          provider,
         }),
       });
 

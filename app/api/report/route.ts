@@ -1,17 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server';
-
-const GROQ_API_KEY = process.env.GROQ_API_KEY;
+import { resolveProvider } from '@/lib/llm';
 
 export async function POST(request: NextRequest) {
-  if (!GROQ_API_KEY) {
-    return NextResponse.json(
-      { error: 'GROQ_API_KEY not configured' },
-      { status: 500 },
-    );
-  }
-
   try {
-    const { engagementName, targetIp, findings } = await request.json();
+    const { engagementName, targetIp, findings, provider } = await request.json();
+    const cfg = resolveProvider(provider);
+
+    if (cfg.id === 'groq' && !cfg.apiKey) {
+      return NextResponse.json(
+        { error: 'GROQ_API_KEY not configured' },
+        { status: 500 },
+      );
+    }
 
     const prompt = `Generate a professional penetration test report for the following:
 
@@ -37,14 +37,14 @@ Please provide a structured report with the following sections in JSON format:
 
 Ensure the JSON is valid and properly formatted.`;
 
-    const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+    const headers: Record<string, string> = { 'Content-Type': 'application/json' };
+    if (cfg.apiKey) headers.Authorization = `Bearer ${cfg.apiKey}`;
+
+    const response = await fetch(cfg.chatUrl, {
       method: 'POST',
-      headers: {
-        Authorization: `Bearer ${GROQ_API_KEY}`,
-        'Content-Type': 'application/json',
-      },
+      headers,
       body: JSON.stringify({
-        model: 'llama-3.3-70b-versatile',
+        model: cfg.model,
         messages: [
           {
             role: 'system',
@@ -57,11 +57,14 @@ Ensure the JSON is valid and properly formatted.`;
         ],
         temperature: 0.7,
         max_tokens: 4096,
+        // Ask for strict JSON. Both Groq and Ollama support this; Ollama
+        // requires the word "JSON" to appear in the prompt (it does, above).
+        response_format: { type: 'json_object' },
       }),
     });
 
     if (!response.ok) {
-      throw new Error(`Groq API error: ${response.statusText}`);
+      throw new Error(`${cfg.label} API error: ${response.statusText}`);
     }
 
     const data = await response.json();
