@@ -9,7 +9,7 @@ export default function ChatBubble({ message }: ChatBubbleProps) {
   const isUser = message.role === 'user';
 
   return (
-    <div className={`flex ${isUser ? 'justify-end' : 'justify-start'}`}>
+    <div className={`flex animate-fade-in-up ${isUser ? 'justify-end' : 'justify-start'}`}>
       <div
         className={`max-w-md p-4 rounded-lg ${
           isUser

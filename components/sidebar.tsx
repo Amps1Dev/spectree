@@ -18,7 +18,7 @@ export default function Sidebar() {
   const active = providers.find((p) => p.id === provider);
 
   return (
-    <aside className="w-60 bg-spectre-surface border-r border-spectre-border flex flex-col no-print">
+    <aside className="w-60 shrink-0 bg-spectre-surface border-r border-spectre-border flex flex-col no-print">
       <div className="p-6 border-b border-spectre-border">
         <h1 className="text-2xl font-bold text-spectre-accent">SPECTRE</h1>
       </div>
@@ -29,12 +29,12 @@ export default function Sidebar() {
           const Icon = item.icon;
 
           return (
-            <Link key={item.href} href={item.href}>
+            <Link key={item.href} href={item.href} aria-current={isActive ? 'page' : undefined} className="block rounded-lg">
               <div
-                className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
+                className={`flex items-center gap-3 px-4 py-3 rounded-lg border-l-2 transition-all duration-200 motion-safe:hover:translate-x-1 ${
                   isActive
                     ? 'bg-spectre-accent/10 border-l-2 border-spectre-accent text-spectre-accent'
-                    : 'text-spectre-muted hover:bg-spectre-border/50'
+                    : 'border-transparent text-spectre-muted hover:text-spectre-text hover:bg-spectre-border/50'
                 }`}
               >
                 <Icon size={20} />

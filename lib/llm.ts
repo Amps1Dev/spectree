@@ -55,17 +55,24 @@ export function resolveProvider(requested?: string): ProviderConfig {
 // with the configured model pulled. Never throws — returns false on any failure.
 export async function checkAvailability(id: ProviderId): Promise<boolean> {
   if (id === 'groq') {
-    return Boolean(process.env.GROQ_API_KEY);
+    const cfg = resolveProvider(id);
+    if (!cfg.apiKey || /your[-_]|placeholder/i.test(cfg.apiKey)) return false;
+    try {
+      const response = await fetch('https://api.groq.com/openai/v1/models', {
+        headers: { Authorization: `Bearer ${cfg.apiKey}` },
+        signal: AbortSignal.timeout(5000), cache: 'no-store',
+      });
+      if (!response.ok) return false;
+      const data = await response.json();
+      return data.data?.some((model: { id: string }) => model.id === cfg.model) ?? false;
+    } catch { return false; }
   }
 
   try {
-    const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), 2000);
     const resp = await fetch(`${OLLAMA_BASE_URL}/api/tags`, {
-      signal: controller.signal,
+      signal: AbortSignal.timeout(2000),
       cache: 'no-store',
     });
-    clearTimeout(timer);
     if (!resp.ok) return false;
 
     const data = await resp.json();
@@ -75,5 +82,57 @@ export async function checkAvailability(id: ProviderId): Promise<boolean> {
     return models.includes(OLLAMA_MODEL);
   } catch {
     return false;
+  }
+}
+
+export class ProviderError extends Error {
+  constructor(message: string, public status: number) { super(message); }
+}
+
+/** Shared provider errors and bounded requests for both chat and reports. */
+export async function requestCompletion(provider: string | undefined, body: Record<string, unknown>, signal: AbortSignal): Promise<Response> {
+  const cfg = resolveProvider(provider);
+  if (cfg.id === 'groq' && (!cfg.apiKey || /your[-_]|placeholder/i.test(cfg.apiKey))) {
+    throw new ProviderError('Set GROQ_API_KEY or select Local (Ollama). Local scans do not require a model provider.', 503);
+  }
+  const controller = new AbortController();
+  const abort = () => controller.abort(signal.reason);
+  signal.addEventListener('abort', abort, { once: true });
+  if (signal.aborted) abort();
+  const timer = setTimeout(() => controller.abort(new Error('Provider timeout')), 120_000);
+  const cleanup = () => { clearTimeout(timer); signal.removeEventListener('abort', abort); };
+  try {
+    const response = await fetch(cfg.chatUrl, {
+      method: 'POST', cache: 'no-store', signal: controller.signal,
+      headers: { 'Content-Type': 'application/json', ...(cfg.apiKey ? { Authorization: `Bearer ${cfg.apiKey}` } : {}) },
+      body: JSON.stringify({ ...body, model: cfg.model }),
+    });
+    if (!response.ok) {
+      const data = await response.json().catch(() => null);
+      const raw = typeof data?.error?.message === 'string' ? data.error.message : typeof data?.error === 'string' ? data.error : '';
+      const detail = (cfg.apiKey ? raw.split(cfg.apiKey).join('[redacted]') : raw).slice(0, 400);
+      const hint = cfg.id === 'ollama' ? ` Check Ollama and the installed model (${cfg.model}).` : ' Check the API key, model access, and quota.';
+      throw new ProviderError(`${cfg.label} request failed (${response.status}).${hint}${detail ? ` ${detail}` : ''}`, response.status === 429 ? 429 : 502);
+    }
+    if (!response.body) { cleanup(); return response; }
+    const reader = response.body.getReader();
+    const stream = new ReadableStream<Uint8Array>({
+      async pull(output) {
+        try {
+          const { done, value } = await reader.read();
+          if (done) { cleanup(); output.close(); }
+          else output.enqueue(value);
+        } catch (error) { cleanup(); output.error(error); }
+      },
+      async cancel() { controller.abort(); cleanup(); await reader.cancel().catch(() => {}); },
+    });
+    return new Response(stream, { status: response.status, headers: response.headers });
+  } catch (error) {
+    cleanup();
+    if (error instanceof ProviderError) throw error;
+    if (signal.aborted) throw new ProviderError('Request cancelled.', 499);
+    if (controller.signal.aborted) throw new ProviderError(`${cfg.label} timed out after 120 seconds.`, 504);
+    const hint = cfg.id === 'ollama' ? 'Start Ollama and check OLLAMA_BASE_URL.' : 'Check internet access or select Local (Ollama).';
+    throw new ProviderError(`Cannot reach ${cfg.label}. ${hint} Local scanning is still available.`, 503);
   }
 }

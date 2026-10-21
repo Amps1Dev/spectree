@@ -2,6 +2,7 @@ import './globals.css';
 import type { Metadata } from 'next';
 import Sidebar from '@/components/sidebar';
 import { LLMProvider } from '@/components/llm-context';
+import { Toaster } from '@/components/ui/toaster';
 
 export const metadata: Metadata = {
   title: 'SPECTRE - Penetration Testing Dashboard',
@@ -19,8 +20,9 @@ export default function RootLayout({
         <LLMProvider>
           <div className="flex h-screen">
             <Sidebar />
-            <main className="flex-1 overflow-auto">{children}</main>
+            <main className="flex-1 min-w-0 overflow-auto">{children}</main>
           </div>
+          <Toaster />
         </LLMProvider>
       </body>
     </html>

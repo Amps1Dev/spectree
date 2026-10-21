@@ -11,6 +11,8 @@ import {
   deleteReport,
   loadReports,
   appendChat,
+  recordActivity,
+  safeId,
 } from '@/lib/local-store';
 import { reportToMarkdown } from '@/lib/report-format';
 
@@ -33,7 +35,7 @@ export default function ReportsPage() {
   }, []);
 
   const generateReport = async () => {
-    if (!engagementName || !targetIp || !findings) {
+    if (loading || !engagementName.trim() || !targetIp.trim() || !findings.trim()) {
       setError('Fill in engagement name, target and findings first.');
       return;
     }
@@ -58,7 +60,7 @@ export default function ReportsPage() {
       setCreatedAt(now);
 
       const entry: SavedReport = {
-        id: crypto.randomUUID(),
+        id: safeId(),
         engagementName,
         targetIp,
         findings,
@@ -66,6 +68,10 @@ export default function ReportsPage() {
         createdAt: now,
       };
       setSaved(addReport(entry));
+      recordActivity({
+        action: `Generated report — ${engagementName}`,
+        target: targetIp,
+      });
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to generate report');
     } finally {
@@ -98,11 +104,11 @@ export default function ReportsPage() {
     router.push('/chat');
   };
 
-  const formIncomplete = !engagementName || !targetIp || !findings;
+  const formIncomplete = !engagementName.trim() || !targetIp.trim() || !findings.trim();
 
   return (
     <div className="p-8 space-y-8">
-      <div>
+      <div className="animate-fade-in-up">
         <h1 className="text-4xl font-bold mb-2">Report Generator</h1>
         <p className="text-spectre-muted">
           Generate structured penetration test reports with your selected model provider.
@@ -215,7 +221,16 @@ export default function ReportsPage() {
 
         {/* Right: rendered report */}
         <div className="lg:col-span-2">
-          {report ? (
+          {loading ? (
+            <div role="status" aria-label="Generating report" className="spectre-card p-8 space-y-8 animate-pulse">
+              <p className="text-sm text-spectre-accent">Preparing your report…</p>
+              <div className="h-8 w-2/3 rounded bg-spectre-border" />
+              {[0, 1, 2].map((i) => <div key={i} className="space-y-3" aria-hidden="true">
+                <div className="h-5 w-1/3 rounded bg-spectre-border" />
+                <div className="h-20 rounded bg-spectre-border/60" />
+              </div>)}
+            </div>
+          ) : report ? (
             <ReportGenerator
               report={report}
               engagementName={engagementName}

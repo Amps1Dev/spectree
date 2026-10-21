@@ -23,6 +23,13 @@ interface LLMContextValue {
 
 const STORAGE_KEY = 'spectre.llmProvider';
 
+function savedProvider(): string | null {
+  try {
+    const value = window.localStorage.getItem(STORAGE_KEY);
+    return value === 'groq' || value === 'ollama' ? value : null;
+  } catch { return null; }
+}
+
 const LLMContext = createContext<LLMContextValue | null>(null);
 
 export function LLMProvider({ children }: { children: ReactNode }) {
@@ -31,10 +38,7 @@ export function LLMProvider({ children }: { children: ReactNode }) {
 
   // Restore the persisted choice before anything hits the network.
   useEffect(() => {
-    const saved =
-      typeof window !== 'undefined'
-        ? window.localStorage.getItem(STORAGE_KEY)
-        : null;
+    const saved = savedProvider();
     if (saved) setProviderState(saved);
   }, []);
 
@@ -43,15 +47,18 @@ export function LLMProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     let cancelled = false;
     fetch('/api/providers')
-      .then((r) => r.json())
+      .then((r) => { if (!r.ok) throw new Error('Provider detection failed'); return r.json(); })
       .then((data) => {
         if (cancelled) return;
         setProviders(data.providers ?? []);
-        const saved = window.localStorage.getItem(STORAGE_KEY);
+        const saved = savedProvider();
         if (!saved && data.default) setProviderState(data.default);
       })
       .catch(() => {
-        /* leave defaults; the sidebar simply won't show status dots */
+        if (!cancelled) setProviders([
+          { id: 'ollama', label: 'Local (Ollama)', model: 'Status unavailable', available: false },
+          { id: 'groq', label: 'Groq (cloud)', model: 'Status unavailable', available: false },
+        ]);
       });
     return () => {
       cancelled = true;

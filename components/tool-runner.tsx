@@ -1,8 +1,10 @@
 'use client';
 
 import { useState } from 'react';
-import { Play, Copy, TerminalSquare } from 'lucide-react';
+import { Play, Square, Copy, TerminalSquare } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { useScan } from '@/hooks/use-scan';
+import ScanProgress from '@/components/scan-progress';
 
 // Mirrors the serializable projection returned by GET /api/tools. Declared
 // locally so this client component never imports lib/tools (which pulls in
@@ -29,8 +31,6 @@ export interface ToolMeta {
   available: boolean;
 }
 
-type Status = 'idle' | 'running' | 'complete' | 'error';
-
 function seedValues(fields: ToolField[]): Record<string, string> {
   const v: Record<string, string> = {};
   for (const f of fields) v[f.name] = f.default ?? '';
@@ -39,9 +39,7 @@ function seedValues(fields: ToolField[]): Record<string, string> {
 
 export default function ToolRunner({ tool }: { tool: ToolMeta }) {
   const [values, setValues] = useState<Record<string, string>>(() => seedValues(tool.fields));
-  const [status, setStatus] = useState<Status>('idle');
-  const [error, setError] = useState('');
-  const [output, setOutput] = useState('');
+  const { status, output, error, elapsed, outputRef, run: startScan, cancel } = useScan();
   const { toast } = useToast();
 
   const missingRequired = tool.fields.some((f) => f.required && !values[f.name]?.trim());
@@ -50,47 +48,21 @@ export default function ToolRunner({ tool }: { tool: ToolMeta }) {
   const setField = (name: string, value: string) =>
     setValues((prev) => ({ ...prev, [name]: value }));
 
-  const run = async () => {
-    setError('');
-    setOutput('');
-    setStatus('running');
-
-    try {
-      const response = await fetch(`/api/tools/${tool.id}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(values),
-      });
-
-      if (!response.ok) throw new Error(`Request failed (${response.status})`);
-
-      const reader = response.body?.getReader();
-      const decoder = new TextDecoder();
-      let full = '';
-      if (reader) {
-        while (true) {
-          const { done, value } = await reader.read();
-          if (done) break;
-          full += decoder.decode(value, { stream: true });
-          setOutput(full);
-        }
-      }
-      setStatus('complete');
-    } catch (err) {
-      setStatus('error');
-      setError(err instanceof Error ? err.message : 'Unknown error');
-    }
+  const run = () => {
+    if (!disabled) void startScan(tool.id, values, tool.name);
   };
 
-  const copyOutput = () => {
-    if (output) {
-      navigator.clipboard.writeText(output);
+  const copyOutput = async () => {
+    try {
+      await navigator.clipboard.writeText(output);
       toast({ title: 'Output copied to clipboard' });
+    } catch {
+      toast({ title: 'Could not copy output. Select and copy the text manually.', variant: 'destructive' });
     }
   };
 
   return (
-    <div className="spectre-card p-6 flex flex-col h-full">
+    <div className="spectre-card spectre-card-interactive p-6 flex flex-col h-full animate-fade-in-up">
       <div className="flex items-start justify-between gap-3 mb-1">
         <h2 className="text-xl font-semibold">{tool.name}</h2>
         <span
@@ -122,6 +94,7 @@ export default function ToolRunner({ tool }: { tool: ToolMeta }) {
       <div className="space-y-3 mb-4">
         {tool.fields.map((f) => {
           const common = {
+            id: `${tool.id}-${f.name}`,
             value: values[f.name] ?? '',
             disabled: status === 'running' || !tool.available,
             className: 'spectre-input w-full',
@@ -130,7 +103,7 @@ export default function ToolRunner({ tool }: { tool: ToolMeta }) {
 
           return (
             <div key={f.name}>
-              <label className="block text-xs text-spectre-muted mb-1">
+              <label htmlFor={`${tool.id}-${f.name}`} className="block text-xs text-spectre-muted mb-1">
                 {f.label}
                 {f.required && <span className="text-spectre-danger"> *</span>}
               </label>
@@ -161,39 +134,36 @@ export default function ToolRunner({ tool }: { tool: ToolMeta }) {
           );
         })}
 
-        <button
-          onClick={run}
-          disabled={disabled}
-          className={`spectre-btn-primary flex items-center gap-2 w-full justify-center ${
-            disabled ? 'opacity-50 cursor-not-allowed' : ''
-          }`}
-        >
-          <Play size={16} />
-          Run
-        </button>
-
-        <div className="flex items-center gap-2">
-          <div
-            className={`inline-flex items-center gap-2 px-3 py-1 bg-spectre-surface border border-spectre-border rounded-full text-xs font-medium ${
-              status === 'running' ? 'text-spectre-accent' : ''
+        <div className="flex gap-2">
+          <button
+            onClick={run}
+            disabled={disabled}
+            className={`spectre-btn-primary flex items-center gap-2 flex-1 justify-center ${
+              disabled ? 'opacity-50 cursor-not-allowed' : ''
             }`}
           >
-            {status === 'running' && (
-              <div className="w-2 h-2 bg-spectre-accent rounded-full animate-pulse" />
-            )}
-            <span>{status.toUpperCase()}</span>
-          </div>
+            <Play size={16} />
+            Run
+          </button>
+          {status === 'running' && (
+            <button onClick={cancel} className="spectre-btn-danger flex items-center gap-2">
+              <Square size={16} />
+              Cancel
+            </button>
+          )}
         </div>
 
+        <ScanProgress status={status} elapsed={elapsed} />
+
         {error && (
-          <div className="p-2 bg-spectre-danger/10 border border-spectre-danger rounded text-spectre-danger text-sm">
+          <div role="alert" className="p-2 bg-spectre-danger/10 border border-spectre-danger rounded text-spectre-danger text-sm animate-fade-in">
             {error}
           </div>
         )}
       </div>
 
       {output && (
-        <div className="flex-1 flex flex-col min-h-64">
+        <div className="flex-1 flex flex-col min-h-64 animate-fade-in">
           <div className="flex items-center justify-between mb-2">
             <p className="text-spectre-muted text-xs">Output:</p>
             <button
@@ -204,7 +174,12 @@ export default function ToolRunner({ tool }: { tool: ToolMeta }) {
               Copy
             </button>
           </div>
-          <div className="spectre-output flex-1 whitespace-pre-wrap break-words">
+          <div
+            ref={outputRef}
+            className={`spectre-output flex-1 max-h-96 whitespace-pre-wrap break-words ${
+              status === 'running' ? 'spectre-cursor' : ''
+            }`}
+          >
             {output}
           </div>
         </div>

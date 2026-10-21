@@ -43,7 +43,7 @@ export default function ToolsPage() {
 
   return (
     <div className="p-8">
-      <div className="mb-8">
+      <div className="mb-8 animate-fade-in-up">
         <h1 className="text-4xl font-bold mb-2">Tool Execution</h1>
         <p className="text-spectre-muted">
           Run reconnaissance, scanning and post-exploitation tools against authorized targets.
@@ -55,7 +55,19 @@ export default function ToolsPage() {
         </p>
       </div>
 
-      {loading && <p className="text-spectre-muted">Detecting installed tools…</p>}
+      {loading && (
+        <div role="status" aria-label="Detecting installed tools" className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {[0, 1, 2, 3].map((i) => (
+            <div key={i} className="spectre-card p-6 space-y-5 animate-pulse" aria-hidden="true">
+              <div className="h-6 w-1/3 bg-spectre-border rounded" />
+              <div className="h-3 w-3/4 bg-spectre-border rounded" />
+              <div className="h-10 bg-spectre-border/60 rounded" />
+              <div className="h-10 bg-spectre-border/60 rounded" />
+              <div className="h-10 bg-spectre-accent/10 rounded" />
+            </div>
+          ))}
+        </div>
+      )}
 
       {error && (
         <div className="p-3 bg-spectre-danger/10 border border-spectre-danger rounded text-spectre-danger text-sm">

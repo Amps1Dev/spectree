@@ -1,189 +1,72 @@
-import { NextRequest } from 'next/server';
-import { spawn, ChildProcess } from 'child_process';
+import { NextRequest, NextResponse } from 'next/server';
 import { randomUUID } from 'crypto';
 import { tmpdir } from 'os';
 import { join } from 'path';
 import { writeFile, unlink } from 'fs/promises';
-import { getTool, resolveBin } from '@/lib/tools';
+import { getTool, resolveBin, validateTarget } from '@/lib/tools';
+import { executeTool } from '@/lib/tool-execution';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
 
-const DEFAULT_TIMEOUT = 180_000;
-
-function streamHeaders() {
-  return {
-    'Content-Type': 'text/plain; charset=utf-8',
-    'Cache-Control': 'no-cache, no-transform',
-    Connection: 'keep-alive',
-  };
-}
-
-async function cleanup(paths: string[]) {
-  await Promise.all(paths.map((p) => unlink(p).catch(() => {})));
-}
-
-// Reject empty / loopback targets for network tools. Strips scheme, path and
-// port so `http://localhost:8080/x` is caught too.
-function hostIsBlocked(value: string): boolean {
-  const v = (value || '').trim();
-  if (!v) return true;
-  const host = v
-    .replace(/^[a-zA-Z][a-zA-Z0-9+.-]*:\/\//, '')
-    .split('/')[0]
-    .split(':')[0]
-    .toLowerCase();
-  return host === 'localhost' || host === '127.0.0.1' || host === '::1';
-}
-
-export async function POST(
-  request: NextRequest,
-  { params }: { params: { tool: string } },
-) {
-  const encoder = new TextEncoder();
-  const message = (msg: string) =>
-    new Response(
-      new ReadableStream({
-        start(controller) {
-          controller.enqueue(encoder.encode(msg));
-          controller.close();
-        },
-      }),
-      { headers: streamHeaders() },
-    );
-
+export async function POST(request: NextRequest, { params }: { params: { tool: string } }) {
+  const fail = (error: string, status = 400) => NextResponse.json({ error }, { status });
   const tool = getTool(params.tool);
-  if (!tool) return message(`✗ Unknown tool "${params.tool}".`);
-
-  let body: Record<string, unknown> = {};
+  if (!tool) return fail(`Unknown tool "${params.tool}".`, 404);
+  let body: Record<string, unknown>;
   try {
-    body = (await request.json()) ?? {};
-  } catch {
-    body = {};
-  }
+    body = await request.json();
+    if (!body || typeof body !== 'object' || Array.isArray(body)) return fail('Expected a JSON object.');
+  } catch { return fail('Invalid JSON request body.'); }
 
-  // Apply defaults, keep only known fields, coerce to string.
   const p: Record<string, string> = {};
   for (const f of tool.fields) {
     const raw = body[f.name];
-    p[f.name] =
-      raw === undefined || raw === null || String(raw) === ''
-        ? f.default ?? ''
-        : String(raw);
-  }
-
-  for (const f of tool.fields) {
-    if (f.required && !p[f.name]) return message(`✗ "${f.label}" is required.`);
-  }
-
-  if (tool.blocksLocalhost && 'target' in p && hostIsBlocked(p.target)) {
-    return message(
-      '✗ Empty target, localhost and 127.0.0.1 are not allowed for this tool.',
-    );
+    if (raw != null && typeof raw !== 'string' && typeof raw !== 'number') return fail(`"${f.label}" must be text or a number.`);
+    const value = raw == null || raw === '' ? f.default ?? '' : String(raw);
+    p[f.name] = f.type === 'password' || f.asFile ? value : value.trim();
+    if (f.required && !p[f.name].trim()) return fail(`"${f.label}" is required.`);
+    if (p[f.name].includes('\0')) return fail(`"${f.label}" contains a null character.`);
+    if (!p[f.name]) continue;
+    if (f.type === 'select' && !f.options?.some((o) => o.value === p[f.name])) return fail(`Invalid "${f.label}" option.`);
+    if (f.type === 'number' && (!/^\d+$/.test(p[f.name]) || !Number.isSafeInteger(Number(p[f.name])) || Number(p[f.name]) < (f.min ?? 1) || Number(p[f.name]) > (f.max ?? Number.MAX_SAFE_INTEGER))) return fail(`"${f.label}" must be a whole number between ${f.min ?? 1} and ${f.max ?? Number.MAX_SAFE_INTEGER}.`);
+    if (f.pattern && !new RegExp(f.pattern).test(p[f.name])) return fail(`Invalid "${f.label}" format.`);
+    if (f.name === 'ports' && !p[f.name].split(',').every((range) => {
+      const bounds = range.split('-').map(Number);
+      const first = bounds[0];
+      const last = bounds[1] ?? first;
+      return first >= 1 && last <= 65535 && first <= last;
+    })) return fail('Ports must be between 1 and 65535, with ascending ranges.');
+    if (f.validate) {
+      const reason = validateTarget(f.validate, p[f.name]);
+      if (reason) return fail(`"${f.label}" ${reason}.`);
+    }
   }
 
   const bin = resolveBin(tool.bins);
-  if (!bin) {
-    const hint = tool.installHint ? `\nInstall: ${tool.installHint}` : '';
-    return message(
-      `⚠ ${tool.name} is not installed on this host (looked for: ${tool.bins.join(', ')}).${hint}`,
-    );
-  }
-
-  // Write any asFile fields (e.g. pasted hashes) to temp files.
+  if (!bin) return fail(`${tool.name} is not installed on this host.${tool.installHint ? ` Install: ${tool.installHint}` : ''}`, 503);
   const tempFiles: string[] = [];
+  const cleanup = async () => { await Promise.all(tempFiles.map((path) => unlink(path).catch(() => {}))); };
   try {
     for (const f of tool.fields) {
-      if (f.asFile) {
-        const path = join(tmpdir(), `spectre-${tool.id}-${randomUUID()}`);
-        await writeFile(path, p[f.name] ?? '', 'utf8');
-        tempFiles.push(path);
-        p[f.name] = path;
-      }
+      if (!f.asFile) continue;
+      const path = join(tmpdir(), `spectre-${tool.id}-${randomUUID()}`);
+      tempFiles.push(path);
+      await writeFile(path, p[f.name], { encoding: 'utf8', mode: 0o600, flag: 'wx' });
+      p[f.name] = path;
     }
-  } catch (err) {
-    await cleanup(tempFiles);
-    return message(`✗ Failed to prepare input: ${(err as Error).message}`);
+    const structured = request.headers.get('accept')?.includes('application/x-ndjson') ?? false;
+    const stream = executeTool({
+      bin, args: tool.buildArgs(p), followArgs: tool.follow?.(p), name: tool.name,
+      secrets: tool.fields.filter((f) => f.type === 'password').map((f) => p[f.name]).filter(Boolean),
+      timeoutMs: tool.timeoutMs ?? 180_000, signal: request.signal, structured, cleanup,
+    });
+    return new Response(stream, { headers: {
+      'Content-Type': structured ? 'application/x-ndjson; charset=utf-8' : 'text/plain; charset=utf-8',
+      'Cache-Control': 'no-cache, no-transform', 'X-Accel-Buffering': 'no',
+    } });
+  } catch {
+    await cleanup();
+    return fail('Failed to prepare the tool input.', 500);
   }
-
-  const args = tool.buildArgs(p);
-  const followArgs = tool.follow ? tool.follow(p) : null;
-  const timeoutMs = tool.timeoutMs ?? DEFAULT_TIMEOUT;
-
-  // Mask secret values (passwords, tokens) in the echoed command line.
-  const secrets = tool.fields
-    .filter((f) => f.type === 'password')
-    .map((f) => p[f.name])
-    .filter(Boolean);
-  const label = bin.split('/').pop() || bin;
-  const redact = (a: string) => (secrets.includes(a) ? '****' : a);
-
-  const state: { child: ChildProcess | null; timedOut: boolean } = {
-    child: null,
-    timedOut: false,
-  };
-
-  const stream = new ReadableStream({
-    start(controller) {
-      let closed = false;
-      const emit = (s: string) => {
-        if (!closed) controller.enqueue(encoder.encode(s));
-      };
-      const finish = async () => {
-        if (closed) return;
-        closed = true;
-        clearTimeout(timer);
-        await cleanup(tempFiles);
-        controller.close();
-      };
-
-      const timer = setTimeout(() => {
-        state.timedOut = true;
-        emit(`\n\n⏱ Timed out after ${Math.round(timeoutMs / 1000)}s — terminating.\n`);
-        state.child?.kill('SIGTERM');
-      }, timeoutMs);
-
-      const run = (runArgs: string[], onClose: () => void) => {
-        emit(`$ ${label} ${runArgs.map(redact).join(' ')}\n\n`);
-        let child: ChildProcess;
-        try {
-          child = spawn(bin, runArgs);
-        } catch (err) {
-          emit(`Error: ${(err as Error).message}\n`);
-          onClose();
-          return;
-        }
-        state.child = child;
-        child.stdout?.on('data', (d) => emit(d.toString()));
-        child.stderr?.on('data', (d) => emit(d.toString()));
-        child.on('error', (err) => {
-          emit(`Error: ${err.message}\n`);
-          onClose();
-        });
-        child.on('close', (code) => {
-          if (code !== 0 && !state.timedOut) {
-            emit(`\n[${tool.name} exited with code ${code}]\n`);
-          }
-          onClose();
-        });
-      };
-
-      run(args, () => {
-        if (!state.timedOut && followArgs && followArgs.length) {
-          emit('\n');
-          run(followArgs, () => {
-            void finish();
-          });
-        } else {
-          void finish();
-        }
-      });
-    },
-    cancel() {
-      state.child?.kill('SIGTERM');
-      void cleanup(tempFiles);
-    },
-  });
-
-  return new Response(stream, { headers: streamHeaders() });
 }

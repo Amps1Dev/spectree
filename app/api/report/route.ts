@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { resolveProvider } from '@/lib/llm';
+import { requestCompletion, ProviderError } from '@/lib/llm';
+import { reportInput } from '@/lib/api-input';
 import { ReportData, ReportFinding, Severity } from '@/lib/types';
 
 const SEVERITIES: Severity[] = ['HIGH', 'MEDIUM', 'LOW', 'INFO'];
@@ -104,19 +105,10 @@ function normalizeReport(raw: any, rawContent: string): ReportData {
 }
 
 export async function POST(request: NextRequest) {
+  const input = reportInput.safeParse(await request.json().catch(() => null));
+  if (!input.success) return NextResponse.json({ error: 'Provide engagementName, targetIp, findings, and a valid provider.' }, { status: 400 });
   try {
-    const { engagementName, targetIp, findings, provider } = await request.json();
-    const cfg = resolveProvider(provider);
-
-    if (cfg.id === 'groq' && !cfg.apiKey) {
-      return NextResponse.json(
-        {
-          error:
-            'Groq API key not configured. Switch to the Local (Ollama) provider or set GROQ_API_KEY.',
-        },
-        { status: 400 },
-      );
-    }
+    const { engagementName, targetIp, findings, provider } = input.data;
 
     const prompt = `Generate a professional penetration test report for the following:
 
@@ -141,14 +133,7 @@ Respond with ONLY a valid JSON object (no prose, no code fences) with this exact
   "conclusion": "Final assessment and conclusion"
 }`;
 
-    const headers: Record<string, string> = { 'Content-Type': 'application/json' };
-    if (cfg.apiKey) headers.Authorization = `Bearer ${cfg.apiKey}`;
-
-    const response = await fetch(cfg.chatUrl, {
-      method: 'POST',
-      headers,
-      body: JSON.stringify({
-        model: cfg.model,
+    const response = await requestCompletion(provider, {
         messages: [
           {
             role: 'system',
@@ -162,22 +147,7 @@ Respond with ONLY a valid JSON object (no prose, no code fences) with this exact
         // Both Groq and Ollama honour this; Ollama requires the word "JSON" in
         // the prompt (present above). extractJson() is the safety net.
         response_format: { type: 'json_object' },
-      }),
-    });
-
-    if (!response.ok) {
-      const detail = await response.text().catch(() => '');
-      const hint =
-        cfg.id === 'ollama'
-          ? ' Is Ollama running and the model pulled?'
-          : '';
-      return NextResponse.json(
-        {
-          error: `${cfg.label} request failed (${response.status}).${hint} ${detail.slice(0, 200)}`.trim(),
-        },
-        { status: 502 },
-      );
-    }
+    }, request.signal);
 
     const data = await response.json();
     const content = data.choices?.[0]?.message?.content;
@@ -194,6 +164,6 @@ Respond with ONLY a valid JSON object (no prose, no code fences) with this exact
   } catch (error) {
     console.error('Report API error:', error);
     const msg = error instanceof Error ? error.message : 'Failed to generate report';
-    return NextResponse.json({ error: msg }, { status: 500 });
+    return NextResponse.json({ error: msg }, { status: error instanceof ProviderError ? error.status : 502 });
   }
 }

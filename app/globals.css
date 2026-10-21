@@ -27,6 +27,14 @@ html {
   button {
     @apply transition-colors duration-200;
   }
+
+  button:focus-visible, a:focus-visible {
+    @apply outline-none ring-2 ring-spectre-accent ring-offset-2 ring-offset-spectre-bg;
+  }
+
+  button:disabled {
+    @apply opacity-50 cursor-not-allowed;
+  }
 }
 
 @layer components {
@@ -34,20 +42,25 @@ html {
     @apply bg-spectre-surface border border-spectre-border rounded-lg;
   }
 
+  /* Card that reacts to the pointer: a faint accent border and lift. */
+  .spectre-card-interactive {
+    @apply transition-all duration-200 hover:border-spectre-accent/40 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-black/30;
+  }
+
   .spectre-input {
-    @apply bg-spectre-surface border border-spectre-border rounded px-3 py-2 text-spectre-text text-sm focus:outline-none focus:ring-2 focus:ring-spectre-accent;
+    @apply bg-spectre-surface border border-spectre-border rounded px-3 py-2 text-spectre-text text-sm focus:outline-none focus:ring-2 focus:ring-spectre-accent transition-colors;
   }
 
   .spectre-btn-primary {
-    @apply bg-spectre-accent hover:bg-opacity-90 text-black font-medium px-4 py-2 rounded transition-all;
+    @apply bg-spectre-accent hover:bg-opacity-90 text-black font-medium px-4 py-2 rounded transition-all active:scale-[0.98];
   }
 
   .spectre-btn-danger {
-    @apply bg-spectre-danger hover:bg-opacity-90 text-white font-medium px-4 py-2 rounded transition-all;
+    @apply bg-spectre-danger hover:bg-opacity-90 text-white font-medium px-4 py-2 rounded transition-all active:scale-[0.98];
   }
 
   .spectre-btn-secondary {
-    @apply bg-spectre-border hover:bg-spectre-surface text-spectre-text font-medium px-4 py-2 rounded transition-all;
+    @apply bg-spectre-border hover:bg-spectre-surface text-spectre-text font-medium px-4 py-2 rounded transition-all active:scale-[0.98];
   }
 
   .spectre-output {
@@ -65,6 +78,24 @@ html {
   .spectre-status-running::before {
     content: '';
     @apply inline-block w-2 h-2 bg-spectre-accent rounded-full animate-pulse;
+  }
+
+  /* Blinking block cursor appended to live-streaming terminal output. */
+  .spectre-cursor::after {
+    content: '▋';
+    @apply text-spectre-accent animate-blink ml-0.5;
+  }
+}
+
+/* Respect users who ask for less motion: keep things usable, drop the movement. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
   }
 }
 
