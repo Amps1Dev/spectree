@@ -1,0 +1,75 @@
+<!doctype html>
+<html
+  lang="en"
+  data-resolution="landscape"
+  data-composition-variables='[
+    {"id":"color-ground","type":"color","label":"Background","default":"#2A2320"},
+    {"id":"color-surface","type":"color","label":"Surface","default":"#3F332E"},
+    {"id":"color-ink","type":"color","label":"Text","default":"#F4E4DC"},
+    {"id":"color-accent","type":"color","label":"Evidence accent","default":"#C98D80"},
+    {"id":"color-proposed","type":"color","label":"Proposed accent","default":"#D6A15F"},
+    {"id":"color-verified","type":"color","label":"Verified accent","default":"#7FA8A8"},
+    {"id":"font-display","type":"string","label":"Display font","default":"Inter"},
+    {"id":"font-mono","type":"string","label":"Data font","default":"IBM Plex Mono"}
+  ]'
+>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+    <style>
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      html, body {
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: var(--color-ground);
+      }
+      #root {
+        position: relative;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: var(--color-ground);
+        font-family: var(--font-display), sans-serif;
+      }
+      .clip {
+        position: absolute;
+        inset: 0;
+        width: 1920px;
+        height: 1080px;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      id="root"
+      data-composition-id="main"
+      data-start="0"
+      data-duration="120"
+      data-width="1920"
+      data-height="1080"
+      data-fps="30"
+    >
+      <div id="scene-01" class="clip" data-composition-id="scene-01" data-composition-src="compositions/scene-01.html" data-start="0" data-duration="17" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="scene-02" class="clip" data-composition-id="scene-02" data-composition-src="compositions/scene-02.html" data-start="17" data-duration="17" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="scene-03" class="clip" data-composition-id="scene-03" data-composition-src="compositions/scene-03.html" data-start="34" data-duration="17" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="scene-04" class="clip" data-composition-id="scene-04" data-composition-src="compositions/scene-04.html" data-start="51" data-duration="17" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="scene-05" class="clip" data-composition-id="scene-05" data-composition-src="compositions/scene-05.html" data-start="68" data-duration="17" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="scene-06" class="clip" data-composition-id="scene-06" data-composition-src="compositions/scene-06.html" data-start="85" data-duration="17" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+      <div id="scene-07" class="clip" data-composition-id="scene-07" data-composition-src="compositions/scene-07.html" data-start="102" data-duration="18" data-track-index="1" data-track-kind="graphics" data-width="1920" data-height="1080"></div>
+
+      <audio id="sfx-scene-01" data-start="0.38" data-duration="0.18" data-track-index="8" data-volume="0.14" src="assets/sfx/impactSoft_medium_001.ogg"></audio>
+      <audio id="sfx-scene-02" data-start="17.38" data-duration="0.12" data-track-index="8" data-volume="0.11" src="assets/sfx/bong_001.ogg"></audio>
+      <audio id="sfx-scene-03" data-start="34.38" data-duration="0.15" data-track-index="8" data-volume="0.12" src="assets/sfx/impactSoft_medium_004.ogg"></audio>
+      <audio id="sfx-scene-04" data-start="51.38" data-duration="0.12" data-track-index="8" data-volume="0.10" src="assets/sfx/bong_001.ogg"></audio>
+      <audio id="sfx-scene-05" data-start="68.38" data-duration="0.14" data-track-index="8" data-volume="0.12" src="assets/sfx/impactSoft_medium_003.ogg"></audio>
+      <audio id="sfx-scene-06" data-start="85.38" data-duration="0.12" data-track-index="8" data-volume="0.10" src="assets/sfx/bong_001.ogg"></audio>
+      <audio id="sfx-scene-07" data-start="104.20" data-duration="0.18" data-track-index="8" data-volume="0.13" src="assets/sfx/impactSoft_medium_001.ogg"></audio>
+    </div>
+    <script>
+      window.__timelines = window.__timelines || {};
+      window.__timelines.main = gsap.timeline({ paused: true });
+    </script>
+  </body>
+</html>

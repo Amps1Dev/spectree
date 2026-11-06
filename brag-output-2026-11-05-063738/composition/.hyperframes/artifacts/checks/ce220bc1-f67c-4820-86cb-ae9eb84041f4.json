@@ -1,0 +1,2527 @@
+{
+  "ok": true,
+  "strict": false,
+  "browserSkipped": false,
+  "lint": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 0,
+    "infoCount": 0,
+    "findings": [],
+    "filesScanned": 8
+  },
+  "runtime": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 0,
+    "infoCount": 0,
+    "findings": []
+  },
+  "layout": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 0,
+    "infoCount": 1,
+    "findings": [
+      {
+        "code": "container_overflow",
+        "severity": "info",
+        "time": 18.42,
+        "selector": "#scene02-row-3",
+        "message": "Element extends outside a clipping layout container.",
+        "rect": {
+          "left": 794,
+          "top": 541.06,
+          "right": 1800,
+          "bottom": 615.06,
+          "width": 1006,
+          "height": 74
+        },
+        "containerSelector": "div.batch-table",
+        "fixHint": "Resize/reposition the child or container, or mark intentional overflow with data-layout-allow-overflow.",
+        "containerRect": {
+          "left": 792,
+          "top": 330.59,
+          "right": 1802,
+          "bottom": 612.59,
+          "width": 1010,
+          "height": 282
+        },
+        "overflow": {
+          "bottom": 2.47
+        },
+        "dataAttributes": {},
+        "sourceFile": "compositions/scene-02.html",
+        "bbox": {
+          "x": 794,
+          "y": 541.06,
+          "width": 1006,
+          "height": 74
+        },
+        "firstSeen": 18.42,
+        "lastSeen": 18.42,
+        "occurrences": 1,
+        "heldMs": 0,
+        "times": [
+          18.42
+        ]
+      }
+    ],
+    "duration": 120,
+    "samples": [
+      0.08,
+      0.12,
+      0.16,
+      0.26,
+      0.36,
+      0.37,
+      0.38,
+      0.39,
+      0.4,
+      0.41,
+      0.42,
+      0.45,
+      0.48,
+      0.5,
+      0.52,
+      0.53,
+      0.54,
+      0.56,
+      0.58,
+      0.61,
+      0.64,
+      0.66,
+      0.68,
+      0.71,
+      0.74,
+      0.75,
+      0.76,
+      0.78,
+      0.8,
+      0.81,
+      0.82,
+      0.85,
+      0.88,
+      0.9,
+      0.92,
+      0.93,
+      0.94,
+      0.95,
+      0.96,
+      0.99,
+      1.02,
+      1.03,
+      1.04,
+      1.05,
+      1.06,
+      1.07,
+      1.08,
+      1.09,
+      1.1,
+      1.11,
+      1.12,
+      1.14,
+      1.16,
+      1.22,
+      1.28,
+      1.29,
+      1.3,
+      1.33,
+      1.36,
+      1.37,
+      1.38,
+      1.4,
+      1.42,
+      1.43,
+      1.44,
+      1.49,
+      1.54,
+      1.56,
+      1.58,
+      1.59,
+      1.6,
+      1.62,
+      1.64,
+      1.65,
+      1.66,
+      1.68,
+      1.7,
+      1.72,
+      1.74,
+      1.745,
+      1.75,
+      1.78,
+      1.81,
+      1.815,
+      1.82,
+      1.83,
+      1.84,
+      1.87,
+      1.9,
+      1.91,
+      1.92,
+      1.93,
+      1.94,
+      1.96,
+      1.98,
+      2,
+      2.02,
+      2.04,
+      2.06,
+      2.105,
+      2.15,
+      2.155,
+      2.16,
+      2.2,
+      2.24,
+      2.3,
+      2.36,
+      2.37,
+      2.38,
+      2.39,
+      2.4,
+      2.857,
+      8.571,
+      9.35,
+      14.286,
+      16.3,
+      16.575,
+      16.85,
+      16.965,
+      17.08,
+      17.23,
+      17.38,
+      17.45,
+      17.52,
+      17.53,
+      17.54,
+      17.75,
+      17.96,
+      17.99,
+      18.02,
+      18.06,
+      18.1,
+      18.26,
+      18.42,
+      18.53,
+      18.64,
+      18.74,
+      18.84,
+      18.91,
+      18.98,
+      19.17,
+      19.36,
+      20,
+      25.714,
+      26.33,
+      31.429,
+      33.3,
+      33.575,
+      33.85,
+      33.965,
+      34.08,
+      34.25,
+      34.42,
+      34.47,
+      34.52,
+      34.55,
+      34.58,
+      34.66,
+      34.74,
+      34.85,
+      34.96,
+      35.04,
+      35.12,
+      35.2,
+      35.28,
+      35.33,
+      35.38,
+      35.48,
+      35.58,
+      35.7,
+      35.82,
+      35.88,
+      35.94,
+      36.09,
+      36.24,
+      37.143,
+      42.857,
+      43.27,
+      48.571,
+      50.3,
+      50.575,
+      50.85,
+      50.965,
+      51.08,
+      51.25,
+      51.42,
+      51.47,
+      51.52,
+      51.67,
+      51.82,
+      51.88,
+      51.94,
+      51.98,
+      52.02,
+      52.09,
+      52.16,
+      52.26,
+      52.36,
+      52.45,
+      52.54,
+      52.62,
+      52.7,
+      52.82,
+      52.94,
+      53,
+      53.06,
+      53.23,
+      53.4,
+      54.286,
+      60,
+      60.35,
+      65.714,
+      67.3,
+      67.575,
+      67.85,
+      67.965,
+      68.08,
+      68.3,
+      68.52,
+      68.58,
+      68.64,
+      68.72,
+      68.8,
+      69.27,
+      69.74,
+      69.78,
+      69.82,
+      69.87,
+      69.92,
+      70.14,
+      70.36,
+      71.429,
+      77.143,
+      77.33,
+      82.857,
+      84.3,
+      84.575,
+      84.85,
+      84.965,
+      85.08,
+      85.24,
+      85.4,
+      85.46,
+      85.52,
+      85.64,
+      85.76,
+      85.82,
+      85.88,
+      85.9,
+      85.92,
+      85.99,
+      86.06,
+      86.18,
+      86.3,
+      86.37,
+      86.44,
+      86.52,
+      86.6,
+      86.72,
+      86.84,
+      86.93,
+      87.02,
+      87.2,
+      87.38,
+      88.571,
+      94.286,
+      94.34,
+      100,
+      101.3,
+      101.575,
+      101.85,
+      101.965,
+      102.08,
+      102.25,
+      102.42,
+      102.47,
+      102.52,
+      102.55,
+      102.58,
+      102.77,
+      102.96,
+      103.02,
+      103.08,
+      103.1,
+      103.12,
+      103.39,
+      103.66,
+      103.705,
+      103.75,
+      103.95,
+      104.15,
+      105.714,
+      111.429,
+      112.075,
+      117.143,
+      120
+    ],
+    "transitionSamples": [
+      0.08,
+      0.12,
+      0.16,
+      0.26,
+      0.36,
+      0.37,
+      0.38,
+      0.39,
+      0.4,
+      0.41,
+      0.42,
+      0.45,
+      0.48,
+      0.5,
+      0.52,
+      0.53,
+      0.54,
+      0.56,
+      0.58,
+      0.61,
+      0.64,
+      0.66,
+      0.68,
+      0.71,
+      0.74,
+      0.75,
+      0.76,
+      0.78,
+      0.8,
+      0.81,
+      0.82,
+      0.85,
+      0.88,
+      0.9,
+      0.92,
+      0.93,
+      0.94,
+      0.95,
+      0.96,
+      0.99,
+      1.02,
+      1.03,
+      1.04,
+      1.05,
+      1.06,
+      1.07,
+      1.08,
+      1.09,
+      1.1,
+      1.11,
+      1.12,
+      1.14,
+      1.16,
+      1.22,
+      1.28,
+      1.29,
+      1.3,
+      1.33,
+      1.36,
+      1.37,
+      1.38,
+      1.4,
+      1.42,
+      1.43,
+      1.44,
+      1.49,
+      1.54,
+      1.56,
+      1.58,
+      1.59,
+      1.6,
+      1.62,
+      1.64,
+      1.65,
+      1.66,
+      1.68,
+      1.7,
+      1.72,
+      1.74,
+      1.745,
+      1.75,
+      1.78,
+      1.81,
+      1.815,
+      1.82,
+      1.83,
+      1.84,
+      1.87,
+      1.9,
+      1.91,
+      1.92,
+      1.93,
+      1.94,
+      1.96,
+      1.98,
+      2,
+      2.02,
+      2.04,
+      2.06,
+      2.105,
+      2.15,
+      2.155,
+      2.16,
+      2.2,
+      2.24,
+      2.3,
+      2.36,
+      2.37,
+      2.38,
+      2.39,
+      2.4,
+      9.35,
+      16.3,
+      16.575,
+      16.85,
+      16.965,
+      17.08,
+      17.23,
+      17.38,
+      17.45,
+      17.52,
+      17.53,
+      17.54,
+      17.75,
+      17.96,
+      17.99,
+      18.02,
+      18.06,
+      18.1,
+      18.26,
+      18.42,
+      18.53,
+      18.64,
+      18.74,
+      18.84,
+      18.91,
+      18.98,
+      19.17,
+      19.36,
+      26.33,
+      33.3,
+      33.575,
+      33.85,
+      33.965,
+      34.08,
+      34.25,
+      34.42,
+      34.47,
+      34.52,
+      34.55,
+      34.58,
+      34.66,
+      34.74,
+      34.85,
+      34.96,
+      35.04,
+      35.12,
+      35.2,
+      35.28,
+      35.33,
+      35.38,
+      35.48,
+      35.58,
+      35.7,
+      35.82,
+      35.88,
+      35.94,
+      36.09,
+      36.24,
+      43.27,
+      50.3,
+      50.575,
+      50.85,
+      50.965,
+      51.08,
+      51.25,
+      51.42,
+      51.47,
+      51.52,
+      51.67,
+      51.82,
+      51.88,
+      51.94,
+      51.98,
+      52.02,
+      52.09,
+      52.16,
+      52.26,
+      52.36,
+      52.45,
+      52.54,
+      52.62,
+      52.7,
+      52.82,
+      52.94,
+      53,
+      53.06,
+      53.23,
+      53.4,
+      60.35,
+      67.3,
+      67.575,
+      67.85,
+      67.965,
+      68.08,
+      68.3,
+      68.52,
+      68.58,
+      68.64,
+      68.72,
+      68.8,
+      69.27,
+      69.74,
+      69.78,
+      69.82,
+      69.87,
+      69.92,
+      70.14,
+      70.36,
+      77.33,
+      84.3,
+      84.575,
+      84.85,
+      84.965,
+      85.08,
+      85.24,
+      85.4,
+      85.46,
+      85.52,
+      85.64,
+      85.76,
+      85.82,
+      85.88,
+      85.9,
+      85.92,
+      85.99,
+      86.06,
+      86.18,
+      86.3,
+      86.37,
+      86.44,
+      86.52,
+      86.6,
+      86.72,
+      86.84,
+      86.93,
+      87.02,
+      87.2,
+      87.38,
+      94.34,
+      101.3,
+      101.575,
+      101.85,
+      101.965,
+      102.08,
+      102.25,
+      102.42,
+      102.47,
+      102.52,
+      102.55,
+      102.58,
+      102.77,
+      102.96,
+      103.02,
+      103.08,
+      103.1,
+      103.12,
+      103.39,
+      103.66,
+      103.705,
+      103.75,
+      103.95,
+      104.15,
+      112.075,
+      120
+    ],
+    "transitionSamplesDropped": 0,
+    "tolerance": 2,
+    "totalIssueCount": 1,
+    "truncated": false
+  },
+  "motion": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 0,
+    "infoCount": 0,
+    "findings": [],
+    "enabled": false,
+    "samples": 0
+  },
+  "contrast": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 5,
+    "infoCount": 0,
+    "findings": [
+      {
+        "code": "contrast_aa_failure",
+        "severity": "warning",
+        "message": "Contrast is 1.65:1; WCAG AA requires 3:1.",
+        "text": "Start Engagement",
+        "fg": "rgb(217,196,181)",
+        "bg": "rgb(201,141,128)",
+        "ratio": 1.65,
+        "requiredRatio": 3,
+        "suggestedColor": "rgb(84,76,70)",
+        "large": true,
+        "selector": "div > div:nth-of-type(2) > div > div:nth-of-type(1) > div > div:nth-of-type(2) > section:nth-of-type(2) > div:nth-of-type(1) > div:nth-of-type(2) > span:nth-of-type(3)",
+        "dataAttributes": {},
+        "sourceFile": "compositions/scene-02.html",
+        "bbox": {
+          "x": 1552.796875,
+          "y": 245.09375,
+          "width": 247.203125,
+          "height": 51
+        },
+        "time": 33.575,
+        "times": [
+          33.575
+        ]
+      },
+      {
+        "code": "contrast_aa_failure",
+        "severity": "warning",
+        "message": "Contrast is 4.41:1; WCAG AA requires 4.5:1.",
+        "text": "01 / SECTION",
+        "fg": "rgb(201,141,128)",
+        "bg": "rgb(63,51,46)",
+        "ratio": 4.41,
+        "requiredRatio": 4.5,
+        "suggestedColor": "rgb(202,143,130)",
+        "large": false,
+        "selector": "div > div:nth-of-type(7) > div > div:nth-of-type(1) > div > div:nth-of-type(2) > section > div:nth-of-type(2) > div:nth-of-type(1) > article:nth-of-type(1) > div",
+        "dataAttributes": {},
+        "sourceFile": "compositions/scene-07.html",
+        "bbox": {
+          "x": 562,
+          "y": 344,
+          "width": 351.703125,
+          "height": 23
+        },
+        "time": 120,
+        "times": [
+          120
+        ]
+      },
+      {
+        "code": "contrast_aa_failure",
+        "severity": "warning",
+        "message": "Contrast is 4.41:1; WCAG AA requires 4.5:1.",
+        "text": "02 / SECTION",
+        "fg": "rgb(201,141,128)",
+        "bg": "rgb(63,51,46)",
+        "ratio": 4.41,
+        "requiredRatio": 4.5,
+        "suggestedColor": "rgb(202,143,130)",
+        "large": false,
+        "selector": "div > div:nth-of-type(7) > div > div:nth-of-type(1) > div > div:nth-of-type(2) > section > div:nth-of-type(2) > div:nth-of-type(1) > article:nth-of-type(2) > div",
+        "dataAttributes": {},
+        "sourceFile": "compositions/scene-07.html",
+        "bbox": {
+          "x": 973.703125,
+          "y": 344,
+          "width": 351.71875,
+          "height": 23
+        },
+        "time": 120,
+        "times": [
+          120
+        ]
+      },
+      {
+        "code": "contrast_aa_failure",
+        "severity": "warning",
+        "message": "Contrast is 4.41:1; WCAG AA requires 4.5:1.",
+        "text": "03 / SECTION",
+        "fg": "rgb(201,141,128)",
+        "bg": "rgb(63,51,46)",
+        "ratio": 4.41,
+        "requiredRatio": 4.5,
+        "suggestedColor": "rgb(202,143,130)",
+        "large": false,
+        "selector": "div > div:nth-of-type(7) > div > div:nth-of-type(1) > div > div:nth-of-type(2) > section > div:nth-of-type(2) > div:nth-of-type(1) > article:nth-of-type(3) > div",
+        "dataAttributes": {},
+        "sourceFile": "compositions/scene-07.html",
+        "bbox": {
+          "x": 562,
+          "y": 596,
+          "width": 351.703125,
+          "height": 23
+        },
+        "time": 120,
+        "times": [
+          120
+        ]
+      },
+      {
+        "code": "contrast_aa_failure",
+        "severity": "warning",
+        "message": "Contrast is 4.41:1; WCAG AA requires 4.5:1.",
+        "text": "04 / SECTION",
+        "fg": "rgb(201,141,128)",
+        "bg": "rgb(63,51,46)",
+        "ratio": 4.41,
+        "requiredRatio": 4.5,
+        "suggestedColor": "rgb(202,143,130)",
+        "large": false,
+        "selector": "div > div:nth-of-type(7) > div > div:nth-of-type(1) > div > div:nth-of-type(2) > section > div:nth-of-type(2) > div:nth-of-type(1) > article:nth-of-type(4) > div",
+        "dataAttributes": {},
+        "sourceFile": "compositions/scene-07.html",
+        "bbox": {
+          "x": 973.703125,
+          "y": 596,
+          "width": 351.71875,
+          "height": 23
+        },
+        "time": 120,
+        "times": [
+          120
+        ]
+      }
+    ],
+    "enabled": true,
+    "samples": [
+      0.08,
+      1.65,
+      33.575,
+      68.72,
+      120
+    ],
+    "checked": 135,
+    "passed": 130
+  },
+  "craft": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 8,
+    "infoCount": 0,
+    "findings": [
+      {
+        "code": "text_below_floor",
+        "severity": "warning",
+        "message": "Type floor is 28 px (2.6% of the 1080 px short side, what a phone can read) and 8 text elements stay under it for 0.5 s or more, the smallest \"01 / WHAT SPECTRE IS\" at 22 px: set reading text to at least 28 px, or put data-layout-ignore on text that is texture rather than reading; see references/look.md.",
+        "text": "01 / WHAT SPECTRE IS",
+        "selector": "div.scene-footer > span:nth-of-type(1)",
+        "dataAttributes": {},
+        "sourceFile": "compositions/scene-01.html",
+        "bbox": {
+          "x": 92,
+          "y": 1009,
+          "width": 316.81,
+          "height": 29
+        },
+        "time": 0,
+        "times": [
+          0,
+          0,
+          1.002,
+          1.202,
+          1.202,
+          1.402,
+          1.603,
+          2.003
+        ],
+        "fontPx": 22,
+        "floorPx": 28,
+        "seconds": 16.627,
+        "elements": [
+          {
+            "selector": "div.scene-footer > span:nth-of-type(1)",
+            "text": "01 / WHAT SPECTRE IS",
+            "fontPx": 22,
+            "time": 0,
+            "seconds": 16.627
+          },
+          {
+            "selector": "div.scene-footer > span:nth-of-type(2)",
+            "text": "AUTHORIZED USE ONLY",
+            "fontPx": 22,
+            "time": 0,
+            "seconds": 16.627
+          },
+          {
+            "selector": "#scene01-node-1 > span:nth-of-type(1)",
+            "text": ".txt / .csvauthorized scope",
+            "fontPx": 23,
+            "time": 1.002,
+            "seconds": 15.625
+          },
+          {
+            "selector": "#scene01-node-2 > span:nth-of-type(1)",
+            "text": "NmapNikto",
+            "fontPx": 23,
+            "time": 1.202,
+            "seconds": 15.425
+          },
+          {
+            "selector": "#scene01-node-3 > span:nth-of-type(1)",
+            "text": "service · portseverity · fix",
+            "fontPx": 23,
+            "time": 1.202,
+            "seconds": 15.425
+          },
+          {
+            "selector": "#scene01-node-4 > span:nth-of-type(1)",
+            "text": "interpretrecommend",
+            "fontPx": 23,
+            "time": 1.402,
+            "seconds": 15.225
+          },
+          {
+            "selector": "#scene01-node-5 > span:nth-of-type(1)",
+            "text": "scoped evidenceexportable text",
+            "fontPx": 23,
+            "time": 1.603,
+            "seconds": 15.024
+          },
+          {
+            "selector": "#scene01-qualifier",
+            "text": "NMAP + NIKTO • GROQ-ASSISTED INTERPRETATION • ENGAGEMENT-SCOPED REPORTING",
+            "fontPx": 27,
+            "time": 2.003,
+            "seconds": 14.624
+          }
+        ]
+      },
+      {
+        "code": "text_below_floor",
+        "severity": "warning",
+        "message": "Type floor is 28 px (2.6% of the 1080 px short side, what a phone can read) and 48 text elements stay under it for 0.5 s or more, the smallest \"TARGET\" at 20 px: set reading text to at least 28 px, or put data-layout-ignore on text that is texture rather than reading; see references/look.md.",
+        "text": "TARGET",
+        "selector": "div.batch-row.header > span:nth-of-type(1)",
+        "dataAttributes": {},
+        "sourceFile": "compositions/scene-02.html",
+        "bbox": {
+          "x": 836.95,
+          "y": 346.09,
+          "width": 84,
+          "height": 27
+        },
+        "time": 17.629,
+        "times": [
+          17.229,
+          17.229,
+          17.629,
+          17.629,
+          17.629,
+          17.629,
+          17.629,
+          17.629,
+          17.629,
+          17.629,
+          17.629,
+          17.629,
+          17.629,
+          17.629,
+          17.629,
+          17.629,
+          17.629,
+          17.629,
+          17.629,
+          17.629,
+          17.629,
+          17.629,
+          17.629,
+          18.23,
+          18.23,
+          18.23,
+          18.431,
+          18.431,
+          18.431,
+          18.431,
+          18.431,
+          18.431,
+          18.631,
+          18.631,
+          18.631,
+          18.631,
+          18.631,
+          18.631,
+          18.631,
+          18.631,
+          18.831,
+          18.831,
+          18.831,
+          18.831,
+          19.032,
+          19.032,
+          19.232,
+          19.232
+        ],
+        "fontPx": 20,
+        "floorPx": 28,
+        "seconds": 16.027,
+        "elements": [
+          {
+            "selector": "div.batch-row.header > span:nth-of-type(1)",
+            "text": "TARGET",
+            "fontPx": 20,
+            "time": 17.629,
+            "seconds": 16.027
+          },
+          {
+            "selector": "div.batch-row.header > span:nth-of-type(2)",
+            "text": "LABEL",
+            "fontPx": 20,
+            "time": 17.629,
+            "seconds": 16.027
+          },
+          {
+            "selector": "div.batch-row.header > span:nth-of-type(3)",
+            "text": "STATUS",
+            "fontPx": 20,
+            "time": 17.629,
+            "seconds": 16.027
+          },
+          {
+            "selector": "div.queue-title",
+            "text": "SERIAL EXECUTION ORDER",
+            "fontPx": 20,
+            "time": 17.629,
+            "seconds": 16.027
+          },
+          {
+            "selector": "#scene02-row-1 > span:nth-of-type(3)",
+            "text": "PENDING",
+            "fontPx": 20,
+            "time": 18.23,
+            "seconds": 15.426
+          },
+          {
+            "selector": "#scene02-row-2 > span:nth-of-type(3)",
+            "text": "PENDING",
+            "fontPx": 20,
+            "time": 18.431,
+            "seconds": 15.225
+          },
+          {
+            "selector": "#scene02-row-3 > span:nth-of-type(3)",
+            "text": "PENDING",
+            "fontPx": 20,
+            "time": 18.431,
+            "seconds": 15.225
+          },
+          {
+            "selector": "#scene02-footer > div:nth-of-type(1)",
+            "text": "HEADER ALIASESip · target · hostname · host",
+            "fontPx": 21,
+            "time": 19.032,
+            "seconds": 14.624
+          },
+          {
+            "selector": "#scene02-footer > div:nth-of-type(2)",
+            "text": "BATCH LIMITup to 500 targets",
+            "fontPx": 21,
+            "time": 19.032,
+            "seconds": 14.624
+          },
+          {
+            "selector": "#scene02-footer > div:nth-of-type(3)",
+            "text": "PROGRESSNDJSON event stream",
+            "fontPx": 21,
+            "time": 19.232,
+            "seconds": 14.424
+          },
+          {
+            "selector": "#scene02-footer > div:nth-of-type(4)",
+            "text": "MODEtargets, then tools",
+            "fontPx": 21,
+            "time": 19.232,
+            "seconds": 14.424
+          },
+          {
+            "selector": "div.demo-label",
+            "text": "FICTIONAL DEMO DATA",
+            "fontPx": 22,
+            "time": 17.229,
+            "seconds": 16.427
+          },
+          {
+            "selector": "div.panel-head > span:nth-of-type(1)",
+            "text": "ip,label,notes",
+            "fontPx": 22,
+            "time": 17.629,
+            "seconds": 16.027
+          },
+          {
+            "selector": "div.panel-head > div:nth-of-type(1) > span:nth-of-type(1)",
+            "text": "3 targets parsed",
+            "fontPx": 22,
+            "time": 17.629,
+            "seconds": 16.027
+          },
+          {
+            "selector": "div.toolbar > span:nth-of-type(1)",
+            "text": "NMAP ✓",
+            "fontPx": 22,
+            "time": 17.629,
+            "seconds": 16.027
+          },
+          {
+            "selector": "div.toolbar > span:nth-of-type(2)",
+            "text": "NIKTO ✓",
+            "fontPx": 22,
+            "time": 17.629,
+            "seconds": 16.027
+          },
+          {
+            "selector": "span.start-btn",
+            "text": "Start Engagement",
+            "fontPx": 22,
+            "time": 17.629,
+            "seconds": 16.027
+          },
+          {
+            "selector": "#scene02-queue > div:nth-of-type(2) > span:nth-of-type(1)",
+            "text": "1",
+            "fontPx": 23,
+            "time": 18.631,
+            "seconds": 15.025
+          },
+          {
+            "selector": "#scene02-queue > div:nth-of-type(2) > span:nth-of-type(2)",
+            "text": "Target 1",
+            "fontPx": 23,
+            "time": 18.631,
+            "seconds": 15.025
+          },
+          {
+            "selector": "#scene02-queue > div:nth-of-type(2) > span:nth-of-type(4)",
+            "text": "Nmap",
+            "fontPx": 23,
+            "time": 18.631,
+            "seconds": 15.025
+          },
+          {
+            "selector": "#scene02-queue > div:nth-of-type(2) > span:nth-of-type(6)",
+            "text": "Nikto",
+            "fontPx": 23,
+            "time": 18.631,
+            "seconds": 15.025
+          },
+          {
+            "selector": "#scene02-queue > div:nth-of-type(3) > span:nth-of-type(1)",
+            "text": "2",
+            "fontPx": 23,
+            "time": 18.631,
+            "seconds": 15.025
+          },
+          {
+            "selector": "#scene02-queue > div:nth-of-type(3) > span:nth-of-type(2)",
+            "text": "Target 2",
+            "fontPx": 23,
+            "time": 18.631,
+            "seconds": 15.025
+          },
+          {
+            "selector": "#scene02-queue > div:nth-of-type(3) > span:nth-of-type(4)",
+            "text": "Nmap",
+            "fontPx": 23,
+            "time": 18.631,
+            "seconds": 15.025
+          },
+          {
+            "selector": "#scene02-queue > div:nth-of-type(3) > span:nth-of-type(6)",
+            "text": "Nikto",
+            "fontPx": 23,
+            "time": 18.631,
+            "seconds": 15.025
+          },
+          {
+            "selector": "#scene02-queue > div:nth-of-type(4) > span:nth-of-type(1)",
+            "text": "3",
+            "fontPx": 23,
+            "time": 18.831,
+            "seconds": 14.825
+          },
+          {
+            "selector": "#scene02-queue > div:nth-of-type(4) > span:nth-of-type(2)",
+            "text": "Target 3",
+            "fontPx": 23,
+            "time": 18.831,
+            "seconds": 14.825
+          },
+          {
+            "selector": "#scene02-queue > div:nth-of-type(4) > span:nth-of-type(4)",
+            "text": "Nmap",
+            "fontPx": 23,
+            "time": 18.831,
+            "seconds": 14.825
+          },
+          {
+            "selector": "#scene02-queue > div:nth-of-type(4) > span:nth-of-type(6)",
+            "text": "Nikto",
+            "fontPx": 23,
+            "time": 18.831,
+            "seconds": 14.825
+          },
+          {
+            "selector": "div.file-notes > div:nth-of-type(1)",
+            "text": ".txt or .csv",
+            "fontPx": 24,
+            "time": 17.629,
+            "seconds": 16.027
+          },
+          {
+            "selector": "div.file-notes > div:nth-of-type(2)",
+            "text": "Comments ignored",
+            "fontPx": 24,
+            "time": 17.629,
+            "seconds": 16.027
+          },
+          {
+            "selector": "div.file-notes > div:nth-of-type(3)",
+            "text": "Optional labels",
+            "fontPx": 24,
+            "time": 17.629,
+            "seconds": 16.027
+          },
+          {
+            "selector": "div.file-notes > div:nth-of-type(4)",
+            "text": "Optional notes",
+            "fontPx": 24,
+            "time": 17.629,
+            "seconds": 16.027
+          },
+          {
+            "selector": "div.scene-num",
+            "text": "02 / MULTI-TARGET INPUT",
+            "fontPx": 25,
+            "time": 17.229,
+            "seconds": 16.427
+          },
+          {
+            "selector": "#scene02-file > pre:nth-of-type(1)",
+            "text": ",,Public web edge ,,Application host ,,Admin service",
+            "fontPx": 25,
+            "time": 17.629,
+            "seconds": 16.027
+          },
+          {
+            "selector": "span.csv-header",
+            "text": "ip,label,notes",
+            "fontPx": 25,
+            "time": 17.629,
+            "seconds": 16.027
+          },
+          {
+            "selector": "#scene02-file > pre:nth-of-type(1) > span:nth-of-type(2)",
+            "text": "192.0.2.10",
+            "fontPx": 25,
+            "time": 17.629,
+            "seconds": 16.027
+          },
+          {
+            "selector": "#scene02-file > pre:nth-of-type(1) > span:nth-of-type(3)",
+            "text": "target-a.example",
+            "fontPx": 25,
+            "time": 17.629,
+            "seconds": 16.027
+          },
+          {
+            "selector": "#scene02-file > pre:nth-of-type(1) > span:nth-of-type(4)",
+            "text": "192.0.2.20",
+            "fontPx": 25,
+            "time": 17.629,
+            "seconds": 16.027
+          },
+          {
+            "selector": "#scene02-file > pre:nth-of-type(1) > span:nth-of-type(5)",
+            "text": "target-b.example",
+            "fontPx": 25,
+            "time": 17.629,
+            "seconds": 16.027
+          },
+          {
+            "selector": "#scene02-file > pre:nth-of-type(1) > span:nth-of-type(6)",
+            "text": "192.0.2.30",
+            "fontPx": 25,
+            "time": 17.629,
+            "seconds": 16.027
+          },
+          {
+            "selector": "#scene02-file > pre:nth-of-type(1) > span:nth-of-type(7)",
+            "text": "target-c.example",
+            "fontPx": 25,
+            "time": 17.629,
+            "seconds": 16.027
+          },
+          {
+            "selector": "#scene02-row-1 > span:nth-of-type(1)",
+            "text": "192.0.2.10",
+            "fontPx": 25,
+            "time": 18.23,
+            "seconds": 15.426
+          },
+          {
+            "selector": "#scene02-row-1 > span:nth-of-type(2)",
+            "text": "target-a.example",
+            "fontPx": 25,
+            "time": 18.23,
+            "seconds": 15.426
+          },
+          {
+            "selector": "#scene02-row-2 > span:nth-of-type(1)",
+            "text": "192.0.2.20",
+            "fontPx": 25,
+            "time": 18.431,
+            "seconds": 15.225
+          },
+          {
+            "selector": "#scene02-row-2 > span:nth-of-type(2)",
+            "text": "target-b.example",
+            "fontPx": 25,
+            "time": 18.431,
+            "seconds": 15.225
+          },
+          {
+            "selector": "#scene02-row-3 > span:nth-of-type(1)",
+            "text": "192.0.2.30",
+            "fontPx": 25,
+            "time": 18.431,
+            "seconds": 15.225
+          },
+          {
+            "selector": "#scene02-row-3 > span:nth-of-type(2)",
+            "text": "target-c.example",
+            "fontPx": 25,
+            "time": 18.431,
+            "seconds": 15.225
+          }
+        ]
+      },
+      {
+        "code": "line_unread",
+        "severity": "warning",
+        "message": "\"target-b.example\" (3 words) is on screen 0.20 s (±0.01 s), under its 1.05 s floor: hold it about 0.5 s + 0.3 s a word (1.40 s here) before it leaves or changes; see references/motion.md.",
+        "text": "target-b.example",
+        "selector": "#scene02-row-2 > span:nth-of-type(2)",
+        "dataAttributes": {},
+        "sourceFile": "compositions/scene-02.html",
+        "bbox": {
+          "x": 1146.69,
+          "y": 483.73,
+          "width": 202.48000000000002,
+          "height": 30
+        },
+        "time": 18.305,
+        "words": 3,
+        "seconds": 0.201,
+        "floorSeconds": 1.05
+      },
+      {
+        "code": "text_below_floor",
+        "severity": "warning",
+        "message": "Type floor is 28 px (2.6% of the 1080 px short side, what a phone can read) and 36 text elements stay under it for 0.5 s or more, the smallest \"TARGET\" at 19 px: set reading text to at least 28 px, or put data-layout-ignore on text that is texture rather than reading; see references/look.md.",
+        "text": "TARGET",
+        "selector": "div.fields > div:nth-of-type(1)",
+        "dataAttributes": {},
+        "sourceFile": "compositions/scene-03.html",
+        "bbox": {
+          "x": 1222.14,
+          "y": 436.06,
+          "width": 72.93,
+          "height": 23.99
+        },
+        "time": 35.659,
+        "times": [
+          34.257,
+          34.257,
+          34.658,
+          34.658,
+          34.658,
+          34.658,
+          34.658,
+          34.658,
+          34.858,
+          34.858,
+          34.858,
+          34.858,
+          34.858,
+          34.858,
+          34.858,
+          34.858,
+          34.858,
+          35.259,
+          35.259,
+          35.259,
+          35.459,
+          35.459,
+          35.459,
+          35.659,
+          35.659,
+          35.659,
+          35.659,
+          35.659,
+          35.659,
+          35.659,
+          35.659,
+          35.659,
+          35.659,
+          35.659,
+          36.06,
+          36.06
+        ],
+        "fontPx": 18.99,
+        "floorPx": 28,
+        "seconds": 15.025,
+        "elements": [
+          {
+            "selector": "div.fields > div:nth-of-type(1)",
+            "text": "TARGET",
+            "fontPx": 18.99,
+            "time": 35.659,
+            "seconds": 15.025
+          },
+          {
+            "selector": "div.fields > div:nth-of-type(3)",
+            "text": "SERVICE",
+            "fontPx": 18.99,
+            "time": 35.659,
+            "seconds": 15.025
+          },
+          {
+            "selector": "div.fields > div:nth-of-type(5)",
+            "text": "DESCRIPTION",
+            "fontPx": 18.99,
+            "time": 35.659,
+            "seconds": 15.025
+          },
+          {
+            "selector": "div.fields > div:nth-of-type(7)",
+            "text": "REMEDIATION",
+            "fontPx": 18.99,
+            "time": 35.659,
+            "seconds": 15.025
+          },
+          {
+            "selector": "div.fields > div:nth-of-type(9)",
+            "text": "SOURCE",
+            "fontPx": 18.99,
+            "time": 35.659,
+            "seconds": 15.025
+          },
+          {
+            "selector": "div.state-rail > span:nth-of-type(1)",
+            "text": "PENDING",
+            "fontPx": 19,
+            "time": 34.658,
+            "seconds": 16.026
+          },
+          {
+            "selector": "div.state-rail > span:nth-of-type(3)",
+            "text": "SCANNING",
+            "fontPx": 19,
+            "time": 34.658,
+            "seconds": 16.026
+          },
+          {
+            "selector": "span.state.complete",
+            "text": "COMPLETE · 3",
+            "fontPx": 19,
+            "time": 34.658,
+            "seconds": 16.026
+          },
+          {
+            "selector": "span.severity",
+            "text": "MEDIUM",
+            "fontPx": 19.99,
+            "time": 35.659,
+            "seconds": 15.025
+          },
+          {
+            "selector": "#scene03-execution > div:nth-of-type(1) > code:nth-of-type(1)",
+            "text": "192.0.2.10",
+            "fontPx": 20,
+            "time": 34.658,
+            "seconds": 16.026
+          },
+          {
+            "selector": "#scene03-output > div:nth-of-type(1) > code:nth-of-type(1)",
+            "text": "NDJSON → UI",
+            "fontPx": 20,
+            "time": 34.858,
+            "seconds": 15.826
+          },
+          {
+            "selector": "#scene03-evidence > div:nth-of-type(1) > code:nth-of-type(1)",
+            "text": "structured evidence",
+            "fontPx": 20,
+            "time": 34.858,
+            "seconds": 15.826
+          },
+          {
+            "selector": "#scene03-output > pre:nth-of-type(1)",
+            "text": "[192.0.2.10] Running NMAP PORT STATE SERVICE [192.0.2.10] Running NIKTO ■ 192.0.2.10: 3 findings ✓ Engagement complete",
+            "fontPx": 21,
+            "time": 34.858,
+            "seconds": 15.826
+          },
+          {
+            "selector": "span.out-command",
+            "text": "▶ Starting 192.0.2.10",
+            "fontPx": 21,
+            "time": 34.858,
+            "seconds": 15.826
+          },
+          {
+            "selector": "#scene03-output > pre:nth-of-type(1) > span:nth-of-type(2)",
+            "text": "80/tcp open http",
+            "fontPx": 21,
+            "time": 34.858,
+            "seconds": 15.826
+          },
+          {
+            "selector": "#scene03-output > pre:nth-of-type(1) > span:nth-of-type(3)",
+            "text": "443/tcp open https",
+            "fontPx": 21,
+            "time": 34.858,
+            "seconds": 15.826
+          },
+          {
+            "selector": "#scene03-output > pre:nth-of-type(1) > span:nth-of-type(4)",
+            "text": "+ Server banner reveals version",
+            "fontPx": 21,
+            "time": 34.858,
+            "seconds": 15.826
+          },
+          {
+            "selector": "#scene03-output > pre:nth-of-type(1) > span:nth-of-type(5)",
+            "text": "+ X-Content-Type-Options missing",
+            "fontPx": 21,
+            "time": 34.858,
+            "seconds": 15.826
+          },
+          {
+            "selector": "#scene03-execution > div:nth-of-type(3) > div:nth-of-type(2) > span:nth-of-type(1)",
+            "text": "Service profile",
+            "fontPx": 21,
+            "time": 35.259,
+            "seconds": 15.425
+          },
+          {
+            "selector": "#scene03-execution > div:nth-of-type(4) > div:nth-of-type(2) > span:nth-of-type(1)",
+            "text": "HTTP assessment",
+            "fontPx": 21,
+            "time": 35.459,
+            "seconds": 15.225
+          },
+          {
+            "selector": "#scene03-inner > div:nth-of-type(1) > div:nth-of-type(2)",
+            "text": "FICTIONAL DEMO DATA",
+            "fontPx": 22,
+            "time": 34.257,
+            "seconds": 16.427
+          },
+          {
+            "selector": "#scene03-summary > span:nth-of-type(1)",
+            "text": "RAW OUTPUT → PARSER → FINDING",
+            "fontPx": 22,
+            "time": 36.06,
+            "seconds": 14.624
+          },
+          {
+            "selector": "#scene03-summary > span:nth-of-type(2)",
+            "text": "SCANS + FINDINGS PERSISTED TO JSON STORE",
+            "fontPx": 22,
+            "time": 36.06,
+            "seconds": 14.624
+          },
+          {
+            "selector": "div.fields > div:nth-of-type(2)",
+            "text": "192.0.2.10",
+            "fontPx": 22.99,
+            "time": 35.659,
+            "seconds": 15.025
+          },
+          {
+            "selector": "div.fields > div:nth-of-type(4)",
+            "text": "http · 80/tcp",
+            "fontPx": 22.99,
+            "time": 35.659,
+            "seconds": 15.025
+          },
+          {
+            "selector": "div.fields > div:nth-of-type(6)",
+            "text": "Traffic is accessible without transport encryption.",
+            "fontPx": 22.99,
+            "time": 35.659,
+            "seconds": 15.025
+          },
+          {
+            "selector": "div.fields > div:nth-of-type(8)",
+            "text": "Redirect HTTP to HTTPS and deploy a valid certificate.",
+            "fontPx": 22.99,
+            "time": 35.659,
+            "seconds": 15.025
+          },
+          {
+            "selector": "div.fields > div:nth-of-type(10)",
+            "text": "nmap",
+            "fontPx": 22.99,
+            "time": 35.659,
+            "seconds": 15.025
+          },
+          {
+            "selector": "div.ip",
+            "text": "Public web edge",
+            "fontPx": 23,
+            "time": 34.658,
+            "seconds": 16.026
+          },
+          {
+            "selector": "div.evidence-foot",
+            "text": "Saved with engagement ID, target, tool, timestamp, severity, description, and remediation.",
+            "fontPx": 23,
+            "time": 34.858,
+            "seconds": 15.826
+          },
+          {
+            "selector": "#scene03-execution > div:nth-of-type(3) > div:nth-of-type(1)",
+            "text": "1",
+            "fontPx": 24,
+            "time": 35.259,
+            "seconds": 15.425
+          },
+          {
+            "selector": "#scene03-execution > div:nth-of-type(4) > div:nth-of-type(1)",
+            "text": "2",
+            "fontPx": 24,
+            "time": 35.459,
+            "seconds": 15.225
+          },
+          {
+            "selector": "#scene03-inner > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1)",
+            "text": "03 / RECON + FINDINGS",
+            "fontPx": 25,
+            "time": 34.257,
+            "seconds": 16.427
+          },
+          {
+            "selector": "div.host",
+            "text": "target-a.example",
+            "fontPx": 27,
+            "time": 34.658,
+            "seconds": 16.026
+          },
+          {
+            "selector": "#scene03-execution > div:nth-of-type(3) > div:nth-of-type(2) > strong:nth-of-type(1)",
+            "text": "Nmap",
+            "fontPx": 27,
+            "time": 35.259,
+            "seconds": 15.425
+          },
+          {
+            "selector": "#scene03-execution > div:nth-of-type(4) > div:nth-of-type(2) > strong:nth-of-type(1)",
+            "text": "Nikto",
+            "fontPx": 27,
+            "time": 35.459,
+            "seconds": 15.225
+          }
+        ]
+      },
+      {
+        "code": "text_below_floor",
+        "severity": "warning",
+        "message": "Type floor is 28 px (2.6% of the 1080 px short side, what a phone can read) and 16 text elements stay under it for 0.5 s or more, the smallest \"returned output\" at 17 px: set reading text to at least 28 px, or put data-layout-ignore on text that is texture rather than reading; see references/look.md.",
+        "text": "returned output",
+        "selector": "#scene04-edge-2 > span:nth-of-type(1)",
+        "dataAttributes": {},
+        "sourceFile": "compositions/scene-04.html",
+        "bbox": {
+          "x": 1231.07,
+          "y": 520.67,
+          "width": 75.86,
+          "height": 47.3
+        },
+        "time": 52.487,
+        "times": [
+          51.285,
+          51.285,
+          51.686,
+          51.686,
+          51.686,
+          51.686,
+          52.087,
+          52.287,
+          52.287,
+          52.287,
+          52.487,
+          52.688,
+          52.688,
+          52.688,
+          53.289,
+          53.289
+        ],
+        "fontPx": 16.87,
+        "floorPx": 28,
+        "seconds": 15.226,
+        "elements": [
+          {
+            "selector": "#scene04-edge-2 > span:nth-of-type(1)",
+            "text": "returned output",
+            "fontPx": 16.87,
+            "time": 52.487,
+            "seconds": 15.226
+          },
+          {
+            "selector": "#scene04-edge-1 > span:nth-of-type(1)",
+            "text": "explicit request",
+            "fontPx": 17.97,
+            "time": 52.087,
+            "seconds": 15.626
+          },
+          {
+            "selector": "#scene04-step-1 > div:nth-of-type(1)",
+            "text": "01 / OBSERVED FINDING",
+            "fontPx": 20,
+            "time": 51.686,
+            "seconds": 16.027
+          },
+          {
+            "selector": "#scene04-step-2 > div:nth-of-type(1)",
+            "text": "02 / OPERATOR-GUIDED STEP",
+            "fontPx": 20,
+            "time": 52.287,
+            "seconds": 15.426
+          },
+          {
+            "selector": "#scene04-step-3 > div:nth-of-type(1)",
+            "text": "03 / FOLLOW-UP EVIDENCE",
+            "fontPx": 20,
+            "time": 52.688,
+            "seconds": 15.025
+          },
+          {
+            "selector": "#scene04-foot > span:nth-of-type(1)",
+            "text": "OBSERVATION → EXPLICIT INTENT → TOOL RESULT",
+            "fontPx": 21,
+            "time": 53.289,
+            "seconds": 14.424
+          },
+          {
+            "selector": "#scene04-foot > span:nth-of-type(2)",
+            "text": "OPERATOR-GUIDED REASONING LOOP",
+            "fontPx": 21,
+            "time": 53.289,
+            "seconds": 14.424
+          },
+          {
+            "selector": "#scene04-inner > div:nth-of-type(1) > div:nth-of-type(2)",
+            "text": "FICTIONAL DEMO DATA",
+            "fontPx": 22,
+            "time": 51.285,
+            "seconds": 16.428
+          },
+          {
+            "selector": "#scene04-step-1 > div:nth-of-type(2) > code:nth-of-type(1)",
+            "text": "192.0.2.1080/tcp · http · MEDIUM",
+            "fontPx": 22,
+            "time": 51.686,
+            "seconds": 16.027
+          },
+          {
+            "selector": "#scene04-step-2 > div:nth-of-type(2) > code:nth-of-type(1)",
+            "text": "“Run Nikto against target-a.example and prioritize the web exposure.”",
+            "fontPx": 22,
+            "time": 52.287,
+            "seconds": 15.426
+          },
+          {
+            "selector": "#scene04-step-3 > div:nth-of-type(2) > code:nth-of-type(1)",
+            "text": "Outdated server bannerMissing security header",
+            "fontPx": 22,
+            "time": 52.688,
+            "seconds": 15.025
+          },
+          {
+            "selector": "#scene04-inner > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1)",
+            "text": "04 / VULNERABILITY CHAINING · PART 1",
+            "fontPx": 25,
+            "time": 51.285,
+            "seconds": 16.428
+          },
+          {
+            "selector": "#scene04-step-1 > div:nth-of-type(2) > p:nth-of-type(1)",
+            "text": "A verified Nmap result becomes the starting evidence.",
+            "fontPx": 25,
+            "time": 51.686,
+            "seconds": 16.027
+          },
+          {
+            "selector": "#scene04-step-2 > div:nth-of-type(2) > p:nth-of-type(1)",
+            "text": "The operator supplies intent. The assistant may call the tool.",
+            "fontPx": 25,
+            "time": 52.287,
+            "seconds": 15.426
+          },
+          {
+            "selector": "#scene04-step-3 > div:nth-of-type(2) > p:nth-of-type(1)",
+            "text": "Actual returned output is interpreted before any conclusion is stated.",
+            "fontPx": 25,
+            "time": 52.688,
+            "seconds": 15.025
+          },
+          {
+            "selector": "#scene04-step-1 > div:nth-of-type(2) > div:nth-of-type(1)",
+            "text": "O",
+            "fontPx": 27,
+            "time": 51.686,
+            "seconds": 16.027
+          }
+        ]
+      },
+      {
+        "code": "text_below_floor",
+        "severity": "warning",
+        "message": "Type floor is 28 px (2.6% of the 1080 px short side, what a phone can read) and 17 text elements stay under it for 0.5 s or more, the smallest \"NMAP · OBSERVED\" at 18 px: set reading text to at least 28 px, or put data-layout-ignore on text that is texture rather than reading; see references/look.md.",
+        "text": "NMAP · OBSERVED",
+        "selector": "#scene05-node-1 > span:nth-of-type(1)",
+        "dataAttributes": {},
+        "sourceFile": "compositions/scene-05.html",
+        "bbox": {
+          "x": 122,
+          "y": 401.33,
+          "width": 178.2,
+          "height": 23
+        },
+        "time": 68.715,
+        "times": [
+          68.314,
+          68.314,
+          68.314,
+          68.715,
+          68.715,
+          68.915,
+          68.915,
+          69.115,
+          69.115,
+          69.316,
+          69.316,
+          69.516,
+          69.516,
+          70.117,
+          70.117,
+          70.117,
+          70.117
+        ],
+        "fontPx": 18,
+        "floorPx": 28,
+        "seconds": 16.026,
+        "elements": [
+          {
+            "selector": "#scene05-node-1 > span:nth-of-type(1)",
+            "text": "NMAP · OBSERVED",
+            "fontPx": 18,
+            "time": 68.715,
+            "seconds": 16.026
+          },
+          {
+            "selector": "#scene05-node-2 > span:nth-of-type(1)",
+            "text": "NIKTO · OBSERVED",
+            "fontPx": 18,
+            "time": 68.915,
+            "seconds": 15.826
+          },
+          {
+            "selector": "#scene05-node-3 > span:nth-of-type(1)",
+            "text": "EVIDENCE",
+            "fontPx": 18,
+            "time": 69.115,
+            "seconds": 15.626
+          },
+          {
+            "selector": "#scene05-node-4 > span:nth-of-type(1)",
+            "text": "PROPOSED",
+            "fontPx": 18,
+            "time": 69.316,
+            "seconds": 15.425
+          },
+          {
+            "selector": "#scene05-node-5 > span:nth-of-type(1)",
+            "text": "OBJECTIVE",
+            "fontPx": 18,
+            "time": 69.516,
+            "seconds": 15.225
+          },
+          {
+            "selector": "#scene05-node-1 > p:nth-of-type(1)",
+            "text": "80/tcp opentarget-a.example",
+            "fontPx": 21,
+            "time": 68.715,
+            "seconds": 16.026
+          },
+          {
+            "selector": "#scene05-node-2 > p:nth-of-type(1)",
+            "text": "Server bannerreturned by tool",
+            "fontPx": 21,
+            "time": 68.915,
+            "seconds": 15.826
+          },
+          {
+            "selector": "#scene05-node-3 > p:nth-of-type(1)",
+            "text": "Requires version-specific validation",
+            "fontPx": 21,
+            "time": 69.115,
+            "seconds": 15.626
+          },
+          {
+            "selector": "#scene05-node-4 > p:nth-of-type(1)",
+            "text": "Operator hypothesisnot confirmed",
+            "fontPx": 21,
+            "time": 69.316,
+            "seconds": 15.425
+          },
+          {
+            "selector": "#scene05-node-5 > p:nth-of-type(1)",
+            "text": "Illustrative onlyrequires proof",
+            "fontPx": 21,
+            "time": 69.516,
+            "seconds": 15.225
+          },
+          {
+            "selector": "#scene05-inner > div:nth-of-type(1) > div:nth-of-type(2)",
+            "text": "FICTIONAL DEMO DATA",
+            "fontPx": 22,
+            "time": 68.314,
+            "seconds": 16.427
+          },
+          {
+            "selector": "#scene05-legend > div:nth-of-type(1) > span:nth-of-type(2)",
+            "text": "Observed evidence",
+            "fontPx": 22,
+            "time": 70.117,
+            "seconds": 14.624
+          },
+          {
+            "selector": "#scene05-legend > div:nth-of-type(2) > span:nth-of-type(2)",
+            "text": "Proposed / unverified",
+            "fontPx": 22,
+            "time": 70.117,
+            "seconds": 14.624
+          },
+          {
+            "selector": "#scene05-legend > div:nth-of-type(3) > span:nth-of-type(2)",
+            "text": "Illustrative objective",
+            "fontPx": 22,
+            "time": 70.117,
+            "seconds": 14.624
+          },
+          {
+            "selector": "#scene05-subtitle",
+            "text": "ILLUSTRATIVE REASONING GRAPH — NOT AN AUTOMATED EXPLOIT TRACE",
+            "fontPx": 24,
+            "time": 68.314,
+            "seconds": 16.427
+          },
+          {
+            "selector": "#scene05-inner > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1)",
+            "text": "05 / VULNERABILITY CHAINING · PART 2",
+            "fontPx": 25,
+            "time": 68.314,
+            "seconds": 16.427
+          },
+          {
+            "selector": "#scene05-warning",
+            "text": "A model suggestion never becomes a confirmed finding without validating output.",
+            "fontPx": 27,
+            "time": 70.117,
+            "seconds": 14.624
+          }
+        ]
+      },
+      {
+        "code": "text_below_floor",
+        "severity": "warning",
+        "message": "Type floor is 28 px (2.6% of the 1080 px short side, what a phone can read) and 19 text elements stay under it for 0.5 s or more, the smallest \"INPUT 01\" at 18 px: set reading text to at least 28 px, or put data-layout-ignore on text that is texture rather than reading; see references/look.md.",
+        "text": "INPUT 01",
+        "selector": "#scene06-inputs > article:nth-of-type(1) > div:nth-of-type(1)",
+        "dataAttributes": {},
+        "sourceFile": "compositions/scene-06.html",
+        "bbox": {
+          "x": 106.92,
+          "y": 356.67,
+          "width": 100.81,
+          "height": 23
+        },
+        "time": 85.543,
+        "times": [
+          85.342,
+          85.342,
+          85.543,
+          85.543,
+          85.543,
+          85.543,
+          86.144,
+          86.144,
+          86.544,
+          86.745,
+          86.945,
+          86.945,
+          86.945,
+          87.145,
+          87.145,
+          87.145,
+          87.145,
+          87.145,
+          87.145
+        ],
+        "fontPx": 18,
+        "floorPx": 28,
+        "seconds": 16.226,
+        "elements": [
+          {
+            "selector": "#scene06-inputs > article:nth-of-type(1) > div:nth-of-type(1)",
+            "text": "INPUT 01",
+            "fontPx": 18,
+            "time": 85.543,
+            "seconds": 16.226
+          },
+          {
+            "selector": "#scene06-inputs > article:nth-of-type(2) > div:nth-of-type(1)",
+            "text": "INPUT 02",
+            "fontPx": 18,
+            "time": 85.543,
+            "seconds": 16.226
+          },
+          {
+            "selector": "#scene06-outputs > article:nth-of-type(1) > div:nth-of-type(1)",
+            "text": "OUTPUT 01",
+            "fontPx": 18,
+            "time": 86.544,
+            "seconds": 15.225
+          },
+          {
+            "selector": "#scene06-outputs > article:nth-of-type(2) > div:nth-of-type(1)",
+            "text": "OUTPUT 02",
+            "fontPx": 18,
+            "time": 86.745,
+            "seconds": 15.024
+          },
+          {
+            "selector": "#scene06-outputs > article:nth-of-type(3) > div:nth-of-type(1)",
+            "text": "OUTPUT 03",
+            "fontPx": 18,
+            "time": 86.945,
+            "seconds": 14.824
+          },
+          {
+            "selector": "div.core-rule",
+            "text": "planning: temperature 0.2final response: temperature 0.4",
+            "fontPx": 20.91,
+            "time": 86.144,
+            "seconds": 15.625
+          },
+          {
+            "selector": "#scene06-foot > span:nth-of-type(1)",
+            "text": "OPERATOR-GUIDED LOOP",
+            "fontPx": 21,
+            "time": 87.145,
+            "seconds": 14.624
+          },
+          {
+            "selector": "#scene06-foot > span:nth-of-type(2)",
+            "text": "SAVED FINDINGS ARE NOT AUTO-INJECTED INTO CHAT",
+            "fontPx": 21,
+            "time": 87.145,
+            "seconds": 14.624
+          },
+          {
+            "selector": "div.model",
+            "text": "openai/gpt-oss-20b",
+            "fontPx": 22,
+            "time": 85.342,
+            "seconds": 16.427
+          },
+          {
+            "selector": "#scene06-inputs > article:nth-of-type(1) > p:nth-of-type(1)",
+            "text": "Authorized target, intent, and the relevant question.",
+            "fontPx": 22,
+            "time": 85.543,
+            "seconds": 16.226
+          },
+          {
+            "selector": "#scene06-inputs > article:nth-of-type(2) > p:nth-of-type(1)",
+            "text": "Returned Nmap or Nikto output—not a model invention.",
+            "fontPx": 22,
+            "time": 85.543,
+            "seconds": 16.226
+          },
+          {
+            "selector": "#scene06-guardrails > div:nth-of-type(1)",
+            "text": "no claim that a tool ran",
+            "fontPx": 22,
+            "time": 86.945,
+            "seconds": 14.824
+          },
+          {
+            "selector": "#scene06-guardrails > div:nth-of-type(1) > strong:nth-of-type(1)",
+            "text": "NO TOOL RESULT",
+            "fontPx": 22,
+            "time": 86.945,
+            "seconds": 14.824
+          },
+          {
+            "selector": "#scene06-guardrails > div:nth-of-type(2)",
+            "text": "does not equal confirmed finding",
+            "fontPx": 22,
+            "time": 87.145,
+            "seconds": 14.624
+          },
+          {
+            "selector": "#scene06-guardrails > div:nth-of-type(2) > strong:nth-of-type(1)",
+            "text": "SUGGESTION",
+            "fontPx": 22,
+            "time": 87.145,
+            "seconds": 14.624
+          },
+          {
+            "selector": "#scene06-guardrails > div:nth-of-type(3)",
+            "text": "feeds the final answer",
+            "fontPx": 22,
+            "time": 87.145,
+            "seconds": 14.624
+          },
+          {
+            "selector": "#scene06-guardrails > div:nth-of-type(3) > strong:nth-of-type(1)",
+            "text": "RETURNED OUTPUT",
+            "fontPx": 22,
+            "time": 87.145,
+            "seconds": 14.624
+          },
+          {
+            "selector": "#scene06-core > p:nth-of-type(1)",
+            "text": "Plans the response, selects an allowed tool when requested, then interprets the returned evidence.",
+            "fontPx": 23.9,
+            "time": 86.144,
+            "seconds": 15.625
+          },
+          {
+            "selector": "#scene06-inner > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1)",
+            "text": "06 / THE LLM'S ROLE",
+            "fontPx": 25,
+            "time": 85.342,
+            "seconds": 16.427
+          }
+        ]
+      },
+      {
+        "code": "text_below_floor",
+        "severity": "warning",
+        "message": "Type floor is 28 px (2.6% of the 1080 px short side, what a phone can read) and 44 text elements stay under it for 0.5 s or more, the smallest \"SCOPE\" at 18 px: set reading text to at least 28 px, or put data-layout-ignore on text that is texture rather than reading; see references/look.md.",
+        "text": "SCOPE",
+        "selector": "div.scope-facts > div:nth-of-type(1) > span:nth-of-type(1)",
+        "dataAttributes": {},
+        "sourceFile": "compositions/scene-07.html",
+        "bbox": {
+          "x": 115.34,
+          "y": 493.39,
+          "width": 60.31,
+          "height": 23
+        },
+        "time": 102.571,
+        "times": [
+          102.17,
+          102.17,
+          102.571,
+          102.571,
+          102.571,
+          102.571,
+          102.571,
+          102.571,
+          102.571,
+          102.571,
+          102.771,
+          102.771,
+          102.771,
+          103.172,
+          103.172,
+          103.372,
+          103.372,
+          103.372,
+          103.372,
+          103.573,
+          103.573,
+          103.773,
+          103.773,
+          103.773,
+          103.773,
+          103.773,
+          103.773,
+          103.773,
+          103.773,
+          103.773,
+          103.773,
+          103.773,
+          103.773,
+          103.773,
+          103.773,
+          103.773,
+          103.773,
+          103.773,
+          103.773,
+          103.773,
+          103.773,
+          103.773,
+          103.773,
+          103.973
+        ],
+        "fontPx": 18,
+        "floorPx": 28,
+        "seconds": 17.429,
+        "elements": [
+          {
+            "selector": "div.scope-facts > div:nth-of-type(1) > span:nth-of-type(1)",
+            "text": "SCOPE",
+            "fontPx": 18,
+            "time": 102.571,
+            "seconds": 17.429
+          },
+          {
+            "selector": "div.scope-facts > div:nth-of-type(2) > span:nth-of-type(1)",
+            "text": "ALTERNATIVE",
+            "fontPx": 18,
+            "time": 102.571,
+            "seconds": 17.429
+          },
+          {
+            "selector": "div.scope-facts > div:nth-of-type(3) > span:nth-of-type(1)",
+            "text": "WRITER",
+            "fontPx": 18,
+            "time": 102.571,
+            "seconds": 17.429
+          },
+          {
+            "selector": "div.report-sections > article:nth-of-type(1) > div:nth-of-type(1)",
+            "text": "01 / SECTION",
+            "fontPx": 18,
+            "time": 103.172,
+            "seconds": 16.828
+          },
+          {
+            "selector": "div.report-sections > article:nth-of-type(2) > div:nth-of-type(1)",
+            "text": "02 / SECTION",
+            "fontPx": 18,
+            "time": 103.372,
+            "seconds": 16.628
+          },
+          {
+            "selector": "div.report-sections > article:nth-of-type(3) > div:nth-of-type(1)",
+            "text": "03 / SECTION",
+            "fontPx": 18,
+            "time": 103.372,
+            "seconds": 16.628
+          },
+          {
+            "selector": "div.report-sections > article:nth-of-type(4) > div:nth-of-type(1)",
+            "text": "04 / SECTION",
+            "fontPx": 18,
+            "time": 103.573,
+            "seconds": 16.427
+          },
+          {
+            "selector": "div.matrix-grid > div:nth-of-type(1)",
+            "text": "TARGET",
+            "fontPx": 18,
+            "time": 103.773,
+            "seconds": 16.227
+          },
+          {
+            "selector": "div.matrix-grid > div:nth-of-type(2)",
+            "text": "H",
+            "fontPx": 18,
+            "time": 103.773,
+            "seconds": 16.227
+          },
+          {
+            "selector": "div.matrix-grid > div:nth-of-type(3)",
+            "text": "M",
+            "fontPx": 18,
+            "time": 103.773,
+            "seconds": 16.227
+          },
+          {
+            "selector": "div.matrix-grid > div:nth-of-type(4)",
+            "text": "L",
+            "fontPx": 18,
+            "time": 103.773,
+            "seconds": 16.227
+          },
+          {
+            "selector": "div.matrix-grid > div:nth-of-type(5)",
+            "text": "I",
+            "fontPx": 18,
+            "time": 103.773,
+            "seconds": 16.227
+          },
+          {
+            "selector": "div.matrix-grid > div:nth-of-type(6)",
+            "text": "target-a.example",
+            "fontPx": 18,
+            "time": 103.773,
+            "seconds": 16.227
+          },
+          {
+            "selector": "div.matrix-grid > div:nth-of-type(7)",
+            "text": "0",
+            "fontPx": 18,
+            "time": 103.773,
+            "seconds": 16.227
+          },
+          {
+            "selector": "div.matrix-grid > div:nth-of-type(8)",
+            "text": "2",
+            "fontPx": 18,
+            "time": 103.773,
+            "seconds": 16.227
+          },
+          {
+            "selector": "div.matrix-grid > div:nth-of-type(9)",
+            "text": "1",
+            "fontPx": 18,
+            "time": 103.773,
+            "seconds": 16.227
+          },
+          {
+            "selector": "div.matrix-grid > div:nth-of-type(10)",
+            "text": "0",
+            "fontPx": 18,
+            "time": 103.773,
+            "seconds": 16.227
+          },
+          {
+            "selector": "div.matrix-grid > div:nth-of-type(11)",
+            "text": "target-b.example",
+            "fontPx": 18,
+            "time": 103.773,
+            "seconds": 16.227
+          },
+          {
+            "selector": "div.matrix-grid > div:nth-of-type(12)",
+            "text": "1",
+            "fontPx": 18,
+            "time": 103.773,
+            "seconds": 16.227
+          },
+          {
+            "selector": "div.matrix-grid > div:nth-of-type(13)",
+            "text": "1",
+            "fontPx": 18,
+            "time": 103.773,
+            "seconds": 16.227
+          },
+          {
+            "selector": "div.matrix-grid > div:nth-of-type(14)",
+            "text": "0",
+            "fontPx": 18,
+            "time": 103.773,
+            "seconds": 16.227
+          },
+          {
+            "selector": "div.matrix-grid > div:nth-of-type(15)",
+            "text": "1",
+            "fontPx": 18,
+            "time": 103.773,
+            "seconds": 16.227
+          },
+          {
+            "selector": "div.matrix-grid > div:nth-of-type(16)",
+            "text": "target-c.example",
+            "fontPx": 18,
+            "time": 103.773,
+            "seconds": 16.227
+          },
+          {
+            "selector": "div.matrix-grid > div:nth-of-type(17)",
+            "text": "0",
+            "fontPx": 18,
+            "time": 103.773,
+            "seconds": 16.227
+          },
+          {
+            "selector": "div.matrix-grid > div:nth-of-type(18)",
+            "text": "1",
+            "fontPx": 18,
+            "time": 103.773,
+            "seconds": 16.227
+          },
+          {
+            "selector": "div.matrix-grid > div:nth-of-type(19)",
+            "text": "0",
+            "fontPx": 18,
+            "time": 103.773,
+            "seconds": 16.227
+          },
+          {
+            "selector": "div.matrix-grid > div:nth-of-type(20)",
+            "text": "0",
+            "fontPx": 18,
+            "time": 103.773,
+            "seconds": 16.227
+          },
+          {
+            "selector": "div.scope-label",
+            "text": "SELECT ENGAGEMENT",
+            "fontPx": 19,
+            "time": 102.571,
+            "seconds": 17.429
+          },
+          {
+            "selector": "div.report-top > div:nth-of-type(1) > p:nth-of-type(1)",
+            "text": "7 findings · engagement scoped",
+            "fontPx": 19,
+            "time": 102.771,
+            "seconds": 17.229
+          },
+          {
+            "selector": "div.select-box > span:nth-of-type(1)",
+            "text": "3 targets · 7 findings",
+            "fontPx": 20,
+            "time": 102.571,
+            "seconds": 17.429
+          },
+          {
+            "selector": "div.actions > span:nth-of-type(1)",
+            "text": "Copy to Clipboard",
+            "fontPx": 20,
+            "time": 102.771,
+            "seconds": 17.229
+          },
+          {
+            "selector": "span.action.primary",
+            "text": "Download as .txt",
+            "fontPx": 20,
+            "time": 102.771,
+            "seconds": 17.229
+          },
+          {
+            "selector": "#scene07-inner > div:nth-of-type(1) > div:nth-of-type(2)",
+            "text": "FICTIONAL DEMO DATA",
+            "fontPx": 21,
+            "time": 102.17,
+            "seconds": 17.83
+          },
+          {
+            "selector": "div.report-sections > article:nth-of-type(1) > p:nth-of-type(1)",
+            "text": "Concise risk posture derived only from supplied structured evidence.",
+            "fontPx": 21,
+            "time": 103.172,
+            "seconds": 16.828
+          },
+          {
+            "selector": "div.report-sections > article:nth-of-type(2) > p:nth-of-type(1)",
+            "text": "Every tested target is listed with the engagement boundary.",
+            "fontPx": 21,
+            "time": 103.372,
+            "seconds": 16.628
+          },
+          {
+            "selector": "div.report-sections > article:nth-of-type(3) > p:nth-of-type(1)",
+            "text": "HIGH, MEDIUM, LOW, and INFO findings organized by target.",
+            "fontPx": 21,
+            "time": 103.372,
+            "seconds": 16.628
+          },
+          {
+            "selector": "div.report-sections > article:nth-of-type(4) > p:nth-of-type(1)",
+            "text": "Concrete remediation tied to the affected service or port.",
+            "fontPx": 21,
+            "time": 103.573,
+            "seconds": 16.427
+          },
+          {
+            "selector": "div.report-rule",
+            "text": "The report prompt forbids invented findings or claims beyond supplied data.",
+            "fontPx": 21,
+            "time": 103.773,
+            "seconds": 16.227
+          },
+          {
+            "selector": "#scene07-outro > span:nth-of-type(1)",
+            "text": "SPECTRE / COPY · DOWNLOAD · REMEDIATE",
+            "fontPx": 21,
+            "time": 103.973,
+            "seconds": 16.027
+          },
+          {
+            "selector": "#scene07-inner > div:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(1)",
+            "text": "07 / THE RESULT",
+            "fontPx": 24,
+            "time": 102.17,
+            "seconds": 17.83
+          },
+          {
+            "selector": "div.select-box > strong:nth-of-type(1)",
+            "text": "target-a.example +2",
+            "fontPx": 24,
+            "time": 102.571,
+            "seconds": 17.429
+          },
+          {
+            "selector": "div.generate",
+            "text": "Generate Report",
+            "fontPx": 24,
+            "time": 102.571,
+            "seconds": 17.429
+          },
+          {
+            "selector": "div.matrix-title",
+            "text": "Severity × target",
+            "fontPx": 25,
+            "time": 103.773,
+            "seconds": 16.227
+          },
+          {
+            "selector": "#scene07-scope > div:nth-of-type(1)",
+            "text": "Findings scope",
+            "fontPx": 27,
+            "time": 102.571,
+            "seconds": 17.429
+          }
+        ]
+      }
+    ],
+    "enabled": true,
+    "step": 0.20000000000000284,
+    "samples": 599
+  },
+  "audio": {
+    "ok": true,
+    "errorCount": 0,
+    "warningCount": 0,
+    "infoCount": 0,
+    "findings": []
+  },
+  "hdr": {
+    "autoPromotion": null,
+    "inspection": "available"
+  },
+  "snapshots": {
+    "enabled": true,
+    "files": [
+      ".hyperframes/artifacts/snapshots/2c8f8400-7d8d-4a45-a456-2154a0d5ca98/frame-00-at-0.1s.png",
+      ".hyperframes/artifacts/snapshots/2c8f8400-7d8d-4a45-a456-2154a0d5ca98/frame-01-at-1.6s.png",
+      ".hyperframes/artifacts/snapshots/2c8f8400-7d8d-4a45-a456-2154a0d5ca98/frame-02-at-33.6s.png",
+      ".hyperframes/artifacts/snapshots/2c8f8400-7d8d-4a45-a456-2154a0d5ca98/frame-03-at-68.7s.png",
+      ".hyperframes/artifacts/snapshots/2c8f8400-7d8d-4a45-a456-2154a0d5ca98/frame-04-at-120.0s.png"
+    ],
+    "times": [
+      0.08,
+      1.65,
+      33.575,
+      68.72,
+      120
+    ],
+    "findingFiles": []
+  }
+}

@@ -37,7 +37,13 @@ function seedValues(fields: ToolField[]): Record<string, string> {
   return v;
 }
 
-export default function ToolRunner({ tool }: { tool: ToolMeta }) {
+export default function ToolRunner({
+  tool,
+  offline = false,
+}: {
+  tool: ToolMeta;
+  offline?: boolean;
+}) {
   const [values, setValues] = useState<Record<string, string>>(() => seedValues(tool.fields));
   const [status, setStatus] = useState<Status>('idle');
   const [error, setError] = useState('');
@@ -45,12 +51,18 @@ export default function ToolRunner({ tool }: { tool: ToolMeta }) {
   const { toast } = useToast();
 
   const missingRequired = tool.fields.some((f) => f.required && !values[f.name]?.trim());
-  const disabled = !tool.available || status === 'running' || missingRequired;
+  const disabled =
+    offline || !tool.available || status === 'running' || missingRequired;
 
   const setField = (name: string, value: string) =>
     setValues((prev) => ({ ...prev, [name]: value }));
 
   const run = async () => {
+    if (offline) {
+      setError('Switch to ONLINE mode before running a tool.');
+      return;
+    }
+
     setError('');
     setOutput('');
     setStatus('running');
@@ -123,7 +135,7 @@ export default function ToolRunner({ tool }: { tool: ToolMeta }) {
         {tool.fields.map((f) => {
           const common = {
             value: values[f.name] ?? '',
-            disabled: status === 'running' || !tool.available,
+            disabled: offline || status === 'running' || !tool.available,
             className: 'spectre-input w-full',
             placeholder: f.placeholder,
           };
@@ -164,12 +176,13 @@ export default function ToolRunner({ tool }: { tool: ToolMeta }) {
         <button
           onClick={run}
           disabled={disabled}
+          title={offline ? 'Scanning is disabled in offline mode' : undefined}
           className={`spectre-btn-primary flex items-center gap-2 w-full justify-center ${
             disabled ? 'opacity-50 cursor-not-allowed' : ''
           }`}
         >
           <Play size={16} />
-          Run
+          {offline ? 'Offline' : 'Run'}
         </button>
 
         <div className="flex items-center gap-2">

@@ -1,0 +1,1 @@
+A two-minute walkthrough of SPECTRE: multi-target authorized scanning, structured findings, operator-guided follow-up, and evidence-scoped reporting.

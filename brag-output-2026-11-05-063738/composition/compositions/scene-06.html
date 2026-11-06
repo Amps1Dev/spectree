@@ -1,0 +1,67 @@
+<template>
+  <style>
+    #root { position:absolute; inset:0; overflow:hidden; background:#2A2320; color:#F4E4DC; font-family:var(--font-display,Inter),sans-serif; }
+    #scene06-stage { position:absolute; inset:0; width:1920px; height:1080px; }
+    #scene06-inner { position:absolute; inset:0; padding:64px 84px 52px; }
+    .head { display:flex; justify-content:space-between; align-items:flex-end; border-bottom:2px solid #4A3D37; padding-bottom:22px; }
+    .num { font:25px var(--font-mono,"IBM Plex Mono"),monospace; letter-spacing:.16em; color:#C98D80; }
+    #scene06-title { margin-top:10px; font-size:58px; letter-spacing:-.04em; }
+    .model { font:22px var(--font-mono,"IBM Plex Mono"),monospace; color:#D9C4B5; }
+    #scene06-flow { display:grid; grid-template-columns:430px 110px 440px 110px 1fr; align-items:center; margin-top:58px; }
+    .input-stack,.output-stack { display:flex; flex-direction:column; gap:20px; }
+    .input-card,.output-card { min-height:138px; padding:22px 24px; border:2px solid #4A3D37; border-radius:16px; background:#3F332E; }
+    .input-card { border-left:5px solid #C98D80; } .output-card { border-left:5px solid #7FA8A8; }
+    .card-tag { font:700 18px var(--font-mono,"IBM Plex Mono"),monospace; letter-spacing:.1em; color:#D9C4B5; }
+    .input-card h2,.output-card h2 { margin-top:13px; font-size:28px; line-height:1.2; }
+    .input-card p,.output-card p { margin-top:10px; font-size:22px; line-height:1.34; color:#D9C4B5; }
+    .flow-arrow { display:flex; justify-content:center; align-items:center; color:#C98D80; }
+    .flow-arrow span { width:76px; height:3px; background:currentColor; position:relative; }
+    .flow-arrow span::after { content:""; position:absolute; right:-1px; top:-7px; border-left:11px solid currentColor; border-top:8px solid transparent; border-bottom:8px solid transparent; }
+    #scene06-core { min-height:440px; border:3px solid #C98D80; border-radius:24px; background:#352B27; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:34px; }
+    .core-badge { width:92px; height:92px; border-radius:24px; display:grid; place-items:center; background:#C98D80; color:#2A2320; font:900 44px var(--font-mono,"IBM Plex Mono"),monospace; }
+    #scene06-core h2 { margin-top:26px; font-size:42px; } #scene06-core p { margin-top:14px; font-size:24px; line-height:1.4; color:#D9C4B5; }
+    .core-rule { margin-top:26px; width:100%; padding:17px; border:2px solid #5D4D46; border-radius:12px; font:21px/1.35 var(--font-mono,"IBM Plex Mono"),monospace; color:#F1C981; }
+    #scene06-guardrails { margin-top:48px; display:grid; grid-template-columns:repeat(3,1fr); gap:18px; }
+    .guard { padding:22px; border:2px solid #5D4D46; border-radius:14px; background:#3F332E; text-align:center; font:700 22px/1.35 var(--font-mono,"IBM Plex Mono"),monospace; color:#D9C4B5; }
+    .guard strong { color:#F1C981; }
+    #scene06-foot { margin-top:28px; display:flex; justify-content:space-between; font:21px var(--font-mono,"IBM Plex Mono"),monospace; color:#BFA79E; }
+    .hold-marker { position:absolute; inset:0; pointer-events:none; }
+  </style>
+  <div id="root" data-composition-id="scene-06" data-width="1920" data-height="1080">
+    <div id="scene06-stage" class="clip" data-start="0" data-duration="17" data-track-index="1">
+      <div id="scene06-inner">
+        <div class="head"><div><div class="num">06 / THE LLM'S ROLE</div><h1 id="scene06-title">Reason over evidence. Invoke tools explicitly.</h1></div><div class="model">openai/gpt-oss-20b</div></div>
+        <div id="scene06-flow">
+          <div id="scene06-inputs" class="input-stack">
+            <article class="input-card"><div class="card-tag">INPUT 01</div><h2>Operator context</h2><p>Authorized target, intent, and the relevant question.</p></article>
+            <article class="input-card"><div class="card-tag">INPUT 02</div><h2>Verified tool result</h2><p>Returned Nmap or Nikto output—not a model invention.</p></article>
+          </div>
+          <div id="scene06-arrow-1" class="flow-arrow"><span></span></div>
+          <section id="scene06-core"><div class="core-badge">S</div><h2>Groq model</h2><p>Plans the response, selects an allowed tool when requested, then interprets the returned evidence.</p><div class="core-rule">planning: temperature 0.2<br>final response: temperature 0.4</div></section>
+          <div id="scene06-arrow-2" class="flow-arrow"><span></span></div>
+          <div id="scene06-outputs" class="output-stack">
+            <article class="output-card"><div class="card-tag">OUTPUT 01</div><h2>Interpret the finding</h2></article>
+            <article class="output-card"><div class="card-tag">OUTPUT 02</div><h2>Recommend the next validation step</h2></article>
+            <article class="output-card"><div class="card-tag">OUTPUT 03</div><h2>Call Nmap or Nikto on explicit request</h2></article>
+          </div>
+        </div>
+        <div id="scene06-guardrails"><div class="guard"><strong>NO TOOL RESULT</strong><br>no claim that a tool ran</div><div class="guard"><strong>SUGGESTION</strong><br>does not equal confirmed finding</div><div class="guard"><strong>RETURNED OUTPUT</strong><br>feeds the final answer</div></div>
+        <div id="scene06-foot"><span>OPERATOR-GUIDED LOOP</span><span>SAVED FINDINGS ARE NOT AUTO-INJECTED INTO CHAT</span></div>
+      </div>
+    </div>
+    <div id="scene06-hold" class="clip hold-marker" data-start="2.5" data-duration="13.8" data-track-index="2" data-hold data-layout-ignore></div>
+    <script>
+      const tl = gsap.timeline({ paused: true });
+      tl.fromTo(".head",{opacity:0,y:-18},{opacity:1,y:0,duration:.44,ease:"power4.out"},.08);
+      tl.fromTo("#scene06-inputs",{opacity:0,x:-42},{opacity:1,x:0,duration:.48,ease:"expo.out"},.40);
+      tl.fromTo("#scene06-arrow-1",{opacity:0,scaleX:.45},{opacity:1,scaleX:1,duration:.3,ease:"power3.out"},.76);
+      tl.fromTo("#scene06-core",{opacity:0,scale:.94},{opacity:1,scale:1,duration:.52,ease:"power4.out"},.92);
+      tl.fromTo("#scene06-arrow-2",{opacity:0,scaleX:.45},{opacity:1,scaleX:1,duration:.3,ease:"power3.out"},1.30);
+      tl.fromTo("#scene06-outputs .output-card",{opacity:0,x:34},{opacity:1,x:0,duration:.34,ease:"power3.out",stagger:.12},1.44);
+      tl.fromTo("#scene06-guardrails .guard,#scene06-foot",{opacity:0,y:16},{opacity:1,y:0,duration:.3,ease:"power3.out",stagger:.08},1.84);
+      tl.fromTo("#scene06-inner",{opacity:1},{opacity:0,duration:.55,ease:"power2.inOut"},16.3);
+      window.__timelines = window.__timelines || {};
+      window.__timelines["scene-06"] = tl;
+    </script>
+  </div>
+</template>

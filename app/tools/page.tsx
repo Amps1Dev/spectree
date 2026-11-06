@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import ToolRunner, { ToolMeta } from '@/components/tool-runner';
+import { useOfflineMode } from '@/hooks/useOfflineMode';
 
 // Display order for the category sections.
 const CATEGORY_ORDER = [
@@ -15,6 +16,7 @@ const CATEGORY_ORDER = [
 ];
 
 export default function ToolsPage() {
+  const { offline } = useOfflineMode();
   const [tools, setTools] = useState<ToolMeta[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -55,6 +57,16 @@ export default function ToolsPage() {
         </p>
       </div>
 
+      {offline && (
+        <div
+          role="status"
+          className="mb-6 rounded-lg border border-spectre-offline/60 bg-spectre-offline/10 px-4 py-3 text-sm text-spectre-muted"
+        >
+          Offline mode is active. Scan controls are disabled until you switch
+          back to ONLINE in the sidebar.
+        </div>
+      )}
+
       {loading && <p className="text-spectre-muted">Detecting installed tools…</p>}
 
       {error && (
@@ -74,7 +86,7 @@ export default function ToolsPage() {
               </h2>
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {inCategory.map((tool) => (
-                  <ToolRunner key={tool.id} tool={tool} />
+                  <ToolRunner key={tool.id} tool={tool} offline={offline} />
                 ))}
               </div>
             </section>

@@ -1,0 +1,57 @@
+<template>
+  <style>
+    #root { position:absolute; inset:0; overflow:hidden; background:#2A2320; color:#F4E4DC; font-family:var(--font-display,Inter),sans-serif; }
+    #scene05-stage { position:absolute; inset:0; width:1920px; height:1080px; }
+    #scene05-inner { position:absolute; inset:0; padding:64px 84px 56px; }
+    .head { display:flex; justify-content:space-between; align-items:flex-end; border-bottom:2px solid #4A3D37; padding-bottom:22px; }
+    .num { font:25px var(--font-mono,"IBM Plex Mono"),monospace; letter-spacing:.16em; color:#C98D80; }
+    #scene05-title { margin-top:10px; font-size:58px; letter-spacing:-.04em; }
+    .demo { border:2px solid #D6A15F; border-radius:999px; padding:10px 16px; color:#F1C981; font:22px var(--font-mono,"IBM Plex Mono"),monospace; letter-spacing:.09em; }
+    #scene05-subtitle { margin-top:26px; font:24px var(--font-mono,"IBM Plex Mono"),monospace; color:#D9C4B5; letter-spacing:.03em; }
+    #scene05-graph { position:relative; display:grid; grid-template-columns:repeat(5,1fr); gap:54px; align-items:center; margin-top:72px; }
+    .node { min-height:270px; padding:24px; border:3px solid #C98D80; border-radius:18px; background:#3F332E; display:flex; flex-direction:column; }
+    .node.proposed { border-color:#D6A15F; border-style:dashed; } .node.objective { border-color:#7FA8A8; }
+    .source { align-self:flex-start; border-radius:999px; padding:7px 11px; background:#352B27; font:700 18px var(--font-mono,"IBM Plex Mono"),monospace; letter-spacing:.06em; color:#D9C4B5; }
+    .node h2 { margin-top:28px; font-size:31px; line-height:1.14; letter-spacing:-.02em; }
+    .node p { margin-top:auto; padding-top:22px; font:21px/1.35 var(--font-mono,"IBM Plex Mono"),monospace; color:#D9C4B5; }
+    .edge { position:absolute; top:132px; width:54px; height:3px; background:#C98D80; }
+    .edge::after { content:""; position:absolute; right:-1px; top:-7px; border-left:11px solid currentColor; border-top:8px solid transparent; border-bottom:8px solid transparent; }
+    .edge.e1 { left:308px; color:#C98D80; } .edge.e2 { left:670px; color:#C98D80; }
+    .edge.e3 { left:1032px; color:#D6A15F; background:repeating-linear-gradient(90deg,#D6A15F 0 12px,transparent 12px 21px); }
+    .edge.e4 { left:1394px; color:#D6A15F; background:repeating-linear-gradient(90deg,#D6A15F 0 12px,transparent 12px 21px); }
+    #scene05-legend { display:flex; justify-content:center; gap:50px; margin-top:66px; padding:22px; border:2px solid #4A3D37; border-radius:16px; background:#352B27; }
+    .legend-item { display:flex; align-items:center; gap:13px; font:22px var(--font-mono,"IBM Plex Mono"),monospace; color:#D9C4B5; }
+    .legend-line { width:48px; height:4px; background:#C98D80; } .legend-line.dashed { background:repeating-linear-gradient(90deg,#D6A15F 0 10px,transparent 10px 18px); } .legend-line.teal { background:#7FA8A8; }
+    #scene05-warning { margin-top:26px; text-align:center; font-size:27px; color:#F1C981; }
+    .hold-marker { position:absolute; inset:0; pointer-events:none; }
+  </style>
+  <div id="root" data-composition-id="scene-05" data-width="1920" data-height="1080">
+    <div id="scene05-stage" class="clip" data-start="0" data-duration="17" data-track-index="1">
+      <div id="scene05-inner">
+        <div class="head"><div><div class="num">05 / VULNERABILITY CHAINING · PART 2</div><h1 id="scene05-title">From first exposure to an objective.</h1></div><div class="demo">FICTIONAL DEMO DATA</div></div>
+        <div id="scene05-subtitle">ILLUSTRATIVE REASONING GRAPH — NOT AN AUTOMATED EXPLOIT TRACE</div>
+        <div id="scene05-graph">
+          <article id="scene05-node-1" class="node"><span class="source">NMAP · OBSERVED</span><h2>Public HTTP service</h2><p>80/tcp open<br>target-a.example</p></article>
+          <article id="scene05-node-2" class="node"><span class="source">NIKTO · OBSERVED</span><h2>Version disclosure</h2><p>Server banner<br>returned by tool</p></article>
+          <article id="scene05-node-3" class="node"><span class="source">EVIDENCE</span><h2>Outdated component suspected</h2><p>Requires version-specific validation</p></article>
+          <article id="scene05-node-4" class="node proposed"><span class="source">PROPOSED</span><h2>Admin surface to validate</h2><p>Operator hypothesis<br>not confirmed</p></article>
+          <article id="scene05-node-5" class="node objective"><span class="source">OBJECTIVE</span><h2>Potential privileged application access</h2><p>Illustrative only<br>requires proof</p></article>
+          <div class="edge e1" data-layout-ignore></div><div class="edge e2" data-layout-ignore></div><div class="edge e3" data-layout-ignore></div><div class="edge e4" data-layout-ignore></div>
+        </div>
+        <div id="scene05-legend"><div class="legend-item"><span class="legend-line"></span><span>Observed evidence</span></div><div class="legend-item"><span class="legend-line dashed"></span><span>Proposed / unverified</span></div><div class="legend-item"><span class="legend-line teal"></span><span>Illustrative objective</span></div></div>
+        <div id="scene05-warning">A model suggestion never becomes a confirmed finding without validating output.</div>
+      </div>
+    </div>
+    <div id="scene05-hold" class="clip hold-marker" data-start="2.5" data-duration="13.8" data-track-index="2" data-hold data-layout-ignore></div>
+    <script>
+      const tl = gsap.timeline({ paused: true });
+      tl.fromTo(".head,#scene05-subtitle",{opacity:0,y:-16},{opacity:1,y:0,duration:.44,ease:"power4.out",stagger:.12},.08);
+      tl.fromTo(".node",{opacity:0,y:30},{opacity:1,y:0,duration:.42,ease:"power4.out",stagger:.22},.52);
+      tl.fromTo(".edge",{opacity:0,scaleX:0,transformOrigin:"left center"},{opacity:1,scaleX:1,duration:.28,ease:"power3.out",stagger:.22},.80);
+      tl.fromTo("#scene05-legend,#scene05-warning",{opacity:0,y:14},{opacity:1,y:0,duration:.32,ease:"power3.out",stagger:.12},1.92);
+      tl.fromTo("#scene05-inner",{opacity:1},{opacity:0,duration:.55,ease:"power2.inOut"},16.3);
+      window.__timelines = window.__timelines || {};
+      window.__timelines["scene-05"] = tl;
+    </script>
+  </div>
+</template>

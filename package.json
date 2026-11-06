@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "test:chat-store": "node scripts/test-chat-store.cjs",
+    "test:parse-targets": "node scripts/test-parse-targets.cjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
@@ -54,6 +56,7 @@
     "eslint-config-next": "13.5.1",
     "input-otp": "^1.2.4",
     "lucide-react": "^0.446.0",
+    "mammoth": "^1.13.0",
     "next": "13.5.1",
     "next-themes": "^0.3.0",
     "postcss": "8.4.30",

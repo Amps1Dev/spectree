@@ -11,6 +11,7 @@
 // shell. Keep it that way — never assemble a shell string from these.
 
 import { accessSync, constants, statSync } from 'fs';
+import { ChildProcessWithoutNullStreams, spawn } from 'child_process';
 import { join } from 'path';
 
 export type FieldType = 'text' | 'textarea' | 'select' | 'password' | 'number';
@@ -344,4 +345,172 @@ export function resolveBin(bins: string[]): string | null {
     }
   }
   return null;
+}
+
+export interface ToolExecutionOptions {
+  signal?: AbortSignal;
+  timeoutMs?: number;
+  onOutput?: (chunk: string) => void;
+}
+
+export interface ToolExecutionResult {
+  output: string;
+  exitCode: number | null;
+}
+
+export class ToolExecutionError extends Error {
+  status: number;
+  output: string;
+
+  constructor(message: string, status = 500, output = '') {
+    super(message);
+    this.name = 'ToolExecutionError';
+    this.status = status;
+    this.output = output;
+  }
+}
+
+export function normalizeScanTarget(value: unknown): string {
+  const target = String(value ?? '').trim();
+  const host = target
+    .replace(/^[a-zA-Z][a-zA-Z0-9+.-]*:\/\//, '')
+    .split('/')[0]
+    .split(':')[0]
+    .toLowerCase();
+
+  if (
+    !host ||
+    host === 'localhost' ||
+    host === '127.0.0.1' ||
+    host === '::1' ||
+    target.startsWith('-') ||
+    /[\r\n\0]/.test(target)
+  ) {
+    throw new ToolExecutionError('Invalid target', 400);
+  }
+
+  return target;
+}
+
+function configuredBinary(envName: string, fallback: string): string | null {
+  const configured = process.env[envName]?.trim();
+  return resolveBin(configured ? [configured] : [fallback]);
+}
+
+function executeSpawn(
+  bin: string,
+  args: string[],
+  label: string,
+  options: ToolExecutionOptions,
+): Promise<ToolExecutionResult> {
+  return new Promise((resolve, reject) => {
+    let output = '';
+    let settled = false;
+    let timedOut = false;
+    let aborted = false;
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    let abort = () => {};
+
+    const emit = (chunk: string) => {
+      output += chunk;
+      options.onOutput?.(chunk);
+    };
+    const cleanup = () => {
+      if (timer) clearTimeout(timer);
+      options.signal?.removeEventListener('abort', abort);
+    };
+    const fail = (error: ToolExecutionError) => {
+      if (settled) return;
+      settled = true;
+      cleanup();
+      reject(error);
+    };
+
+    let child: ChildProcessWithoutNullStreams;
+    try {
+      child = spawn(bin, args, { shell: false });
+    } catch (error) {
+      fail(
+        new ToolExecutionError(
+          error instanceof Error ? error.message : `Failed to start ${label}`,
+          500,
+          output,
+        ),
+      );
+      return;
+    }
+
+    const timeoutMs = options.timeoutMs ?? 180_000;
+    timer = setTimeout(() => {
+      timedOut = true;
+      emit(`\n${label} timed out after ${Math.round(timeoutMs / 1000)} seconds.\n`);
+      child.kill('SIGTERM');
+    }, timeoutMs);
+
+    abort = () => {
+      aborted = true;
+      child.kill('SIGTERM');
+    };
+
+    if (options.signal?.aborted) abort();
+    else options.signal?.addEventListener('abort', abort, { once: true });
+
+    child.stdout.on('data', (data) => emit(data.toString()));
+    child.stderr.on('data', (data) => emit(data.toString()));
+    child.on('error', (error) => {
+      emit(`Error: ${error.message}\n`);
+      fail(new ToolExecutionError(error.message, 500, output));
+    });
+    child.on('close', (code) => {
+      if (settled) return;
+      cleanup();
+
+      if (aborted) {
+        fail(new ToolExecutionError(`${label} was cancelled`, 499, output));
+        return;
+      }
+      if (timedOut) {
+        fail(new ToolExecutionError(`${label} timed out`, 504, output));
+        return;
+      }
+      if (code !== 0) emit(`\n${label} exited with code ${code}\n`);
+
+      settled = true;
+      resolve({ output, exitCode: code });
+    });
+  });
+}
+
+export function executeNmap(
+  targetValue: unknown,
+  profileValue: unknown = 'Quick',
+  options: ToolExecutionOptions = {},
+): Promise<ToolExecutionResult> {
+  const target = normalizeScanTarget(targetValue);
+  const profile = String(profileValue || 'Quick');
+  const bin = configuredBinary('SPECTRE_NMAP_BIN', 'nmap');
+
+  if (!bin) {
+    throw new ToolExecutionError('Nmap is not installed on this host', 503);
+  }
+
+  const flags = NMAP_PROFILE_FLAGS[profile] || NMAP_PROFILE_FLAGS.Quick;
+  return executeSpawn(bin, [...flags.split(' '), target], 'Nmap', {
+    ...options,
+    timeoutMs: options.timeoutMs ?? 300_000,
+  });
+}
+
+export function executeNikto(
+  targetValue: unknown,
+  options: ToolExecutionOptions = {},
+): Promise<ToolExecutionResult> {
+  const target = normalizeScanTarget(targetValue);
+  const bin = configuredBinary('SPECTRE_NIKTO_BIN', 'nikto');
+
+  if (!bin) {
+    throw new ToolExecutionError('Nikto is not installed on this host', 503);
+  }
+
+  return executeSpawn(bin, ['-h', target], 'Nikto', options);
 }

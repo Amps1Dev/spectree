@@ -1,0 +1,98 @@
+<template>
+  <style>
+    #root { position:absolute; inset:0; overflow:hidden; background:#2A2320; color:#F4E4DC; font-family:var(--font-display,Inter),sans-serif; }
+    #scene07-stage { position:absolute; inset:0; width:1920px; height:1080px; }
+    #scene07-inner { position:absolute; inset:0; padding:58px 78px 46px; }
+    .head { display:flex; justify-content:space-between; align-items:flex-end; border-bottom:2px solid #4A3D37; padding-bottom:20px; }
+    .num { font:24px var(--font-mono,"IBM Plex Mono"),monospace; letter-spacing:.16em; color:#C98D80; }
+    #scene07-title { margin-top:8px; font-size:56px; letter-spacing:-.04em; }
+    .demo { border:2px solid #D6A15F; border-radius:999px; padding:9px 15px; color:#F1C981; font:21px var(--font-mono,"IBM Plex Mono"),monospace; letter-spacing:.09em; }
+    #scene07-main { display:grid; grid-template-columns:410px 1fr; gap:28px; margin-top:28px; height:758px; }
+    .panel { border:2px solid #4A3D37; border-radius:18px; background:#3F332E; overflow:hidden; }
+    .panel-head { height:68px; display:flex; align-items:center; padding:0 22px; border-bottom:2px solid #4A3D37; background:#352B27; font-size:27px; font-weight:700; }
+    #scene07-scope { padding-bottom:22px; }
+    .scope-label { padding:22px 22px 10px; font:700 19px var(--font-mono,"IBM Plex Mono"),monospace; color:#D9C4B5; letter-spacing:.08em; }
+    .select-box { margin:0 22px; padding:18px; border:2px solid #C98D80; border-radius:12px; background:#2A2320; font-size:24px; line-height:1.35; }
+    .select-box strong { display:block; } .select-box span { display:block; margin-top:8px; font:20px var(--font-mono,"IBM Plex Mono"),monospace; color:#D9C4B5; }
+    .scope-facts { margin:24px 22px; display:grid; gap:14px; }
+    .scope-fact { padding:18px; border:2px solid #4A3D37; border-radius:12px; background:#352B27; }
+    .scope-fact span { display:block; font:18px var(--font-mono,"IBM Plex Mono"),monospace; color:#D9C4B5; letter-spacing:.07em; }
+    .scope-fact strong { display:block; margin-top:7px; font-size:29px; }
+    .generate { margin:8px 22px 0; padding:16px; border-radius:11px; text-align:center; background:#C98D80; color:#2A2320; font-size:24px; font-weight:800; }
+    #scene07-report { position:relative; }
+    .report-top { height:82px; display:flex; align-items:center; justify-content:space-between; padding:0 24px; border-bottom:2px solid #4A3D37; background:#352B27; }
+    .report-top h2 { font-size:31px; } .report-top p { margin-top:4px; font:19px var(--font-mono,"IBM Plex Mono"),monospace; color:#D9C4B5; }
+    .actions { display:flex; gap:12px; } .action { padding:11px 14px; border:2px solid #5D4D46; border-radius:10px; font-size:20px; font-weight:700; } .action.primary { background:#C98D80; color:#2A2320; border-color:#C98D80; }
+    .report-body { display:grid; grid-template-columns:1.35fr .75fr; gap:22px; padding:22px; height:674px; background:#302825; }
+    .report-sections { display:grid; grid-template-columns:1fr 1fr; gap:16px; align-content:start; }
+    .section { min-height:236px; padding:20px; border:2px solid #4A3D37; border-radius:14px; background:#3F332E; }
+    .section-index { font:700 18px var(--font-mono,"IBM Plex Mono"),monospace; color:#CA8F82; letter-spacing:.1em; }
+    .section h3 { margin-top:11px; font-size:29px; }
+    .section p { margin-top:14px; font-size:21px; line-height:1.42; color:#D9C4B5; }
+    .matrix { border:2px solid #4A3D37; border-radius:14px; background:#3F332E; overflow:hidden; }
+    .matrix-title { padding:18px; border-bottom:2px solid #4A3D37; font-size:25px; font-weight:700; }
+    .matrix-grid { display:grid; grid-template-columns:1.3fr repeat(4,.6fr); }
+    .cell { min-height:58px; display:flex; align-items:center; justify-content:center; padding:9px; border-right:2px solid #4A3D37; border-bottom:2px solid #4A3D37; font:700 18px var(--font-mono,"IBM Plex Mono"),monospace; }
+    .cell.target { justify-content:flex-start; color:#D9C4B5; } .cell.head { background:#352B27; color:#D9C4B5; }
+    .cell.high { color:#F09A90; } .cell.medium { color:#F1C981; } .cell.low { color:#A8C5C5; } .cell.info { color:#B7C8D8; }
+    .report-rule { margin:20px; padding:18px; border-left:4px solid #7FA8A8; background:#352B27; font-size:21px; line-height:1.38; color:#D9C4B5; }
+    #scene07-outro { margin-top:24px; display:flex; justify-content:space-between; align-items:center; }
+    #scene07-outro strong { font-size:37px; letter-spacing:-.025em; } #scene07-outro span { font:21px var(--font-mono,"IBM Plex Mono"),monospace; color:#D9C4B5; }
+    .hold-marker { position:absolute; inset:0; pointer-events:none; }
+  </style>
+  <div id="root" data-composition-id="scene-07" data-width="1920" data-height="1080">
+    <div id="scene07-stage" class="clip" data-start="0" data-duration="18" data-track-index="1">
+      <div id="scene07-inner">
+        <div class="head"><div><div class="num">07 / THE RESULT</div><h1 id="scene07-title">Evidence in. A defensible report out.</h1></div><div class="demo">FICTIONAL DEMO DATA</div></div>
+        <div id="scene07-main">
+          <aside id="scene07-scope" class="panel">
+            <div class="panel-head">Findings scope</div>
+            <div class="scope-label">SELECT ENGAGEMENT</div>
+            <div class="select-box"><strong>target-a.example +2</strong><span>3 targets · 7 findings</span></div>
+            <div class="scope-facts">
+              <div class="scope-fact"><span>SCOPE</span><strong>One engagement</strong></div>
+              <div class="scope-fact"><span>ALTERNATIVE</span><strong>All saved findings</strong></div>
+              <div class="scope-fact"><span>WRITER</span><strong>Groq · Markdown</strong></div>
+            </div>
+            <div class="generate">Generate Report</div>
+          </aside>
+          <section id="scene07-report" class="panel">
+            <div class="report-top"><div><h2>Generated Report</h2><p>7 findings · engagement scoped</p></div><div class="actions"><span class="action">Copy to Clipboard</span><span class="action primary">Download as .txt</span></div></div>
+            <div class="report-body">
+              <div class="report-sections">
+                <article class="section"><div class="section-index">01 / SECTION</div><h3>Executive Summary</h3><p>Concise risk posture derived only from supplied structured evidence.</p></article>
+                <article class="section"><div class="section-index">02 / SECTION</div><h3>Scope</h3><p>Every tested target is listed with the engagement boundary.</p></article>
+                <article class="section"><div class="section-index">03 / SECTION</div><h3>Findings by Severity</h3><p>HIGH, MEDIUM, LOW, and INFO findings organized by target.</p></article>
+                <article class="section"><div class="section-index">04 / SECTION</div><h3>Overall Recommendations</h3><p>Concrete remediation tied to the affected service or port.</p></article>
+              </div>
+              <div>
+                <div class="matrix">
+                  <div class="matrix-title">Severity × target</div>
+                  <div class="matrix-grid">
+                    <div class="cell head target">TARGET</div><div class="cell head">H</div><div class="cell head">M</div><div class="cell head">L</div><div class="cell head">I</div>
+                    <div class="cell target">target-a.example</div><div class="cell high">0</div><div class="cell medium">2</div><div class="cell low">1</div><div class="cell info">0</div>
+                    <div class="cell target">target-b.example</div><div class="cell high">1</div><div class="cell medium">1</div><div class="cell low">0</div><div class="cell info">1</div>
+                    <div class="cell target">target-c.example</div><div class="cell high">0</div><div class="cell medium">1</div><div class="cell low">0</div><div class="cell info">0</div>
+                  </div>
+                  <div class="report-rule">The report prompt forbids invented findings or claims beyond supplied data.</div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+        <div id="scene07-outro"><strong>One engagement—or the complete evidence set.</strong><span>SPECTRE / COPY · DOWNLOAD · REMEDIATE</span></div>
+      </div>
+    </div>
+    <div id="scene07-hold" class="clip hold-marker" data-start="2.5" data-duration="15.5" data-track-index="2" data-hold data-layout-ignore></div>
+    <script>
+      const tl = gsap.timeline({ paused: true });
+      tl.fromTo(".head",{opacity:0,y:-18},{opacity:1,y:0,duration:.44,ease:"power4.out"},.08);
+      tl.fromTo("#scene07-scope",{opacity:0,x:-44},{opacity:1,x:0,duration:.54,ease:"expo.out"},.42);
+      tl.fromTo("#scene07-report",{opacity:0,x:44},{opacity:1,x:0,duration:.54,ease:"expo.out"},.58);
+      tl.fromTo(".section",{opacity:0,y:20},{opacity:1,y:0,duration:.34,ease:"power3.out",stagger:.11},1.08);
+      tl.fromTo(".matrix,#scene07-outro",{opacity:0,y:18},{opacity:1,y:0,duration:.36,ease:"power3.out",stagger:.13},1.66);
+      window.__timelines = window.__timelines || {};
+      window.__timelines["scene-07"] = tl;
+    </script>
+  </div>
+</template>

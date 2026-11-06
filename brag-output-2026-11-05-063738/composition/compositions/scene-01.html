@@ -1,0 +1,56 @@
+<template>
+  <style>
+    #root { position:absolute; inset:0; overflow:hidden; background:var(--color-ground,#2A2320); color:var(--color-ink,#F4E4DC); font-family:var(--font-display,Inter),sans-serif; }
+    #scene01-stage { position:absolute; inset:0; width:1920px; height:1080px; }
+    #scene01-inner { position:absolute; inset:0; padding:72px 92px; }
+    #scene01-inner::before { content:""; position:absolute; width:720px; height:720px; right:-210px; top:-250px; border-radius:50%; background:radial-gradient(circle,rgba(201,141,128,.20),rgba(201,141,128,0) 68%); }
+    .scene01-kicker { position:relative; font-family:var(--font-mono,"IBM Plex Mono"),monospace; font-size:30px; letter-spacing:.18em; color:#D9C4B5; }
+    #scene01-wordmark { position:relative; margin-top:18px; font-size:108px; line-height:.95; font-weight:900; letter-spacing:-.06em; color:var(--color-accent,#C98D80); }
+    #scene01-title { position:relative; margin-top:28px; width:1260px; font-size:58px; line-height:1.08; font-weight:700; letter-spacing:-.035em; }
+    #scene01-flow { position:relative; display:grid; grid-template-columns:repeat(5,1fr); gap:46px; align-items:center; margin-top:74px; }
+    .scene01-node { min-height:176px; padding:28px 24px; border:2px solid #5D4D46; border-radius:16px; background:#3F332E; display:flex; flex-direction:column; justify-content:space-between; }
+    .scene01-node strong { font-size:29px; line-height:1.1; text-transform:uppercase; letter-spacing:.02em; }
+    .scene01-node span { margin-top:18px; font-family:var(--font-mono,"IBM Plex Mono"),monospace; font-size:23px; line-height:1.35; color:#D9C4B5; }
+    .scene01-node.evidence { border-color:var(--color-accent,#C98D80); }
+    .scene01-node.result { border-color:var(--color-verified,#7FA8A8); }
+    .scene01-arrow { position:absolute; top:81px; width:46px; height:2px; background:#8A7169; }
+    .scene01-arrow::after { content:""; position:absolute; right:-1px; top:-6px; border-left:10px solid #8A7169; border-top:7px solid transparent; border-bottom:7px solid transparent; }
+    .scene01-arrow.a1 { left:318px; } .scene01-arrow.a2 { left:677px; } .scene01-arrow.a3 { left:1036px; } .scene01-arrow.a4 { left:1395px; }
+    #scene01-qualifier { position:relative; margin-top:42px; padding-top:24px; border-top:2px solid #4A3D37; font-family:var(--font-mono,"IBM Plex Mono"),monospace; font-size:27px; color:#D9C4B5; letter-spacing:.02em; }
+    .scene-footer { position:absolute; left:92px; right:92px; bottom:42px; display:flex; justify-content:space-between; font-family:var(--font-mono,"IBM Plex Mono"),monospace; font-size:22px; letter-spacing:.12em; color:#B69D94; }
+    .hold-marker { position:absolute; inset:0; pointer-events:none; }
+  </style>
+  <div id="root" data-composition-id="scene-01" data-width="1920" data-height="1080">
+    <div id="scene01-stage" class="clip" data-start="0" data-duration="17" data-track-index="1">
+      <div id="scene01-inner">
+        <div id="scene01-kicker" class="scene01-kicker">SPECTRE / SYSTEM OVERVIEW</div>
+        <div id="scene01-wordmark">SPECTRE</div>
+        <h1 id="scene01-title">Authorized testing, from target list to report.</h1>
+        <div id="scene01-flow">
+          <div id="scene01-node-1" class="scene01-node"><strong>Target list</strong><span>.txt / .csv<br>authorized scope</span></div>
+          <div id="scene01-node-2" class="scene01-node"><strong>Scans</strong><span>Nmap<br>Nikto</span></div>
+          <div id="scene01-node-3" class="scene01-node evidence"><strong>Findings</strong><span>service · port<br>severity · fix</span></div>
+          <div id="scene01-node-4" class="scene01-node"><strong>LLM assist</strong><span>interpret<br>recommend</span></div>
+          <div id="scene01-node-5" class="scene01-node result"><strong>Report</strong><span>scoped evidence<br>exportable text</span></div>
+          <div class="scene01-arrow a1" data-layout-ignore></div><div class="scene01-arrow a2" data-layout-ignore></div>
+          <div class="scene01-arrow a3" data-layout-ignore></div><div class="scene01-arrow a4" data-layout-ignore></div>
+        </div>
+        <div id="scene01-qualifier">NMAP + NIKTO&nbsp;&nbsp;•&nbsp;&nbsp;GROQ-ASSISTED INTERPRETATION&nbsp;&nbsp;•&nbsp;&nbsp;ENGAGEMENT-SCOPED REPORTING</div>
+        <div class="scene-footer"><span>01 / WHAT SPECTRE IS</span><span>AUTHORIZED USE ONLY</span></div>
+      </div>
+    </div>
+    <div id="scene01-hold" class="clip hold-marker" data-start="2.5" data-duration="13.8" data-track-index="2" data-hold data-layout-ignore></div>
+    <script>
+      const tl = gsap.timeline({ paused: true });
+      tl.fromTo("#scene01-kicker",{opacity:0,filter:"blur(8px)"},{opacity:1,filter:"blur(0px)",duration:.28,ease:"power4.out"},.08);
+      tl.fromTo("#scene01-wordmark",{opacity:0,y:22,filter:"blur(12px)"},{opacity:1,y:0,filter:"blur(0px)",duration:.52,ease:"expo.out"},.16);
+      tl.fromTo("#scene01-title",{opacity:0,y:18},{opacity:1,y:0,duration:.48,ease:"power4.out"},.48);
+      tl.fromTo(".scene01-node",{opacity:0,y:28},{opacity:1,y:0,duration:.48,ease:"power4.out",stagger:.15},.82);
+      tl.fromTo(".scene01-arrow",{opacity:0,scaleX:0,transformOrigin:"left center"},{opacity:1,scaleX:1,duration:.32,ease:"power3.out",stagger:.15},1.04);
+      tl.fromTo("#scene01-qualifier",{opacity:0},{opacity:1,duration:.34,ease:"power2.out"},1.82);
+      tl.fromTo("#scene01-inner",{opacity:1},{opacity:0,duration:.55,ease:"power2.inOut"},16.3);
+      window.__timelines = window.__timelines || {};
+      window.__timelines["scene-01"] = tl;
+    </script>
+  </div>
+</template>

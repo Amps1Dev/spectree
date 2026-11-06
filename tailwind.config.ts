@@ -1,7 +1,7 @@
 import type { Config } from 'tailwindcss';
 
 const config: Config = {
-  darkMode: 'class',
+  darkMode: 'media',
   content: [
     './pages/**/*.{js,ts,jsx,tsx,mdx}',
     './components/**/*.{js,ts,jsx,tsx,mdx}',
@@ -11,18 +11,33 @@ const config: Config = {
     extend: {
       fontFamily: {
         inter: ['var(--font-inter)', 'system-ui', 'sans-serif'],
-        mono: ['JetBrains Mono', 'monospace'],
+        mono: ['var(--font-mono)', 'monospace'],
       },
       colors: {
         spectre: {
-          bg: '#080808',
-          surface: '#111111',
-          border: '#1f1f1f',
-          accent: '#00c853',
-          danger: '#e53935',
-          muted: '#6b7280',
-          text: '#f1f5f9',
-          'surface-dark': '#1a1a1a',
+          bg: 'rgb(var(--bg-primary-rgb) / <alpha-value>)',
+          surface: 'rgb(var(--bg-secondary-rgb) / <alpha-value>)',
+          card: 'rgb(var(--bg-card-rgb) / <alpha-value>)',
+          'surface-dark': 'rgb(var(--bg-card-rgb) / <alpha-value>)',
+          border: 'rgb(var(--border-rgb) / <alpha-value>)',
+          accent: 'rgb(var(--accent-rgb) / <alpha-value>)',
+          'accent-hover': 'rgb(var(--accent-hover-rgb) / <alpha-value>)',
+          'accent-contrast': 'rgb(var(--on-accent-rgb) / <alpha-value>)',
+          danger: 'rgb(var(--danger-rgb) / <alpha-value>)',
+          warning: 'rgb(var(--warning-rgb) / <alpha-value>)',
+          success: 'rgb(var(--success-rgb) / <alpha-value>)',
+          info: 'rgb(var(--info-rgb) / <alpha-value>)',
+          offline: 'rgb(var(--offline-rgb) / <alpha-value>)',
+          overlay: 'rgb(var(--overlay-rgb) / <alpha-value>)',
+          'muted-bg': 'rgb(var(--muted-rgb) / <alpha-value>)',
+          muted: 'rgb(var(--text-muted-rgb) / <alpha-value>)',
+          text: 'rgb(var(--text-primary-rgb) / <alpha-value>)',
+          'text-secondary': 'rgb(var(--text-secondary-rgb) / <alpha-value>)',
+          'on-danger': 'rgb(var(--on-danger-rgb) / <alpha-value>)',
+          'severity-high': 'rgb(var(--severity-high-rgb) / <alpha-value>)',
+          'severity-medium': 'rgb(var(--severity-medium-rgb) / <alpha-value>)',
+          'severity-low': 'rgb(var(--severity-low-rgb) / <alpha-value>)',
+          'severity-info': 'rgb(var(--severity-info-rgb) / <alpha-value>)',
         },
       },
       keyframes: {

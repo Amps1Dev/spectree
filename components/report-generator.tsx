@@ -4,7 +4,7 @@ import { Download, Send } from 'lucide-react';
 
 interface Finding {
   title: string;
-  severity: 'HIGH' | 'MEDIUM' | 'LOW';
+  severity: 'HIGH' | 'MEDIUM' | 'LOW' | 'INFO';
   description: string;
 }
 
@@ -23,9 +23,10 @@ interface ReportGeneratorProps {
 
 export default function ReportGenerator({ report, onDownload }: ReportGeneratorProps) {
   const severityColors = {
-    HIGH: 'bg-spectre-danger text-white',
-    MEDIUM: 'bg-yellow-600 text-white',
-    LOW: 'bg-spectre-accent text-black',
+    HIGH: 'bg-spectre-severity-high text-spectre-on-danger',
+    MEDIUM: 'bg-spectre-severity-medium text-spectre-accent-contrast',
+    LOW: 'bg-spectre-severity-low text-spectre-accent-contrast',
+    INFO: 'bg-spectre-severity-info text-spectre-accent-contrast',
   };
 
   return (
@@ -58,7 +59,7 @@ export default function ReportGenerator({ report, onDownload }: ReportGeneratorP
             <div key={idx} className="border border-spectre-border rounded-lg p-4">
               <div className="flex items-start gap-3 mb-2">
                 <span
-                  className={`px-3 py-1 rounded text-xs font-bold ${
+                  className={`severity-badge px-3 py-1 rounded text-xs font-bold ${
                     severityColors[finding.severity]
                   }`}
                 >

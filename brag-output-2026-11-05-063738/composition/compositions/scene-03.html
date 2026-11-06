@@ -1,0 +1,97 @@
+<template>
+  <style>
+    #root { position:absolute; inset:0; overflow:hidden; background:#2A2320; color:#F4E4DC; font-family:var(--font-display,Inter),sans-serif; }
+    #scene03-stage { position:absolute; inset:0; width:1920px; height:1080px; }
+    #scene03-inner { position:absolute; inset:0; padding:64px 84px 54px; }
+    .head { display:flex; justify-content:space-between; align-items:flex-end; border-bottom:2px solid #4A3D37; padding-bottom:22px; }
+    .num { font:25px var(--font-mono,"IBM Plex Mono"),monospace; letter-spacing:.16em; color:#C98D80; }
+    #scene03-title { margin-top:10px; font-size:58px; letter-spacing:-.04em; }
+    .demo { border:2px solid #D6A15F; border-radius:999px; padding:10px 16px; color:#F1C981; font:22px var(--font-mono,"IBM Plex Mono"),monospace; letter-spacing:.09em; }
+    #scene03-columns { display:grid; grid-template-columns:430px 610px 1fr; gap:26px; margin-top:34px; height:710px; }
+    .panel { border:2px solid #4A3D37; border-radius:18px; background:#3F332E; overflow:hidden; }
+    .panel-head { height:70px; display:flex; align-items:center; padding:0 24px; border-bottom:2px solid #4A3D37; background:#352B27; font-size:28px; font-weight:700; }
+    .panel-head code { margin-left:auto; font:20px var(--font-mono,"IBM Plex Mono"),monospace; color:#D9C4B5; }
+    .target-card { margin:24px; padding:22px; border:2px solid #5D4D46; border-radius:14px; background:#2A2320; }
+    .target-card .host { font:700 27px var(--font-mono,"IBM Plex Mono"),monospace; color:#F4E4DC; }
+    .target-card .ip { margin-top:8px; font:23px var(--font-mono,"IBM Plex Mono"),monospace; color:#A8C5C5; }
+    .tool-step { margin:0 24px 18px; display:grid; grid-template-columns:48px 1fr; gap:16px; align-items:center; padding:18px; border:2px solid #4A3D37; border-radius:14px; }
+    .tool-index { width:48px; height:48px; border-radius:12px; display:grid; place-items:center; background:#C98D80; color:#2A2320; font:800 24px var(--font-mono,"IBM Plex Mono"),monospace; }
+    .tool-step strong { display:block; font-size:27px; } .tool-step span { display:block; margin-top:6px; font:21px var(--font-mono,"IBM Plex Mono"),monospace; color:#D9C4B5; }
+    .state-rail { margin:30px 24px; display:flex; align-items:center; gap:10px; font:700 19px var(--font-mono,"IBM Plex Mono"),monospace; }
+    .state { padding:8px 11px; border:2px solid #5D4D46; border-radius:999px; } .state.complete { border-color:#7FA8A8; color:#A8C5C5; }
+    .state-arrow { color:#8A7169; }
+    #scene03-output pre { margin:24px; height:590px; padding:22px; border:2px solid #4A3D37; border-radius:14px; background:#211B19; color:#D9C4B5; font:21px/1.58 var(--font-mono,"IBM Plex Mono"),monospace; white-space:pre-wrap; }
+    .out-command { color:#C98D80; } .out-open { color:#A8C5C5; } .out-note { color:#F1C981; }
+    .evidence-card { margin:24px; border:2px solid #C98D80; border-radius:16px; overflow:hidden; }
+    .evidence-top { padding:22px; background:#352B27; border-bottom:2px solid #5D4D46; display:flex; justify-content:space-between; align-items:center; }
+    .evidence-top strong { font-size:30px; } .severity { padding:8px 12px; border-radius:999px; background:#D6A15F; color:#2A2320; font:800 20px var(--font-mono,"IBM Plex Mono"),monospace; }
+    .fields { display:grid; grid-template-columns:150px 1fr; }
+    .field-label,.field-value { padding:14px 18px; border-bottom:2px solid #4A3D37; font-size:23px; line-height:1.28; }
+    .field-label { background:#352B27; color:#D9C4B5; font:700 19px var(--font-mono,"IBM Plex Mono"),monospace; letter-spacing:.04em; }
+    .field-value.mono { font-family:var(--font-mono,"IBM Plex Mono"),monospace; }
+    .evidence-foot { margin:22px 24px; padding:18px; border-left:4px solid #7FA8A8; background:#352B27; font-size:23px; line-height:1.35; color:#D9C4B5; }
+    #scene03-summary { display:flex; justify-content:space-between; margin-top:22px; padding-top:18px; border-top:2px solid #4A3D37; font:22px var(--font-mono,"IBM Plex Mono"),monospace; color:#D9C4B5; }
+    .hold-marker { position:absolute; inset:0; pointer-events:none; }
+  </style>
+  <div id="root" data-composition-id="scene-03" data-width="1920" data-height="1080">
+    <div id="scene03-stage" class="clip" data-start="0" data-duration="17" data-track-index="1">
+      <div id="scene03-inner">
+        <div class="head"><div><div class="num">03 / RECON + FINDINGS</div><h1 id="scene03-title">Each target produces evidence, not just output.</h1></div><div class="demo">FICTIONAL DEMO DATA</div></div>
+        <div id="scene03-columns">
+          <section id="scene03-execution" class="panel">
+            <div class="panel-head">Execution <code>192.0.2.10</code></div>
+            <div class="target-card"><div class="host">target-a.example</div><div class="ip">Public web edge</div></div>
+            <div class="tool-step"><div class="tool-index">1</div><div><strong>Nmap</strong><span>Service profile</span></div></div>
+            <div class="tool-step"><div class="tool-index">2</div><div><strong>Nikto</strong><span>HTTP assessment</span></div></div>
+            <div class="state-rail"><span class="state">PENDING</span><span class="state-arrow">→</span><span class="state">SCANNING</span><span class="state-arrow">→</span><span class="state complete">COMPLETE · 3</span></div>
+          </section>
+          <section id="scene03-output" class="panel">
+            <div class="panel-head">Combined Engagement Log <code>NDJSON → UI</code></div>
+            <pre><span class="out-command">▶ Starting 192.0.2.10</span>
+
+[192.0.2.10] Running NMAP
+PORT      STATE  SERVICE
+<span class="out-open">80/tcp    open   http</span>
+<span class="out-open">443/tcp   open   https</span>
+
+[192.0.2.10] Running NIKTO
+<span class="out-note">+ Server banner reveals version</span>
+<span class="out-note">+ X-Content-Type-Options missing</span>
+
+■ 192.0.2.10: 3 findings
+✓ Engagement complete</pre>
+          </section>
+          <section id="scene03-evidence" class="panel">
+            <div class="panel-head">Saved finding <code>structured evidence</code></div>
+            <div class="evidence-card">
+              <div class="evidence-top"><strong>HTTP service exposed</strong><span class="severity">MEDIUM</span></div>
+              <div class="fields">
+                <div class="field-label">TARGET</div><div class="field-value mono">192.0.2.10</div>
+                <div class="field-label">SERVICE</div><div class="field-value mono">http · 80/tcp</div>
+                <div class="field-label">DESCRIPTION</div><div class="field-value">Traffic is accessible without transport encryption.</div>
+                <div class="field-label">REMEDIATION</div><div class="field-value">Redirect HTTP to HTTPS and deploy a valid certificate.</div>
+                <div class="field-label">SOURCE</div><div class="field-value mono">nmap</div>
+              </div>
+            </div>
+            <div class="evidence-foot">Saved with engagement ID, target, tool, timestamp, severity, description, and remediation.</div>
+          </section>
+        </div>
+        <div id="scene03-summary"><span>RAW OUTPUT → PARSER → FINDING</span><span>SCANS + FINDINGS PERSISTED TO JSON STORE</span></div>
+      </div>
+    </div>
+    <div id="scene03-hold" class="clip hold-marker" data-start="2.5" data-duration="13.8" data-track-index="2" data-hold data-layout-ignore></div>
+    <script>
+      const tl = gsap.timeline({ paused: true });
+      tl.fromTo(".head",{opacity:0,y:-18},{opacity:1,y:0,duration:.44,ease:"power4.out"},.08);
+      tl.fromTo("#scene03-execution",{opacity:0,x:-46},{opacity:1,x:0,duration:.54,ease:"expo.out"},.42);
+      tl.fromTo("#scene03-output",{opacity:0,y:32},{opacity:1,y:0,duration:.54,ease:"expo.out"},.58);
+      tl.fromTo("#scene03-evidence",{opacity:0,x:46},{opacity:1,x:0,duration:.54,ease:"expo.out"},.74);
+      tl.fromTo(".tool-step",{opacity:0,y:16},{opacity:1,y:0,duration:.32,stagger:.14,ease:"power3.out"},1.12);
+      tl.fromTo(".evidence-card",{opacity:0,scale:.96},{opacity:1,scale:1,duration:.44,ease:"power4.out"},1.38);
+      tl.fromTo("#scene03-summary",{opacity:0},{opacity:1,duration:.3,ease:"power2.out"},1.94);
+      tl.fromTo("#scene03-inner",{opacity:1},{opacity:0,duration:.55,ease:"power2.inOut"},16.3);
+      window.__timelines = window.__timelines || {};
+      window.__timelines["scene-03"] = tl;
+    </script>
+  </div>
+</template>
