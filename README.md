@@ -1,5 +1,6 @@
 # SPECTRE
 
+![alt text](image.png)
 SPECTRE is an LLM-powered penetration testing framework for planning authorised assessments, running real security tools, parsing their output into structured findings, and generating professional reports.
 
 > **Authorised use only:** Only scan systems you own or have explicit written permission to test.
