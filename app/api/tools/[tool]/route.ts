@@ -4,7 +4,8 @@ import { randomUUID } from 'crypto';
 import { tmpdir } from 'os';
 import { join } from 'path';
 import { writeFile, unlink } from 'fs/promises';
-import { getTool, resolveBin } from '@/lib/tools';
+import { getTool, toolBinary } from '@/lib/tools';
+import { normalizeScanTarget, validateResolvedTarget } from '@/lib/tool-scope';
 
 export const dynamic = 'force-dynamic';
 export const runtime = 'nodejs';
@@ -82,7 +83,16 @@ export async function POST(
     );
   }
 
-  const bin = resolveBin(tool.bins);
+  const networkTarget = p.target || p.domain;
+  if (networkTarget && (tool.blocksLocalhost || p.domain)) {
+    try {
+      await validateResolvedTarget(normalizeScanTarget(networkTarget));
+    } catch (error) {
+      return message(`[SPECTRE_ERROR] ${error instanceof Error ? error.message : 'Invalid target'}`);
+    }
+  }
+
+  const bin = toolBinary(tool);
   if (!bin) {
     const hint = tool.installHint ? `\nInstall: ${tool.installHint}` : '';
     return message(

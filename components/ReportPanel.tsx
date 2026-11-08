@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Check, Copy, Download, FileText, X } from 'lucide-react';
 import AgentActivity from '@/components/AgentActivity';
+import SpectreSpinner from '@/components/spectre-spinner';
 import MarkdownText from '@/components/markdown-text';
 import { useOfflineMode } from '@/hooks/useOfflineMode';
 
@@ -237,6 +238,7 @@ export default function ReportPanel({
       </header>
 
       <div className="min-h-0 flex-1 space-y-4 overflow-y-auto p-4">
+        {loadingMetadata && <p className="flex items-center gap-2 text-xs text-spectre-muted"><SpectreSpinner size={20} label="" />Loading findings…</p>}
         {offline && (
           <div className="rounded border border-spectre-offline/60 bg-spectre-offline/10 px-3 py-2 text-xs text-spectre-muted">
             Offline mode is active. Report generation is disabled.

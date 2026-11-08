@@ -9,7 +9,8 @@
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
     "test:chat-store": "node scripts/test-chat-store.cjs",
-    "test:parse-targets": "node scripts/test-parse-targets.cjs"
+    "test:parse-targets": "node scripts/test-parse-targets.cjs",
+    "test": "node --test scripts/test-tools.cjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",

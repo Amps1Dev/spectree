@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { TOOLS, resolveBin } from '@/lib/tools';
+import { TOOLS, isToolAvailable } from '@/lib/tools';
 
 // Availability depends on which binaries are installed on the host right now,
 // so this must never be cached.
@@ -17,7 +17,7 @@ export async function GET() {
     commandHint: t.commandHint,
     installHint: t.installHint ?? null,
     fields: t.fields,
-    available: resolveBin(t.bins) !== null,
+    available: isToolAvailable(t),
   }));
 
   return NextResponse.json(tools);

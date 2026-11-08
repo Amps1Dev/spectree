@@ -9,15 +9,17 @@ SPECTRE is an LLM-powered penetration testing framework for planning authorised 
 ## Features
 
 - AI-assisted chat powered by Groq using `openai/gpt-oss-20b`.
-- Real `nmap` and `nikto` tool calls from chat—scan output is never simulated.
+- Fourteen real tool calls from chat, including network/web scans, mobile analysis, reverse engineering, and credential/protocol audits.
 - Persistent chat history, streamed responses, cancellation, and activity indicators.
 - Target-list import from `.txt`, `.csv`, and `.docx` files.
 - Batch engagements with live per-target status and NDJSON output streaming.
 - Finding extraction, severity classification, and engagement tracking.
 - Markdown penetration-test reports scoped to one engagement or all findings.
 - Downloadable and copyable reports persisted in the browser.
-- A local tool console for Nmap, Nikto, WPScan, theHarvester, enum4linux, dnsrecon, SearchSploit, Masscan, John the Ripper, Lynis, sslscan, and NetExec/CrackMapExec.
-- Offline mode and light, dark, and system themes.
+- A console with 24 tools grouped into Network & Web, Mobile, Reverse Engineering, and Credential & Protocol Auditing. See [tool integration setup](docs/tool-integrations.md).
+- Offline mode and persistent dark red / light grey-teal themes, defaulting to dark.
+- A responsive homepage with cursor-tracked 3D typography and a flip-card wordmark.
+- A shared eight-chevron loading indicator for chat, scans, and reports.
 
 ## Architecture
 
@@ -41,7 +43,7 @@ The API routes use the Next.js Node.js runtime because security tools are execut
 
 ## Requirements
 
-- Node.js 18 or newer.
+- Node.js 20.6 or newer.
 - npm.
 - A Groq API key.
 - Linux or Kali Linux for local tool execution.
@@ -55,7 +57,7 @@ sudo apt update
 sudo apt install nmap nikto
 ```
 
-The Tools page detects installed binaries and displays an installation hint for anything missing. Some tools, such as Masscan and Lynis, may require elevated privileges for their full functionality.
+The Tools page detects installed binaries and configured REST services and displays setup instructions for anything missing. [Tool integration setup](docs/tool-integrations.md) covers MobSF, Burp, Nessus, mobile devices, binary overrides, and server-enforced scope. Some tools, such as Masscan and Lynis, may require elevated privileges for their full functionality.
 
 ## Setup
 
@@ -153,7 +155,7 @@ The sidebar toggle prevents chat requests, report generation, and tool execution
 ## Data storage
 
 - Chats, active-chat selection, theme preferences, and generated reports are stored in browser `localStorage`.
-- The intro-animation state is stored in browser `sessionStorage`.
+- The theme is stored under `spectre_theme` and defaults to dark before the first paint.
 - Engagements, scans, and parsed vulnerabilities are stored server-side in `data/store.json` by default.
 - Set `SPECTRE_STORE_PATH` to use another writable location.
 
@@ -163,6 +165,7 @@ Scan output and reports may contain sensitive information. Protect the host, bro
 
 ```bash
 npm run typecheck
+npm test
 npm run test:chat-store
 npm run test:parse-targets
 npm run build

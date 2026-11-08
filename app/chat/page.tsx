@@ -22,6 +22,7 @@ import {
 } from 'lucide-react';
 import ChatBubble from '@/components/chat-bubble';
 import AgentActivity from '@/components/AgentActivity';
+import SpectreSpinner from '@/components/spectre-spinner';
 import { useChat } from '@/components/ChatProvider';
 import ReportPanel from '@/components/ReportPanel';
 import TargetImporter from '@/components/targets/TargetImporter';
@@ -196,7 +197,7 @@ export default function ChatPage() {
 
   return (
     <div className="flex h-full min-w-0 bg-spectre-bg">
-      <aside className="flex w-64 shrink-0 flex-col border-r border-spectre-border bg-spectre-surface">
+      <aside className="hidden w-64 shrink-0 flex-col border-r border-spectre-border bg-spectre-surface xl:flex">
         <div className="border-b border-spectre-border p-4">
           <button
             type="button"
@@ -209,7 +210,7 @@ export default function ChatPage() {
 
         <div className="flex-1 space-y-1 overflow-y-auto p-3">
           {!hydrated && (
-            <p className="px-2 py-3 text-sm text-spectre-muted">Loading chats…</p>
+            <p className="flex items-center gap-2 px-2 py-3 text-sm text-spectre-muted"><SpectreSpinner size={20} label="" />Loading chats…</p>
           )}
           {chats.map((chat) => {
             const active = chat.id === activeChatId;
@@ -265,7 +266,7 @@ export default function ChatPage() {
       </aside>
 
       <section
-        className="relative flex min-w-0 flex-1 flex-col border-r border-spectre-border p-6"
+        className="relative flex min-w-0 flex-1 flex-col border-r border-spectre-border p-3 sm:p-6"
         onDragEnter={onDragEnter}
         onDragOver={(event) => {
           if (event.dataTransfer.types.includes('Files')) event.preventDefault();
@@ -285,7 +286,7 @@ export default function ChatPage() {
               type="button"
               onClick={() => setDesktopReportOpen((current) => !current)}
               aria-expanded={desktopReportOpen}
-              className="spectre-btn-secondary hidden items-center gap-2 text-sm lg:flex"
+              className="spectre-btn-secondary hidden items-center gap-2 text-sm 2xl:flex"
             >
               <FileText size={16} /> Report
             </button>
@@ -293,12 +294,21 @@ export default function ChatPage() {
               type="button"
               onClick={() => setMobileReportOpen(true)}
               aria-expanded={mobileReportOpen}
-              className="spectre-btn-secondary flex items-center gap-2 text-sm lg:hidden"
+              className="spectre-btn-secondary flex items-center gap-2 text-sm 2xl:hidden"
             >
               <FileText size={16} /> Report
             </button>
           </div>
         </header>
+
+        <div className="mb-4 flex min-w-0 items-center gap-2 xl:hidden">
+          <label htmlFor="mobile-chat-history" className="sr-only">Chat history</label>
+          <select id="mobile-chat-history" value={activeChatId ?? ''} onChange={(event) => selectChat(event.target.value)} className="spectre-input min-w-0 flex-1" disabled={!hydrated}>
+            {!hydrated && <option value="">Loading chats…</option>}
+            {chats.map((chat) => <option key={chat.id} value={chat.id}>{chat.title}</option>)}
+          </select>
+          <button type="button" onClick={createNewChat} className="spectre-btn-primary shrink-0" aria-label="New chat"><Plus size={18} /></button>
+        </div>
 
         {offline && (
           <div
@@ -409,7 +419,7 @@ export default function ChatPage() {
             onKeyDown={onInputKeyDown}
             disabled={Boolean(activeRequest)}
             rows={1}
-            className="spectre-input max-h-40 min-h-10 flex-1 resize-y"
+            className="spectre-input max-h-40 min-h-10 min-w-0 flex-1 resize-y"
           />
           <button
             type="submit"
@@ -433,7 +443,7 @@ export default function ChatPage() {
       </section>
 
       {desktopReportOpen && (
-        <aside className="hidden w-[380px] shrink-0 border-l border-spectre-border lg:block">
+        <aside className="hidden w-[380px] shrink-0 border-l border-spectre-border 2xl:block">
           <ReportPanel
             requestedEngagementId={reportEngagementId}
             onClose={() => setDesktopReportOpen(false)}
@@ -442,7 +452,7 @@ export default function ChatPage() {
       )}
 
       {mobileReportOpen && (
-        <div className="fixed inset-0 z-50 lg:hidden">
+        <div className="fixed inset-0 z-50 2xl:hidden">
           <button
             type="button"
             aria-label="Close report panel"

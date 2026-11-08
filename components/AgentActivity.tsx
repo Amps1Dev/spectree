@@ -2,6 +2,7 @@
 
 import { Square } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
+import SpectreSpinner from '@/components/spectre-spinner';
 
 const ROTATING_MESSAGES = [
   'Analysing request…',
@@ -95,18 +96,7 @@ export default function AgentActivity({
       }`}
     >
       <div className="flex items-center gap-3">
-        {reducedMotion ? (
-          <span className="h-2.5 w-2.5 shrink-0 rounded-full bg-spectre-accent" />
-        ) : (
-          <span
-            className={`agent-radar shrink-0 ${compact ? 'h-8 w-8' : 'h-11 w-11'}`}
-            aria-hidden="true"
-          >
-            <span className="agent-radar-ring" />
-            <span className="agent-radar-sweep" />
-            <span className="agent-radar-dot" />
-          </span>
-        )}
+        <SpectreSpinner size={compact ? 32 : 44} label="" />
 
         <div className="min-w-0 flex-1">
           <div className="flex items-center justify-between gap-3">

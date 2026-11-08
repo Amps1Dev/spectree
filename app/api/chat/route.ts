@@ -56,11 +56,322 @@ const TOOLS = [
       },
     },
   },
+  {
+    type: 'function',
+    function: {
+      name: 'run_mobsf',
+      description: "Analyse an authorized local APK or IPA with MobSF. Dynamic mode requires a configured test device.",
+      parameters: {
+        "type": "object",
+        "properties": {
+          "filePath": {
+            "type": "string",
+            "description": "Readable APK/IPA path on the server within the configured file scope."
+          },
+          "mode": {
+            "type": "string",
+            "description": "Analysis mode; defaults to static.",
+            "enum": [
+              "static",
+              "dynamic"
+            ]
+          }
+        },
+        "required": [
+          "filePath"
+        ],
+        "additionalProperties": false
+      },
+    },
+  },
+  {
+    type: 'function',
+    function: {
+      name: 'run_drozer',
+      description: "Run a Drozer module through an authorized Android agent.",
+      parameters: {
+        "type": "object",
+        "properties": {
+          "target": {
+            "type": "string",
+            "description": "Authorized Drozer agent host, optionally with :port."
+          },
+          "module": {
+            "type": "string",
+            "description": "Module name and optional arguments, e.g. app.package.attacksurface -a com.example.app."
+          }
+        },
+        "required": [
+          "target",
+          "module"
+        ],
+        "additionalProperties": false
+      },
+    },
+  },
+  {
+    type: 'function',
+    function: {
+      name: 'run_frida',
+      description: "Instrument a running app on the attached test device with an existing local JavaScript file.",
+      parameters: {
+        "type": "object",
+        "properties": {
+          "target": {
+            "type": "string",
+            "description": "Authorized app process name or PID on the USB device."
+          },
+          "script": {
+            "type": "string",
+            "description": "Existing .js script path on the server within configured file scope."
+          }
+        },
+        "required": [
+          "target",
+          "script"
+        ],
+        "additionalProperties": false
+      },
+    },
+  },
+  {
+    type: 'function',
+    function: {
+      name: 'run_objection',
+      description: "Run one Objection command against an authorized app on the attached test device.",
+      parameters: {
+        "type": "object",
+        "properties": {
+          "target": {
+            "type": "string",
+            "description": "App bundle or package identifier."
+          },
+          "command": {
+            "type": "string",
+            "description": "Single Objection command, e.g. env or android sslpinning disable."
+          }
+        },
+        "required": [
+          "target",
+          "command"
+        ],
+        "additionalProperties": false
+      },
+    },
+  },
+  {
+    type: 'function',
+    function: {
+      name: 'run_jadx',
+      description: "Decompile an authorized APK to Java source in a new directory.",
+      parameters: {
+        "type": "object",
+        "properties": {
+          "apkPath": {
+            "type": "string",
+            "description": "Existing APK path on the server."
+          },
+          "outputDir": {
+            "type": "string",
+            "description": "New output directory within configured file scope; must not already exist."
+          }
+        },
+        "required": [
+          "apkPath",
+          "outputDir"
+        ],
+        "additionalProperties": false
+      },
+    },
+  },
+  {
+    type: 'function',
+    function: {
+      name: 'run_apktool',
+      description: "Decode an authorized APK or rebuild an existing APKTool project.",
+      parameters: {
+        "type": "object",
+        "properties": {
+          "apkPath": {
+            "type": "string",
+            "description": "APK file for decode, or decoded project directory containing apktool.yml for build."
+          },
+          "mode": {
+            "type": "string",
+            "description": "APKTool operation.",
+            "enum": [
+              "decode",
+              "build"
+            ]
+          }
+        },
+        "required": [
+          "apkPath",
+          "mode"
+        ],
+        "additionalProperties": false
+      },
+    },
+  },
+  {
+    type: 'function',
+    function: {
+      name: 'run_ghidra',
+      description: "Analyse a native binary with Ghidra headless and run an existing post-analysis script.",
+      parameters: {
+        "type": "object",
+        "properties": {
+          "binaryPath": {
+            "type": "string",
+            "description": "Readable native binary path on the server."
+          },
+          "scriptPath": {
+            "type": "string",
+            "description": "Existing Ghidra .java or .py script path on the server."
+          }
+        },
+        "required": [
+          "binaryPath",
+          "scriptPath"
+        ],
+        "additionalProperties": false
+      },
+    },
+  },
+  {
+    type: 'function',
+    function: {
+      name: 'run_burp',
+      description: "Start a real Burp Suite Professional crawl and active web scan, and return collected issues.",
+      parameters: {
+        "type": "object",
+        "properties": {
+          "target": {
+            "type": "string",
+            "description": "Authorized HTTP(S) URL to scan."
+          }
+        },
+        "required": [
+          "target"
+        ],
+        "additionalProperties": false
+      },
+    },
+  },
+  {
+    type: 'function',
+    function: {
+      name: 'run_nessus',
+      description: "Run a real Nessus vulnerability scan using an existing policy.",
+      parameters: {
+        "type": "object",
+        "properties": {
+          "target": {
+            "type": "string",
+            "description": "Single authorized target host or IP."
+          },
+          "policyId": {
+            "type": "string",
+            "description": "Existing positive Nessus policy ID, as a string."
+          }
+        },
+        "required": [
+          "target",
+          "policyId"
+        ],
+        "additionalProperties": false
+      },
+    },
+  },
+  {
+    type: 'function',
+    function: {
+      name: 'run_nuclei',
+      description: "Run Nuclei template-based scanning and return JSON Lines findings.",
+      parameters: {
+        "type": "object",
+        "properties": {
+          "target": {
+            "type": "string",
+            "description": "Authorized HTTP(S) URL."
+          },
+          "templates": {
+            "type": "string",
+            "description": "Optional comma-separated local template file/directory paths; omit to use installed templates."
+          }
+        },
+        "required": [
+          "target"
+        ],
+        "additionalProperties": false
+      },
+    },
+  },
+  {
+    type: 'function',
+    function: {
+      name: 'run_credential_audit',
+      description: "Audit one specified account using Hydra with protocol-aware ports and an existing password wordlist. Use only when the user requests credential auditing.",
+      parameters: {
+        "type": "object",
+        "properties": {
+          "target": {
+            "type": "string",
+            "description": "Authorized username@host, optionally with :port. Do not guess usernames."
+          },
+          "service": {
+            "type": "string",
+            "description": "Login protocol.",
+            "enum": [
+              "ssh",
+              "ftp",
+              "smb",
+              "rdp",
+              "http-get",
+              "https-get",
+              "mysql",
+              "postgres"
+            ]
+          },
+          "wordlist": {
+            "type": "string",
+            "description": "Existing password wordlist path on the server."
+          }
+        },
+        "required": [
+          "target",
+          "service",
+          "wordlist"
+        ],
+        "additionalProperties": false
+      },
+    },
+  },
+  {
+    type: 'function',
+    function: {
+      name: 'run_protocol_audit',
+      description: "Enumerate SMB, NetBIOS and Active Directory information with Enum4linux-ng.",
+      parameters: {
+        "type": "object",
+        "properties": {
+          "target": {
+            "type": "string",
+            "description": "Single authorized target host or IP."
+          }
+        },
+        "required": [
+          "target"
+        ],
+        "additionalProperties": false
+      },
+    },
+  },
 ] as const;
 
 type ToolCall = {
   id: string;
-  type: 'function';
+  type: (typeof TOOLS)[number]['type'];
   function: {
     name: string;
     arguments: string;
@@ -114,6 +425,18 @@ async function executeToolCall(call: ToolCall, request: NextRequest) {
   const routeByName: Record<string, string> = {
     run_nmap: '/api/tools/nmap',
     run_nikto: '/api/tools/nikto',
+    run_mobsf: '/api/tools/mobsf',
+    run_drozer: '/api/tools/drozer',
+    run_frida: '/api/tools/frida',
+    run_objection: '/api/tools/objection',
+    run_jadx: '/api/tools/jadx',
+    run_apktool: '/api/tools/apktool',
+    run_ghidra: '/api/tools/ghidra',
+    run_burp: '/api/tools/burp',
+    run_nessus: '/api/tools/nessus',
+    run_nuclei: '/api/tools/nuclei',
+    run_credential_audit: '/api/tools/credential-audit',
+    run_protocol_audit: '/api/tools/protocol-audit',
   };
   const route = routeByName[call.function.name];
 
@@ -218,7 +541,7 @@ export async function POST(request: NextRequest) {
       {
         role: 'system',
         content:
-          'You are SPECTRE, an expert penetration testing assistant. Help the user enumerate authorized targets, interpret real scan results, identify vulnerabilities, and plan remediation. When the user explicitly asks to scan a target, call run_nmap or run_nikto instead of inventing scan output. Never claim a tool ran unless a tool result is present. Be concise and technical.',
+          'You are SPECTRE, an expert penetration testing assistant. Help the user enumerate authorized targets, interpret real scan results, identify vulnerabilities, and plan remediation. Use the relevant callable tool when the user requests a scan, mobile analysis, reverse engineering, or credential/protocol audit. Use only targets, accounts, modules, scripts, and local file paths supplied for the requested task; ask for missing required inputs. All tools enforce server target, app, and file scope. Never invent scan output. Never claim a tool ran unless a tool result is present. Be concise and technical.',
       },
       ...formattedMessages,
     ];

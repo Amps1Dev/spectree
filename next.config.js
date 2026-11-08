@@ -4,6 +4,11 @@ const nextConfig = {
     ignoreDuringBuilds: true,
   },
   images: { unoptimized: true },
+  experimental: {
+    outputFileTracingIncludes: {
+      '/api/tools/*': ['./scripts/spectre-api-tool.cjs'],
+    },
+  },
 };
 
 module.exports = nextConfig;

@@ -1,55 +1,13 @@
-import { NextRequest, NextResponse } from 'next/server';
-import {
-  executeNikto,
-  ToolExecutionError,
-} from '@/lib/tools';
+import { NextRequest } from 'next/server';
+import { executeNikto } from '@/lib/tools';
+import { streamTool, textParam } from '@/lib/tool-route';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
-export async function POST(request: NextRequest) {
-  try {
-    const { target = '' } = await request.json();
-    const encoder = new TextEncoder();
-    const abortController = new AbortController();
-    const { readable, writable } = new TransformStream<Uint8Array, Uint8Array>();
-    const writer = writable.getWriter();
-
-    const abort = () => abortController.abort();
-    if (request.signal.aborted) abort();
-    else request.signal.addEventListener('abort', abort, { once: true });
-
-    const execution = executeNikto(target, {
-      signal: abortController.signal,
-      onOutput(chunk) {
-        void writer.write(encoder.encode(chunk)).catch(abort);
-      },
-    });
-
-    void execution
-      .catch(async (error) => {
-        const message = error instanceof Error ? error.message : 'Nikto failed';
-        await writer.write(encoder.encode(`Error: ${message}\n`));
-      })
-      .finally(async () => {
-        request.signal.removeEventListener('abort', abort);
-        await writer.close().catch(() => {});
-      })
-      .catch(abort);
-
-    return new Response(readable, {
-      headers: {
-        'Content-Type': 'text/plain; charset=utf-8',
-        'Cache-Control': 'no-cache, no-transform',
-        Connection: 'keep-alive',
-      },
-    });
-  } catch (error) {
-    console.error('Nikto API error:', error);
-    const status = error instanceof ToolExecutionError ? error.status : 500;
-    return NextResponse.json(
-      { error: error instanceof Error ? error.message : 'Failed to execute nikto' },
-      { status },
-    );
-  }
+export function POST(request: NextRequest) {
+  // The shared executor validates scope/blocklists before spawning.
+  return streamTool(request, (input, options) =>
+    executeNikto(textParam(input, 'target'), options),
+  );
 }

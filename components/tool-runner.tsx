@@ -1,8 +1,9 @@
 'use client';
 
-import { useState } from 'react';
-import { Play, Copy, TerminalSquare } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
+import { Play, Copy, Square, TerminalSquare } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import SpectreSpinner from '@/components/spectre-spinner';
 
 // Mirrors the serializable projection returned by GET /api/tools. Declared
 // locally so this client component never imports lib/tools (which pulls in
@@ -48,7 +49,13 @@ export default function ToolRunner({
   const [status, setStatus] = useState<Status>('idle');
   const [error, setError] = useState('');
   const [output, setOutput] = useState('');
+  const abortRef = useRef<AbortController | null>(null);
   const { toast } = useToast();
+
+  useEffect(() => () => abortRef.current?.abort(), []);
+  useEffect(() => {
+    if (offline) abortRef.current?.abort();
+  }, [offline]);
 
   const missingRequired = tool.fields.some((f) => f.required && !values[f.name]?.trim());
   const disabled =
@@ -66,15 +73,21 @@ export default function ToolRunner({
     setError('');
     setOutput('');
     setStatus('running');
+    const controller = new AbortController();
+    abortRef.current = controller;
 
     try {
       const response = await fetch(`/api/tools/${tool.id}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(values),
+        signal: controller.signal,
       });
 
-      if (!response.ok) throw new Error(`Request failed (${response.status})`);
+      if (!response.ok) {
+        const problem = await response.json().catch(() => null);
+        throw new Error(problem?.error || `Request failed (${response.status})`);
+      }
 
       const reader = response.body?.getReader();
       const decoder = new TextDecoder();
@@ -87,10 +100,16 @@ export default function ToolRunner({
           setOutput(full);
         }
       }
+      full += decoder.decode();
+      setOutput(full);
+      const failure = full.match(/^\[SPECTRE_ERROR\] (.+)$/m);
+      if (failure) throw new Error(failure[1]);
       setStatus('complete');
     } catch (err) {
       setStatus('error');
-      setError(err instanceof Error ? err.message : 'Unknown error');
+      setError(controller.signal.aborted ? 'Tool execution cancelled.' : err instanceof Error ? err.message : 'Unknown error');
+    } finally {
+      if (abortRef.current === controller) abortRef.current = null;
     }
   };
 
@@ -112,7 +131,7 @@ export default function ToolRunner({
               : 'border-spectre-border text-spectre-muted'
           }`}
         >
-          {tool.available ? 'ready' : 'not installed'}
+          {tool.available ? 'ready' : 'unavailable'}
         </span>
       </div>
       <p className="text-spectre-muted text-sm mb-3">{tool.description}</p>
@@ -126,7 +145,7 @@ export default function ToolRunner({
 
       {!tool.available && tool.installHint && (
         <div className="mb-4 p-2 bg-spectre-surface border border-spectre-border rounded text-xs text-spectre-muted">
-          Install with{' '}
+          Setup: {' '}
           <code className="font-mono text-spectre-text">{tool.installHint}</code>
         </div>
       )}
@@ -142,7 +161,7 @@ export default function ToolRunner({
 
           return (
             <div key={f.name}>
-              <label className="block text-xs text-spectre-muted mb-1">
+              <label htmlFor={`${tool.id}-${f.name}`} className="block text-xs text-spectre-muted mb-1">
                 {f.label}
                 {f.required && <span className="text-spectre-danger"> *</span>}
               </label>
@@ -150,12 +169,13 @@ export default function ToolRunner({
               {f.type === 'textarea' ? (
                 <textarea
                   {...common}
+                  id={`${tool.id}-${f.name}`}
                   rows={4}
                   className="spectre-input w-full h-28 resize-none font-mono text-sm"
                   onChange={(e) => setField(f.name, e.target.value)}
                 />
               ) : f.type === 'select' ? (
-                <select {...common} onChange={(e) => setField(f.name, e.target.value)}>
+                <select {...common} id={`${tool.id}-${f.name}`} onChange={(e) => setField(f.name, e.target.value)}>
                   {(f.options ?? []).map((o) => (
                     <option key={o.value} value={o.value}>
                       {o.label}
@@ -165,6 +185,7 @@ export default function ToolRunner({
               ) : (
                 <input
                   {...common}
+                  id={`${tool.id}-${f.name}`}
                   type={f.type === 'password' ? 'password' : f.type === 'number' ? 'number' : 'text'}
                   onChange={(e) => setField(f.name, e.target.value)}
                 />
@@ -185,6 +206,12 @@ export default function ToolRunner({
           {offline ? 'Offline' : 'Run'}
         </button>
 
+        {status === 'running' && (
+          <button type="button" onClick={() => abortRef.current?.abort()} className="spectre-btn-secondary flex w-full items-center justify-center gap-2 text-sm">
+            <Square size={14} /> Cancel
+          </button>
+        )}
+
         <div className="flex items-center gap-2">
           <div
             className={`inline-flex items-center gap-2 px-3 py-1 bg-spectre-surface border border-spectre-border rounded-full text-xs font-medium ${
@@ -192,7 +219,7 @@ export default function ToolRunner({
             }`}
           >
             {status === 'running' && (
-              <div className="w-2 h-2 bg-spectre-accent rounded-full animate-pulse" />
+              <SpectreSpinner size={18} label={`Running ${tool.name}`} />
             )}
             <span>{status.toUpperCase()}</span>
           </div>

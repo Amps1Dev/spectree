@@ -8,6 +8,9 @@
 # testing
 /coverage
 
+# generated reverse-engineering artifacts
+/data/tool-output/
+
 # next.js
 /.next/
 /out/
